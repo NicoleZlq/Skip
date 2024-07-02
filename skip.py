@@ -64,13 +64,14 @@ class Skip(gym.Env):
         """
         super().reset(seed=seed, options=options)
         # count the train, station, time unit
-        self.train_index = 1
+        self.train_index = 0
+        self.time_index = 0
+        # the first station station_index=0 should be make the passenger boarding on the train, thus, we start at the second station
         self.station_index = 1
-        self.time_index = 1
         
         #the initial state s_0
         #departue time of the current train, its the first item of state
-        self.DepartTime = 1
+        self.DepartTime = 0
         #remining passengers who cannot boarding the train
         self.RemainPass = 0
         #passengers on the train
