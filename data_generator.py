@@ -16,15 +16,15 @@ def generate_data():
         passenger = i
         
         # 第二列数据，从1到5的随机整数
-        start = random.randint(1, 5)
+        start = random.randint(0, 4)
         
         # 第三列数据，从2到6的随机整数，且大于第二列
         end = start
         while end <= start:
-            end = random.randint(2, 6)
+            end = random.randint(1, 5)
         
         # 第四列数据，从1到100的随机整数
-        time = random.randint(0, 59)
+        time = random.randint(0, 60)
         
         # 将数据添加到列表
         data_list.append({
@@ -76,21 +76,4 @@ def process_csv():
 
     return time_count_dict
 
-# 打印结果
-def print_results(time_count_dict):
-    for time, entries in time_count_dict.items():
-        for entry in entries:
-            print(f"time: {time}, start: {entry[0]}, end: {entry[1]}, count: {entry[2]}")
 
-    # 调用函数处理CSV文件并打印结果
-    time_count_dict = process_csv()
-    print_results(time_count_dict)
-    for key in time_count_dict:
-        print(key)
-        print(time_count_dict[key])
-
-pass_od = process_csv()
-
-a = pass_od[1]
-
-generate_data()

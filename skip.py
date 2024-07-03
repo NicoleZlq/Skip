@@ -28,7 +28,7 @@ class Skip(gym.Env):
         self.PassOD = pass_od
 
         # numbers of trains
-        self.train = num_trains
+        self.train_num = num_trains
         # number of station
         self.station = num_stations
         # peak hour time (1 time inverval = 1 min)
@@ -41,6 +41,11 @@ class Skip(gym.Env):
         self.running_time = 9
         # the train capacity 
         self.train_cap = 20
+        #in the toy instance, the departure time is fixed
+        self.depart_interval = 10
+        
+        # dict for onboard passenger
+        self.onboard_dict = {key: [] for key in range(0, self.train_num)}
         
         
         
@@ -63,27 +68,56 @@ class Skip(gym.Env):
         :return: (np.array)
         """
         super().reset(seed=seed, options=options)
-        # count the train, station, time unit
+        # count the train, station, time unit, the count start from 0
         self.train_index = 0
         self.time_index = 0
-        # the first station station_index=0 should be make the passenger boarding on the train, thus, we start at the second station
-        self.station_index = 1
+        # count the station, the count start from 1.
+        #the od also strat from 1 to 6
+        self.station_index = 0
+        #the passeners waiting at the in every station
+        self.PassengerEvery = {key: [] for key in range(0, self.train_num )}
         
         #the initial state s_0
         #departue time of the current train, its the first item of state
         self.DepartTime = 0
+        #passengers on the train 
+        self.PassengerRemain = {key: [] for key in range(0, self.train_num )}
         #remining passengers who cannot boarding the train
-        self.RemainPass = 0
-        #passengers on the train
-        self.OntrainPass = 0
-        #passenger waiting on the station when train arrive at the station
-        self.WaitPass = 0
+        self.PassengerWaiting = {key: [] for key in range(0, self.station )}
+        #the total passenger waiting on the station when train arrive at the station
+        self.PassengerTotal = {key: [] for key in range(0, self.station )}
         
+        
+        self.FirstBoardProcess()
 
         # here we convert to float32 to make it more general (in case we want to use continuous actions)
-        return np.array([self.DepartTime,self.RemainPass, self.OntrainPass, self.WaitPass ]).astype(np.float32), {}  # empty info dict
+        #return np.array([self.DepartTime,self.PassengerWaiting, self.PassengerRemain, self.PassengerTotal]).astype(np.float32), {}  # empty info dict
+        return np.array([self.DepartTime,len(self.PassengerWaiting[self.station_index]), len(self.PassengerRemain[self.station_index]), len(self.PassengerTotal[self.station_index])]).astype(np.float32), {} 
 
     def step(self, action):
+        
+        self.station_index += 1
+        #train running process
+        self.time_index = self.time_index +self.running_time
+        #the passenger waiting as the current station p^n_ks
+
+            
+        time_interval = [self.DepartTime, self.time_index+1]
+        
+        
+        for key in self.PassOD:
+            if time_interval[0] <= key <= time_interval[1]:
+                values = self.PassOD[key]
+                for value in values:
+                    new_tuple = value[:0] + (key,) + value[1:]   #transfer the first item 'start station' to arrive time 'time', the information 'start staion' is showed in the Passenger dic key
+                    self.PassengerTotal[value[0]].append(new_tuple)
+            
+            #boarding process, alighting process, calculate the passenger who fail to board on the train
+           
+            self.PassengerBoardProcess()
+                
+        
+        
         if self.station_index == 0:
             self.action = 1
         else:
@@ -130,6 +164,48 @@ class Skip(gym.Env):
     def close(self):
         pass
     
+    
+    def FirstBoardProcess(self):
+        
+        #The earliest passenger arrival time, to calculate number of the passenger 
+        #who arrive at the first station when the train departure this station
+        
+        #when the first train start from the first train, there no passenger
+        
+        if self.time_index in self.PassOD.keys():
+            values = self.PassOD[self.time_index]           
+            for value in values:
+                if value[0] == self.station_index:
+                    self.onboard_dict[self.train_index].append(value)
+                    values.remove(value)
+    
+    def PassengerBoardProcess(self):
+        
+        #Alighting Process
+        onboard_passengers = self.onboard_dict[self.train_index]
+        
+        #先下车， 下车时间不限
+        #下完车，用while 判断列车是否坐满了，再上车
+        #再更新没有上车的字典
+        
+        
+        if self.time_index in self.PassOD.keys():
+            
+            for value in values:
+                if value[0] == self.station_index:
+                    self.onboard_dict[self.train_index].append(value)
+                    values.remove(value)
+                    break
+            if len(values) == 0:
+                del self.PassOD[self.time_index]
+
+            
+        
+        else:
+            pass
+            
+    
+
     
     
       
