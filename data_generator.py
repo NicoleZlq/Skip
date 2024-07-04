@@ -11,7 +11,7 @@ def generate_data():
     data_list = []
     
     # 生成数据
-    for i in range(0, 100):
+    for i in range(0, 200):
         # 第一列数据
         passenger = i
         
@@ -63,17 +63,9 @@ def process_csv():
             # 构建一个包含time, start, end的元组，并将其添加到time_data字典中
             data_tuple = (start, end)
             time_data[time].append(data_tuple)
+
     
-    # 转换字典格式，计算每个time下相同start和end的组合的个数
-    time_count_dict = {}
-    for time, data_list in time_data.items():
-        # 使用defaultdict来自动初始化计数器
-        count_dict = defaultdict(int)
-        for data in data_list:
-            count_dict[data] += 1
-        # 将每个time对应的数据和计数存入time_count_dict
-        time_count_dict[time] = [(data[0], data[1], count) for data, count in count_dict.items()]
 
-    return time_count_dict
+    return time_data
 
-
+print(33//9)

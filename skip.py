@@ -3,6 +3,8 @@ import gymnasium as gym
 from gymnasium import spaces
 from stable_baselines3.common.env_checker import check_env
 
+import copy
+
 from gymnasium.envs.registration import register
 
 import pass_process
@@ -25,12 +27,12 @@ class Skip(gym.Env):
         super(Skip, self).__init__()
         self.render_mode = render_mode
         #passengers flow, dict
-        self.PassOD = pass_od
+        self.OriginalOD = pass_od.copy()
 
         # numbers of trains
         self.train_num = num_trains
         # number of station
-        self.station = num_stations
+        self.station_num = num_stations
         # peak hour time (1 time inverval = 1 min)
         self.num_time = num_time
         
@@ -56,10 +58,15 @@ class Skip(gym.Env):
         # Example when using discrete actions, we have two: left and right
         n_actions = 2
         self.action_space = spaces.Discrete(n_actions)
-        # The observation will be the coordinate of the agent
-        # this can be described both by Discrete and Box space
+        # initial state
+        state_length = 1+1+self.station_num+self.train_cap+self.train_cap+1
+        
+        self.ini_state = [0] * state_length
+        
+        max_value = [2000] * state_length
+        
         self.observation_space = spaces.Box(
-        low=np.array([0, 0, 0, 0]), high=np.array([self.num_time+180, 1000, 2000, 2000]), shape=(4,), dtype=np.int64
+        low=np.array(self.ini_state), high=np.array(max_value), shape=(state_length,), dtype=np.int64
     )
 
     def reset(self, seed=None, options=None):
@@ -78,76 +85,84 @@ class Skip(gym.Env):
         self.PassengerEvery = {key: [] for key in range(0, self.train_num )}
         
         #the initial state s_0
-        #departue time of the current train, its the first item of state
+        #departure time of the current train, its the first item of state
         self.DepartTime = 0
-        #passengers on the train 
-        self.PassengerRemain = {key: [] for key in range(0, self.train_num )}
-        #remining passengers who cannot boarding the train
-        self.PassengerWaiting = {key: [] for key in range(0, self.station )}
+        #the initial departure time from the first station
+        self.StartDepartTime = 0
+        #predifined departure interval
+        self.PreDepartInterval =10
         #the total passenger waiting on the station when train arrive at the station
-        self.PassengerTotal = {key: [] for key in range(0, self.station )}
+        self.PassengerTotal = {key: [] for key in range(0, self.station_num )}
+        
+        #waiting time, use to calculate the missing train
+        self.TotalWaitingTime = []
+        
+        
+        self.PassOD = self.OriginalOD.copy()
         
         
         self.FirstBoardProcess()
 
         # here we convert to float32 to make it more general (in case we want to use continuous actions)
         #return np.array([self.DepartTime,self.PassengerWaiting, self.PassengerRemain, self.PassengerTotal]).astype(np.float32), {}  # empty info dict
-        return np.array([self.DepartTime,len(self.PassengerWaiting[self.station_index]), len(self.PassengerRemain[self.station_index]), len(self.PassengerTotal[self.station_index])]).astype(np.float32), {} 
+        return np.array(self.ini_state).astype(np.float32), {} 
 
     def step(self, action):
         
         self.station_index += 1
+        
+        print('station:', self.station_index)
+        print('train:', self.train_index)
+        
         #train running process
-        self.time_index = self.time_index +self.running_time
+        self.time_index = self.DepartTime +self.running_time
         #the passenger waiting as the current station p^n_ks
+        
+        self.UpdateTrain()
 
+        
+        self.PassengerArriveProcess() #calculate the total passenger who waiting at the station
+
+        if action == 1 and self.station_index !=0:
+            self.time_index +=1
+            self.PassengerBoardProcess() #alighting, boarding, updating the waiting passengers
             
-        time_interval = [self.DepartTime, self.time_index+1]
-        
-        
-        for key in self.PassOD:
-            if time_interval[0] <= key <= time_interval[1]:
-                values = self.PassOD[key]
-                for value in values:
-                    new_tuple = value[:0] + (key,) + value[1:]   #transfer the first item 'start station' to arrive time 'time', the information 'start staion' is showed in the Passenger dic key
-                    self.PassengerTotal[value[0]].append(new_tuple)
             
-            #boarding process, alighting process, calculate the passenger who fail to board on the train
-           
-            self.PassengerBoardProcess()
-                
-        
-        
-        if self.station_index == 0:
-            self.action = 1
-        else:
-            if action == self.LEFT:
-                self.agent_pos -= 1
-            elif action == self.RIGHT:
-                self.agent_pos += 1
-            else:
-                raise ValueError(
-                    f"Received invalid action={action} which is not part of the action space"
-                )
+        self.DepartTime = self.time_index
+            
 
-        current_station_pass = self.PassOD[self.time_index]
+        # predefine the constrain condition
+        terminated = bool(self.station_index == self.station_num-2 and self.train_index == self.train_num-1)
         
-        current_train = pass_process.boarding()
-        # Account for the boundaries of the grid
-        self.agent_pos = np.clip(self.agent_pos, 0, self.grid_size)
-
-        # Are we at the left of the grid?
-        terminated = bool(self.agent_pos == 0)
+        reward = -sum([(num // 9) ** 2 for num in self.TotalWaitingTime])/1000
+        
+        
+        
+        print('*************', terminated)
+        if terminated:
+            added_reward = self.CalculateFinalReward()/1000  #these passenger connot boarding on the train
+            reward -= added_reward
+            
+            for key in self.PassengerTotal:
+                length = len(self.PassengerTotal[key])
+                print(f"The length of key {key} is {length}.")
         truncated = False  # we do not limit the number of steps here
+        
 
-        # Null reward everywhere except when reaching the goal (left of the grid)
-        reward = 1 if self.agent_pos == 0 else 0
+        print('reward:', reward)
+        
+        
+        
 
         # Optionally we can pass additional info, we are not using that for now
         info = {}
+        
+        state = self.UpdateState()
+        
+        
 
         return (
-            np.array([self.agent_pos]).astype(np.int32),
+            np.array(state).astype(np.float32),
             reward,
             terminated,
             truncated,
@@ -164,6 +179,28 @@ class Skip(gym.Env):
     def close(self):
         pass
     
+    def UpdateState(self):
+        pass
+    #station_index + train_index　＋　numbers of remaining passengers in each station 
+    #+ onboard passengers arriving time +  onboard passengers end station
+    #  1 + 1 + train_num + station_num + capacity + capacity
+    
+        info = [self.train_index, self.station_index]
+        
+        remaining_pass =  [len(value_list) for value_list in self.PassengerTotal.values()]
+        
+        arriving_time = [value_list[0] for value_list in self.onboard_dict[self.train_index]]
+
+        arriving_time.extend([-1] * (self.train_cap - len(arriving_time)))
+        
+        end_station = [value_list[1] for value_list in self.onboard_dict[self.train_index]]
+
+        end_station.extend([-1] * (self.train_cap - len(end_station)))
+        
+        time = [self.DepartTime]
+        
+        return  info + remaining_pass + arriving_time + end_station + time
+    
     
     def FirstBoardProcess(self):
         
@@ -173,37 +210,126 @@ class Skip(gym.Env):
         #when the first train start from the first train, there no passenger
         
         if self.time_index in self.PassOD.keys():
-            values = self.PassOD[self.time_index]           
-            for value in values:
-                if value[0] == self.station_index:
-                    self.onboard_dict[self.train_index].append(value)
-                    values.remove(value)
+            values = self.PassOD[self.time_index]  
+            boarding = [value for value in values if value[0] == self.station_index]
+            updated_values = [value for value in values if value[0] != self.station_index]
+            self.onboard_dict[self.train_index] = boarding
+            self.PassOD[self.time_index] =  updated_values
+        
+        print(self.PassOD[self.time_index])
+        print(self.onboard_dict[self.train_index])
+            
+            
+                  
+
+                    
+    def PassengerArriveProcess(self):
+        
+        time_interval = [self.DepartTime, self.time_index+1]
+        
+        
+        for key in self.PassOD:
+            if time_interval[0] <= key <= time_interval[1]:
+                while len(self.PassOD[key])>0:
+                    value = self.PassOD[key].pop(0)     #Avoid passengers being counted repeatedly   
+                    new_tuple = value[:0] + (key,) + value[1:]   #transfer the first item 'start station' to arrive time 'time', the information 'start staion' is showed in the Passenger dic key
+                    self.PassengerTotal[value[0]].append(new_tuple)
+                    
+                    
+        for key in self.PassengerTotal:
+                    
+            self.PassengerTotal[key] = sorted(self.PassengerTotal[key], key=lambda x: x[0])
+    
     
     def PassengerBoardProcess(self):
         
         #Alighting Process
-        onboard_passengers = self.onboard_dict[self.train_index]
+        Passengers = self.onboard_dict[self.train_index]
+
+        self.onboard_dict[self.train_index] = [value for value in Passengers if value[1] > self.station_index]
         
-        #先下车， 下车时间不限
-        #下完车，用while 判断列车是否坐满了，再上车
-        #再更新没有上车的字典
-        
-        
-        if self.time_index in self.PassOD.keys():
+        print('before')
+        print('waiging passengers:',len(self.PassengerTotal[self.station_index]))
+        print('numbers of onboard passenger', len(self.onboard_dict[self.train_index])) 
+               
+       #Boarding Process
+        while len(self.onboard_dict[self.train_index]) < self.train_cap and len(self.PassengerTotal[self.station_index]) >0:   #constrain: train capacity
+            boarding_passenger = self.PassengerTotal[self.station_index].pop(0)  
+            self.onboard_dict[self.train_index].append(boarding_passenger)
             
-            for value in values:
-                if value[0] == self.station_index:
-                    self.onboard_dict[self.train_index].append(value)
-                    values.remove(value)
-                    break
-            if len(values) == 0:
-                del self.PassOD[self.time_index]
+        #calcualte the waiting time until the passenger board on the train
+        ArrivingTime = [value[0] for value in self.onboard_dict[self.train_index]]
+        WaitingTime = [self.time_index - item for item in ArrivingTime]
+        self.TotalWaitingTime.extend(WaitingTime)
+        
+        print('after')
+        print('numbers of remaining passenger', len(self.PassengerTotal[self.station_index]))
+        print('numbers of onboard passenger', len(self.onboard_dict[self.train_index]))
+        
 
             
+    def UpdateTrain(self):
         
-        else:
-            pass
+        if self.station_index == self.station_num-1:
             
+            self.onboard_dict[self.train_index] = []    #in the end station, all of passenger should be alighting
+            self.train_index +=1
+            self.station_index = 0
+        
+            self.DepartTime = self.time_index = self.StartDepartTime = self.StartDepartTime + self.PreDepartInterval
+            
+            #take the passenger in the first station
+            
+            print('waiging passengers:',len(self.PassengerTotal[self.station_index]))
+            
+            passengers = self.PassengerTotal[self.station_index]
+            
+            selected_passenger = [value for value in passengers if value[0] <= self.time_index]
+            updated_passengers = [value for value in passengers if value[0] > self.time_index]
+            
+            
+            num_to_passenger =  min(len(selected_passenger), self.train_cap)
+            
+            self.onboard_dict[self.train_index] =  selected_passenger[:num_to_passenger]
+            
+            updated_passengers += selected_passenger[num_to_passenger:]
+            
+            
+            self.PassengerTotal[self.station_index] = updated_passengers
+
+            
+            print('in the first staition')
+            print('waiging passengers:',len(self.PassengerTotal[self.station_index]))
+            print('numbers of onboard passengers:',len(self.onboard_dict[self.train_index]))
+            
+            
+            
+
+    def CalculateFinalReward(self):
+        sum_of_squares = 0
+
+        # Iterate through the dictionary values
+        for key, value in self.PassengerTotal.items():
+    # Check if the list is not empty
+            if value:  # This ensures there is at least one element in the list
+                # Take the first item, which could be a number or a tuple
+                print(value)
+                for i in value:
+                    first_item = i[0]
+                    # Divide the first item by 9, square it, and add to the sum
+                    sum_of_squares += (first_item // 9) ** 2
+        
+        return sum_of_squares
+         
+
+            
+
+            
+
+            
+           
+            
+
     
 
     
