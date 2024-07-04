@@ -5,6 +5,10 @@ from stable_baselines3.common.vec_env import SubprocVecEnv
 import data_generator
 import argparse
 
+import warnings
+warnings.filterwarnings("ignore")
+
+
 
 
 def main(args):
