@@ -10,7 +10,7 @@ from gymnasium.envs.registration import register
 import pass_process
 
 from gymnasium.experimental.vector import VectorEnv
-class Skip(gym.Env):
+class SkipToy(gym.Env):
     """
     Custom Environment that follows gym interface.
     This is a simple env where the agent must learn to go always left.
@@ -24,7 +24,7 @@ class Skip(gym.Env):
     SKIP= 0
 
     def __init__(self, num_trains=6, num_stations=6, num_time =60,  pass_od = None, render_mode="console"):
-        super(Skip, self).__init__()
+        super(SkipToy, self).__init__()
         self.render_mode = render_mode
         #passengers flow, dict
         self.OriginalOD = pass_od.copy()
@@ -96,9 +96,10 @@ class Skip(gym.Env):
         
         #waiting time, use to calculate the missing train
         self.TotalWaitingTime = []
+
         
         
-        self.PassOD = self.OriginalOD.copy()
+        self.PassOD = copy.deepcopy(self.OriginalOD)        
         
         
         self.FirstBoardProcess()
@@ -171,10 +172,7 @@ class Skip(gym.Env):
 
     def render(self):
         # agent is represented as a cross, rest as a dot
-        if self.render_mode == "console":
-            print("." * self.agent_pos, end="")
-            print("x", end="")
-            print("." * (self.grid_size - self.agent_pos))
+        pass
 
     def close(self):
         pass
@@ -216,12 +214,6 @@ class Skip(gym.Env):
             self.onboard_dict[self.train_index] = boarding
             self.PassOD[self.time_index] =  updated_values
         
-        print(self.PassOD[self.time_index])
-        print(self.onboard_dict[self.train_index])
-            
-            
-                  
-
                     
     def PassengerArriveProcess(self):
         
@@ -307,6 +299,7 @@ class Skip(gym.Env):
 
     def CalculateFinalReward(self):
         sum_of_squares = 0
+        missing = 0
 
         # Iterate through the dictionary values
         for key, value in self.PassengerTotal.items():
@@ -317,9 +310,10 @@ class Skip(gym.Env):
                 for i in value:
                     first_item = i[0]
                     # Divide the first item by 9, square it, and add to the sum
+                    missing += first_item // 9
                     sum_of_squares += (first_item // 9) ** 2
         
-        return sum_of_squares
+        return sum_of_squares, missing
          
 
             
