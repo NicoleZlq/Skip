@@ -1,13 +1,48 @@
 import numpy as np
 import gymnasium as gym
-from stable_baselines3 import A2C
+from stable_baselines3 import A2C,PPO
 from stable_baselines3.common.vec_env import SubprocVecEnv
 import data_generator
 import argparse
+from stable_baselines3.common.callbacks import BaseCallback
+from stable_baselines3.common.logger import HParam
 
 import warnings
 warnings.filterwarnings("ignore")
 
+
+import numpy as np
+
+from stable_baselines3 import SAC
+from stable_baselines3.common.callbacks import BaseCallback
+
+
+class HParamCallback(BaseCallback):
+    """
+    Saves the hyperparameters and metrics at the start of the training, and logs them to TensorBoard.
+    """
+
+    def _on_training_start(self) -> None:
+        hparam_dict = {
+            "algorithm": self.model.__class__.__name__,
+            "learning rate": self.model.learning_rate,
+            "gamma": self.model.gamma,
+        }
+        # define the metrics that will appear in the `HPARAMS` Tensorboard tab by referencing their tag
+        # Tensorbaord will find & display metrics from the `SCALARS` tab
+        metric_dict = {
+            "rollout/ep_rew_mean": 0,
+            "train/value_loss": 0.0,
+            "eval/mean_reward": 0.0,
+        }
+        self.logger.record(
+            "hparams",
+            HParam(hparam_dict, metric_dict),
+            exclude=("stdout", "log", "json", "csv"),
+        )
+
+    def _on_step(self) -> bool:
+        return True
 
 
 
@@ -21,12 +56,21 @@ def main(args):
     
     env = gym.make("Skip-v0", num_trains=args.train, num_stations=args.station, num_time = args.time, pass_od = read_OD)
     
-    n_steps = 100
 
-    model = A2C("MlpPolicy", env, verbose=1).learn(n_steps)
+    model = PPO("MlpPolicy", env, verbose=1, seed=1, tensorboard_log="./skip_small_01_tensorboard/")
+    
+    model.learn(50000, callback=HParamCallback(BaseCallback))
+    
+    model.save("a2c_skip_small")
+    
+    del model
+    
+    n_steps =500
 
     # using the vecenv
     obs,_ = env.reset()
+    
+    model = PPO.load('a2c_skip_small')
     
     
     for step in range(n_steps):
