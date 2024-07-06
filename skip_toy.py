@@ -37,26 +37,44 @@ class SkipToy(gym.Env):
         self.num_time = num_time
         
         
-        # when the train decides stop at the station, the stop time is 1 min
-        self.stop_time = 1
+        # the dwell time is also the action list, min
+        self.dwell_time = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300]
         # when train running in the section, the running time is 10 -1 = 9 min
-        self.running_time = 9
+        self.running_time =100
         # the train capacity 
-        self.train_cap = 20
+        self.train_cap = 200
         #in the toy instance, the departure time is fixed
         self.depart_interval = 10
         
         # dict for onboard passenger
         self.onboard_dict = {key: [] for key in range(0, self.train_num)}
         
+        #the passenger boarding or alighting speed
+        self.boarding_speed = 1
+        #c_0
+        self.discount_boarding_speed = 10
+        #minimum departure-arrive \theta_st
+        self.min_da = 100
         
+        #minimum arrive-arrive \theta_se 
+        self.min_aa = 100
+        
+        #minimum departure-departure \theta
+        self.min_dd = 100
+        
+        #departure time of current train and its previous train 
+        self.departure_recode = {key: [None, None] for key in range(6)}
+        
+        
+        #arrive time of current train and its previous train 
+        self.arrive_recode = {key: [None, None] for key in range(6)}
         
         
 
         # Define action and observation space
         # They must be gym.spaces objects
         # Example when using discrete actions, we have two: left and right
-        n_actions = 2
+        n_actions = 11
         self.action_space = spaces.Discrete(n_actions)
         # initial state
         state_length = 1+1+self.station_num+self.train_cap+self.train_cap+1
@@ -96,6 +114,9 @@ class SkipToy(gym.Env):
         
         #waiting time, use to calculate the missing train
         self.TotalWaitingTime = []
+        #missing train
+        self.MissingTrain =[]
+        
 
         
         
@@ -112,6 +133,8 @@ class SkipToy(gym.Env):
         
         self.station_index += 1
         
+        self.action = self.dwell_time[action] 
+        
         print('station:', self.station_index)
         print('train:', self.train_index)
         
@@ -124,7 +147,7 @@ class SkipToy(gym.Env):
         
         self.PassengerArriveProcess() #calculate the total passenger who waiting at the station
 
-        if action == 1 and self.station_index !=0:
+        if self.station_index !=0:
             self.time_index +=1
             self.PassengerBoardProcess() #alighting, boarding, updating the waiting passengers
             
@@ -141,6 +164,7 @@ class SkipToy(gym.Env):
         
         print('*************', terminated)
         if terminated:
+            self.MissingTrain = [(num // 9)  for num in self.TotalWaitingTime]
             added_reward = self.CalculateFinalReward()/1000  #these passenger connot boarding on the train
             reward -= added_reward
             
@@ -165,6 +189,7 @@ class SkipToy(gym.Env):
         return (
             np.array(state).astype(np.float32),
             reward,
+            self.MissingTrain,
             terminated,
             truncated,
             info,
@@ -231,6 +256,8 @@ class SkipToy(gym.Env):
         for key in self.PassengerTotal:
                     
             self.PassengerTotal[key] = sorted(self.PassengerTotal[key], key=lambda x: x[0])
+            
+        
     
     
     def PassengerBoardProcess(self):
@@ -299,22 +326,25 @@ class SkipToy(gym.Env):
 
     def CalculateFinalReward(self):
         sum_of_squares = 0
-        missing = 0
 
         # Iterate through the dictionary values
         for key, value in self.PassengerTotal.items():
     # Check if the list is not empty
             if value:  # This ensures there is at least one element in the list
                 # Take the first item, which could be a number or a tuple
-                print(value)
+
                 for i in value:
                     first_item = i[0]
+                    self.MissingTrain.append(first_item//9)
                     # Divide the first item by 9, square it, and add to the sum
-                    missing += first_item // 9
                     sum_of_squares += (first_item // 9) ** 2
         
-        return sum_of_squares, missing
-         
+        return sum_of_squares
+    
+    
+    def skip_constrain(self):
+        pass
+        
 
             
 
