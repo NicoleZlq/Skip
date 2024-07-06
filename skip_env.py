@@ -6,6 +6,7 @@ import data_generator
 import argparse
 from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.logger import HParam
+import random
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -51,26 +52,28 @@ def main(args):
 # Instantiate the env
 
     read_OD = data_generator.process_csv()
-    
-    print(read_OD)
-    
+
     env = gym.make("Skip-v0", num_trains=args.train, num_stations=args.station, num_time = args.time, pass_od = read_OD)
     
-
-    model = PPO("MlpPolicy", env, verbose=1, seed=1, tensorboard_log="./skip_small_01_tensorboard/")
     
-    model.learn(50000, callback=HParamCallback(BaseCallback))
+    np.random.seed(20240101)
+    seed1 = np.random.randint( 0,20240101) 
+    model = A2C("MlpPolicy", env, verbose=1, seed=seed1, tensorboard_log="./skip_small_01_tensorboard/")
+
+    
+    model.learn(30000, callback=HParamCallback(BaseCallback), tb_log_name="A2C",reset_num_timesteps=False)
+
     
     model.save("a2c_skip_small")
     
-    del model
+    del model # remove to demonstrate saving and loading
     
     n_steps =500
 
     # using the vecenv
     obs,_ = env.reset()
     
-    model = PPO.load('a2c_skip_small')
+    model = A2C.load('a2c_skip_small')
     
     
     for step in range(n_steps):
