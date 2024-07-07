@@ -38,36 +38,30 @@ class SkipToy(gym.Env):
         
         
         # the dwell time is also the action list, min
-        self.dwell_time = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300]
+        self.dwell_time = [20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
         # when train running in the section, the running time is 10 -1 = 9 min
         self.running_time =100
         # the train capacity 
         self.train_cap = 200
-        #in the toy instance, the departure time is fixed
-        self.depart_interval = 10
         
         # dict for onboard passenger
         self.onboard_dict = {key: [] for key in range(0, self.train_num)}
         
         #the passenger boarding or alighting speed
-        self.boarding_speed = 1
+        self.boarding_speed = 10
         #c_0
-        self.discount_boarding_speed = 10
+        self.discount_boarding_speed = 5
         #minimum departure-arrive \theta_st
-        self.min_da = 100
+        self.min_da = 30
         
         #minimum arrive-arrive \theta_se 
-        self.min_aa = 100
+        self.min_aa = 30
         
         #minimum departure-departure \theta
-        self.min_dd = 100
+        self.min_dd = 30
         
-        #departure time of current train and its previous train 
-        self.departure_recode = {key: [None, None] for key in range(6)}
-        
-        
-        #arrive time of current train and its previous train 
-        self.arrive_recode = {key: [None, None] for key in range(6)}
+        #departure interval from the first station
+        self.departure_interval = 120
         
         
 
@@ -95,20 +89,20 @@ class SkipToy(gym.Env):
         super().reset(seed=seed, options=options)
         # count the train, station, time unit, the count start from 0
         self.train_index = 0
-        self.time_index = 0
+
         # count the station, the count start from 1.
         #the od also strat from 1 to 6
         self.station_index = 0
-        #the passeners waiting at the in every station
-        self.PassengerEvery = {key: [] for key in range(0, self.train_num )}
+
+        #departure time of current train and its previous train 
+        self.departure_recode = {key: [None] * 6 for key in range(6)}
         
+        
+        #arrive time of current train and its previous train 
+        self.arrive_recode = {key: [None] * 6 for key in range(6)}
         #the initial state s_0
-        #departure time of the current train, its the first item of state
-        self.DepartTime = 0
         #the initial departure time from the first station
         self.StartDepartTime = 0
-        #predifined departure interval
-        self.PreDepartInterval =10
         #the total passenger waiting on the station when train arrive at the station
         self.PassengerTotal = {key: [] for key in range(0, self.station_num )}
         
@@ -116,6 +110,10 @@ class SkipToy(gym.Env):
         self.TotalWaitingTime = []
         #missing train
         self.MissingTrain =[]
+        
+        #the first train departuren directly from the initial station
+        self.departure_recode[self.train_index][self.station_index] = 0
+        self.arrive_recode[self.train_index][self.station_index] = 0
         
 
         
@@ -132,39 +130,43 @@ class SkipToy(gym.Env):
     def step(self, action):
         
         self.station_index += 1
+        #update arrvie time
+        self.arrive_recode[self.train_index][self.station_index]  = self.departure_recode[self.train_index][self.station_index-1] + self.running_time
         
         self.action = self.dwell_time[action] 
+    
         
+        new_action, penatly = self.ActionDetection()
+        
+        print('action:' ,self.action, new_action)
+   
         print('station:', self.station_index)
         print('train:', self.train_index)
         
-        #train running process
-        self.time_index = self.DepartTime +self.running_time
         #the passenger waiting as the current station p^n_ks
-        
-        self.UpdateTrain()
 
         
         self.PassengerArriveProcess() #calculate the total passenger who waiting at the station
 
-        if self.station_index !=0:
-            self.time_index +=1
+        if self.station_index !=0 :
+
             self.PassengerBoardProcess() #alighting, boarding, updating the waiting passengers
             
             
-        self.DepartTime = self.time_index
             
 
         # predefine the constrain condition
-        terminated = bool(self.station_index == self.station_num-2 and self.train_index == self.train_num-1)
+        terminated = bool((self.station_index == self.station_num-2 and self.train_index == self.train_num-1) or new_action is None)
         
-        reward = -sum([(num // 9) ** 2 for num in self.TotalWaitingTime])/1000
+        reward = -sum([(num // 180) ** 2 for num in self.TotalWaitingTime])/1000 +penatly
+        
+        self.UpdateTrain()
         
         
         
         print('*************', terminated)
         if terminated:
-            self.MissingTrain = [(num // 9)  for num in self.TotalWaitingTime]
+            self.MissingTrain = [(num // 180)  for num in self.TotalWaitingTime]
             added_reward = self.CalculateFinalReward()/1000  #these passenger connot boarding on the train
             reward -= added_reward
             
@@ -203,7 +205,6 @@ class SkipToy(gym.Env):
         pass
     
     def UpdateState(self):
-        pass
     #station_index + train_index　＋　numbers of remaining passengers in each station 
     #+ onboard passengers arriving time +  onboard passengers end station
     #  1 + 1 + train_num + station_num + capacity + capacity
@@ -220,9 +221,70 @@ class SkipToy(gym.Env):
 
         end_station.extend([-1] * (self.train_cap - len(end_station)))
         
-        time = [self.DepartTime]
+        time = [self.departure_recode[self.train_index][self.station_index]]
         
         return  info + remaining_pass + arriving_time + end_station + time
+    
+    
+    def ActionDetection(self):
+        
+        new_action = self.action
+        
+        penatly = 0
+        
+        departure_time = self.arrive_recode[self.train_index][self.station_index] + self.action
+        
+        if self.train_index != 0:
+            
+            #calcualte arrive-departure constrain
+            arrive_time_next_station = departure_time + self.running_time
+            
+            diff_ad = arrive_time_next_station - self.departure_recode[self.train_index-1][self.station_index+1]
+            
+            #calcualte arrive-arrive constrain
+            diff_aa = arrive_time_next_station - self.arrive_recode[self.train_index-1][self.station_index+1]
+            
+            #calcualte departure-departure constrain
+            diff_dd = departure_time -self.departure_recode[self.train_index-1][self.station_index]
+            
+            min_time = min(diff_aa, diff_ad, diff_dd)
+            
+            if min_time < self.min_aa:
+                
+                diff_time = self.min_aa - min_time + self.action
+                
+                new_action = self.FindNewAction(self.dwell_time, diff_time)
+                
+                if new_action in self.dwell_time:
+                
+                    penatly = (self.action -new_action) * self.action /10
+                
+                    departure_time = self.arrive_recode[self.train_index][self.station_index] + new_action
+                    
+                    self.action = new_action
+                else:
+                    new_action = None
+                    penatly = -self.dwell_time[-1]
+                
+        self.departure_recode[self.train_index][self.station_index] = departure_time
+         
+        
+        return new_action, penatly
+    
+    
+    def FindNewAction(self,numbers, target):
+
+        closest_number = None
+        min_difference = float('inf')
+
+        for number in numbers:
+            if number > target:
+                difference = number - target
+                if difference < min_difference:
+                    min_difference = difference
+                    closest_number = number
+
+        return closest_number
     
     
     def FirstBoardProcess(self):
@@ -232,18 +294,27 @@ class SkipToy(gym.Env):
         
         #when the first train start from the first train, there no passenger
         
-        if self.time_index in self.PassOD.keys():
-            values = self.PassOD[self.time_index]  
+        departure_time = self.train_index * self.departure_interval
+        
+        if self.arrive_recode[self.train_index][self.station_index] in self.PassOD.keys():
+            values = self.PassOD[departure_time]  
             boarding = [value for value in values if value[0] == self.station_index]
             updated_values = [value for value in values if value[0] != self.station_index]
             self.onboard_dict[self.train_index] = boarding
-            self.PassOD[self.time_index] =  updated_values
+            self.PassOD[departure_time] =  updated_values
         
                     
     def PassengerArriveProcess(self):
         
-        time_interval = [self.DepartTime, self.time_index+1]
+        if self.train_index == 0:
         
+            time_interval = [self.arrive_recode[self.train_index][self.station_index-1], self.arrive_recode[self.train_index][self.station_index]]
+        
+        else:
+            
+            time_interval = [self.departure_recode[self.train_index-1][self.station_index], self.arrive_recode[self.train_index][self.station_index]]
+        
+        print(time_interval)
         
         for key in self.PassOD:
             if time_interval[0] <= key <= time_interval[1]:
@@ -267,18 +338,39 @@ class SkipToy(gym.Env):
 
         self.onboard_dict[self.train_index] = [value for value in Passengers if value[1] > self.station_index]
         
+        
+        
+        
+        #calcualte alighting time  and boarding time    
+        alighting_num = len(Passengers) - len(self.onboard_dict[self.train_index])
+        alighting_time = alighting_num / self.boarding_speed
+        
+        boarding_time = self.action - self.discount_boarding_speed - alighting_time
+        
+        #the maximum boarding passenger
+    
+        max_boarding_passenger = self.boarding_speed * boarding_time
+        
+        print('max boarding passengers:', max_boarding_passenger)
+        
         print('before')
         print('waiging passengers:',len(self.PassengerTotal[self.station_index]))
         print('numbers of onboard passenger', len(self.onboard_dict[self.train_index])) 
+        
+        boarding_num = 0
+        
+        
                
        #Boarding Process
-        while len(self.onboard_dict[self.train_index]) < self.train_cap and len(self.PassengerTotal[self.station_index]) >0:   #constrain: train capacity
+        while len(self.onboard_dict[self.train_index]) < self.train_cap and len(self.PassengerTotal[self.station_index]) >0 and boarding_num < max_boarding_passenger:   #constrain: train capacity
+            boarding_num +=1
             boarding_passenger = self.PassengerTotal[self.station_index].pop(0)  
             self.onboard_dict[self.train_index].append(boarding_passenger)
+        
             
         #calcualte the waiting time until the passenger board on the train
         ArrivingTime = [value[0] for value in self.onboard_dict[self.train_index]]
-        WaitingTime = [self.time_index - item for item in ArrivingTime]
+        WaitingTime = [self.arrive_recode[self.train_index][self.station_index] - item for item in ArrivingTime]
         self.TotalWaitingTime.extend(WaitingTime)
         
         print('after')
@@ -289,22 +381,28 @@ class SkipToy(gym.Env):
             
     def UpdateTrain(self):
         
-        if self.station_index == self.station_num-1:
+        if self.station_index+1 == self.station_num-1 and self.train_index < self.station_num-1:
+            
+            
+            self.departure_recode[self.train_index][self.station_num-1] = self.arrive_recode[self.train_index][self.station_num-1] = \
+                self.departure_recode[self.train_index][self.station_num-2] + self.running_time
             
             self.onboard_dict[self.train_index] = []    #in the end station, all of passenger should be alighting
             self.train_index +=1
             self.station_index = 0
         
-            self.DepartTime = self.time_index = self.StartDepartTime = self.StartDepartTime + self.PreDepartInterval
+            initial_departure_time = self.train_index * self.departure_interval
+            
+            self.arrive_recode[self.train_index][self.station_index] = self.departure_recode[self.train_index][self.station_index]  = initial_departure_time
             
             #take the passenger in the first station
             
-            print('waiging passengers:',len(self.PassengerTotal[self.station_index]))
+
             
             passengers = self.PassengerTotal[self.station_index]
             
-            selected_passenger = [value for value in passengers if value[0] <= self.time_index]
-            updated_passengers = [value for value in passengers if value[0] > self.time_index]
+            selected_passenger = [value for value in passengers if value[0] <= initial_departure_time]
+            updated_passengers = [value for value in passengers if value[0] > initial_departure_time]
             
             
             num_to_passenger =  min(len(selected_passenger), self.train_cap)
@@ -315,6 +413,8 @@ class SkipToy(gym.Env):
             
             
             self.PassengerTotal[self.station_index] = updated_passengers
+            
+            
 
             
             print('in the first staition')
@@ -335,9 +435,9 @@ class SkipToy(gym.Env):
 
                 for i in value:
                     first_item = i[0]
-                    self.MissingTrain.append(first_item//9)
+                    self.MissingTrain.append(first_item//180)
                     # Divide the first item by 9, square it, and add to the sum
-                    sum_of_squares += (first_item // 9) ** 2
+                    sum_of_squares += (first_item // 180) ** 2
         
         return sum_of_squares
     

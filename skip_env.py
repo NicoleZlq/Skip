@@ -57,11 +57,11 @@ def main(args):
     
     
     np.random.seed(20240101)
-    seed1 = np.random.randint( 0,20240101) 
-    model = A2C("MlpPolicy", env, verbose=1, seed=seed1, tensorboard_log="./skip_small_01_tensorboard/")
+    seed1 = [np.random.randint( 0,20240101) for _ in range(5)] 
+    model = A2C("MlpPolicy", env, verbose=1,seed=seed1[2], tensorboard_log="./skip_small_01_tensorboard/")
 
-    
-    model.learn(30000, callback=HParamCallback(BaseCallback), tb_log_name="A2C",reset_num_timesteps=False)
+    #model = A2C("MlpPolicy", env, verbose=1, seed=seed1)
+    model.learn(20000, callback=HParamCallback(BaseCallback), tb_log_name="A2C",reset_num_timesteps=True)
 
     
     model.save("a2c_skip_small")
@@ -81,7 +81,7 @@ def main(args):
         action, _ = model.predict(obs, deterministic=True)
         print(f"Step {step + 1}")
         print("Action: ", action)
-        obs, reward, done,_, info = env.step(action)
+        obs, reward, missing, done,_, info = env.step(action)
         print("obs=", obs, "reward=", reward, "done=", done)
         env.render()
         if done:
