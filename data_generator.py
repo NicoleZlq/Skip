@@ -21,13 +21,17 @@ def generate_data():
     data_list = []
     
     # 生成数据
-    for i in range(0, 800):
+    for i in range(0, 8000):
         # 第一列数据
         passenger = i
         
         # start
-        start = random.randint(0, 4)
-        
+        if i > 6000:
+            start = random.randint(0, 4)
+            
+        else:
+            start = random.randint(0, 2)
+
         # end
         end = start
         while end <= start:
@@ -35,7 +39,7 @@ def generate_data():
         
         # time
 
-        time = random.randint(0,50)
+        time = random.randint(0,1000)
 
         # Display the random integers
       
@@ -203,4 +207,3 @@ def plot_flow2():
     # Show the plot
     plt.show()
     plt.close()
-    
