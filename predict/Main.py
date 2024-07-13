@@ -6,12 +6,12 @@ from sklearn import metrics
 from utils import *
 from model import *
 
-data1 = pd.read_csv("./601988.SH.csv")
+data1 = pd.read_csv("predict/601988.SH.csv")
 data1.index = pd.to_datetime(data1['trade_date'], format='%Y%m%d')
 #data1 = data1.drop(['ts_code', 'trade_date', 'turnover_rate', 'volume_ratio', 'pb', 'total_share', 'float_share', 'free_share'], axis=1)
 data1 = data1.loc[:, ['open', 'high', 'low', 'close', 'vol', 'amount']]
 data_yuan = data1
-residuals = pd.read_csv('./ARIMA_residuals1.csv')
+residuals = pd.read_csv('predict/ARIMA_residuals1.csv')
 residuals.index = pd.to_datetime(residuals['trade_date'])
 residuals.pop('trade_date')
 data1 = pd.merge(data1, residuals, on='trade_date')
