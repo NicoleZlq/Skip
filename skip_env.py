@@ -1,6 +1,6 @@
 import numpy as np
 import gymnasium as gym
-from stable_baselines3 import A2C,PPO
+from stable_baselines3 import A2C,PPO,DQN
 from stable_baselines3.common.vec_env import SubprocVecEnv
 import data_generator
 import argparse
@@ -51,29 +51,29 @@ def main(args):
 
 # Instantiate the env
 
-    read_OD = data_generator.process_csv()
+    read_OD = data_generator.process_csv(args.instance)
 
-    env = gym.make("Skip-v0", num_trains=args.train, num_stations=args.station, num_time = args.time, pass_od = read_OD)
+    env = gym.make("Skip-v0", num_trains=args.train,   num_stations=args.station, num_time = args.time, pass_od = read_OD)
     
     
     np.random.seed(20240101)
-    seed1 = [np.random.randint( 0,20240101) for _ in range(5)] 
-    model = A2C("MlpPolicy", env, verbose=1,seed=seed1[2], tensorboard_log="./skip_small_01_tensorboard/")
+
+    model = A2C("MlpPolicy", env, learning_rate = 0.0004, use_rms_prop=False, verbose=1,tensorboard_log="./skip_small_01_tensorboard/")
 
     #model = A2C("MlpPolicy", env, verbose=1, seed=seed1)
-    model.learn(20000, callback=HParamCallback(BaseCallback), tb_log_name="A2C",reset_num_timesteps=True)
+    model.learn(1e5, log_interval=100,  callback=HParamCallback(BaseCallback), tb_log_name="A2C_instance{}".format(args.instance),reset_num_timesteps=True)
 
     
-    model.save("a2c_skip_small")
+    model.save("skip_small_{}".format(args.instance))
     
     del model # remove to demonstrate saving and loading
     
-    n_steps =500
+    n_steps =5
 
     # using the vecenv
     obs,_ = env.reset()
     
-    model = A2C.load('a2c_skip_small')
+    model = A2C.load("skip_small_{}".format(args.instance))
     
     
     for step in range(n_steps):
@@ -81,8 +81,8 @@ def main(args):
         action, _ = model.predict(obs, deterministic=True)
         print(f"Step {step + 1}")
         print("Action: ", action)
-        obs, reward, missing, done,_, info = env.step(action)
-        print("obs=", obs, "reward=", reward, "done=", done)
+        obs, reward, missing,  travel, done,_, info = env.step(action)
+        #print("obs=", obs, "reward=", reward, "done=", done)
         env.render()
         if done:
             # Note that the VecEnv resets automatically
@@ -102,6 +102,7 @@ parser.add_argument('--port', default='3306', type=int)
 parser.add_argument('-t',  '--train', default=6, type=int )
 parser.add_argument('-s','--station', default=6, type=int )
 parser.add_argument('--time',  default=60, type=int)
+parser.add_argument('--instance',  default=1, type=int)
 
 # 解析参数:
 args = parser.parse_args()

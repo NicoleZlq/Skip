@@ -38,11 +38,13 @@ class SkipToy(gym.Env):
         
         
         # the dwell time is also the action list, min
-        self.dwell_time = [20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+        self.dwell_time = [20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130,140,150]
         # when train running in the section, the running time is 10 -1 = 9 min
         self.running_time =100
         # the train capacity 
-        self.train_cap = 200
+        self.train_cap = 250
+        
+        self.length_info = 50
         
         # dict for onboard passenger
         self.onboard_dict = {key: [] for key in range(0, self.train_num)}
@@ -62,16 +64,18 @@ class SkipToy(gym.Env):
         
         #departure interval from the first station
         self.departure_interval = 120
+        #use to calculate the number of missing train
+        self.missing_interval = self.departure_interval + self.dwell_time[len(self.dwell_time) // 2 +2]
         
         
 
         # Define action and observation space
         # They must be gym.spaces objects
         # Example when using discrete actions, we have two: left and right
-        n_actions = 11
+        n_actions = len(self.dwell_time)
         self.action_space = spaces.Discrete(n_actions)
         # initial state
-        state_length = 1+1+self.station_num+self.train_cap+self.train_cap+1
+        state_length = 1+1+self.station_num+self.length_info+self.length_info+1+ self.length_info
         
         self.ini_state = [0] * state_length
         
@@ -95,11 +99,11 @@ class SkipToy(gym.Env):
         self.station_index = 0
 
         #departure time of current train and its previous train 
-        self.departure_recode = {key: [None] * 6 for key in range(6)}
+        self.departure_recode = {key: [None] * self.station_num for key in range(self.train_num)}
         
         
         #arrive time of current train and its previous train 
-        self.arrive_recode = {key: [None] * 6 for key in range(6)}
+        self.arrive_recode = {key: [None] * self.station_num for key in range(self.train_num)}
         #the initial state s_0
         #the initial departure time from the first station
         self.StartDepartTime = 0
@@ -108,6 +112,8 @@ class SkipToy(gym.Env):
         
         #waiting time, use to calculate the missing train
         self.TotalWaitingTime = []
+        #traveling time, use to calculate the missing train
+        self.TotalTravelingTime = []
         #missing train
         self.MissingTrain =[]
         
@@ -115,6 +121,7 @@ class SkipToy(gym.Env):
         self.departure_recode[self.train_index][self.station_index] = 0
         self.arrive_recode[self.train_index][self.station_index] = 0
         
+        self.max_added_reward, self.max_reward, self.max_penatly = 0,0,0
 
         
         
@@ -130,6 +137,8 @@ class SkipToy(gym.Env):
     def step(self, action):
         
         self.station_index += 1
+        
+
         #update arrvie time
         self.arrive_recode[self.train_index][self.station_index]  = self.departure_recode[self.train_index][self.station_index-1] + self.running_time
         
@@ -137,8 +146,6 @@ class SkipToy(gym.Env):
     
         
         new_action, penatly = self.ActionDetection()
-        
-        print('action:' ,self.action, new_action)
    
         print('station:', self.station_index)
         print('train:', self.train_index)
@@ -157,29 +164,32 @@ class SkipToy(gym.Env):
 
         # predefine the constrain condition
         terminated = bool((self.station_index == self.station_num-2 and self.train_index == self.train_num-1) or new_action is None)
+
+        reward = -sum([(num // self.missing_interval) ** 2 for num in self.TotalWaitingTime])/(len(self.TotalWaitingTime))+ penatly
         
-        reward = -sum([(num // 180) ** 2 for num in self.TotalWaitingTime])/1000 +penatly
+        #reward =0
         
         self.UpdateTrain()
-        
-        
-        
+
         print('*************', terminated)
         if terminated:
-            self.MissingTrain = [(num // 180)  for num in self.TotalWaitingTime]
-            added_reward = self.CalculateFinalReward()/1000  #these passenger connot boarding on the train
-            reward -= added_reward
             
-            for key in self.PassengerTotal:
-                length = len(self.PassengerTotal[key])
-                print(f"The length of key {key} is {length}.")
+            #reward = -sum([(num // self.missing_interval) ** 2 for num in self.TotalWaitingTime])/(len(self.TotalWaitingTime) * 1e2)+ penatly
+            
+            if new_action is not None:
+
+                added_reward = -self.CalculateFinalReward()/(len(self.TotalWaitingTime)) #these passenger connot boarding on the train 5e2
+                reward += added_reward
+                
+            self.MissingTrain = [(num // self.missing_interval)  for num in self.TotalWaitingTime]
+
+            
+            print(self.arrive_recode)
+
         truncated = False  # we do not limit the number of steps here
-        
+         
 
         print('reward:', reward)
-        
-        
-        
 
         # Optionally we can pass additional info, we are not using that for now
         info = {}
@@ -192,6 +202,7 @@ class SkipToy(gym.Env):
             np.array(state).astype(np.float32),
             reward,
             self.MissingTrain,
+            self.TotalTravelingTime,
             terminated,
             truncated,
             info,
@@ -213,17 +224,25 @@ class SkipToy(gym.Env):
         
         remaining_pass =  [len(value_list) for value_list in self.PassengerTotal.values()]
         
-        arriving_time = [value_list[0] for value_list in self.onboard_dict[self.train_index]]
+        arriving_time = [value_list[0] for value_list in self.onboard_dict[self.train_index][:self.length_info]]
 
-        arriving_time.extend([-1] * (self.train_cap - len(arriving_time)))
+        arriving_time.extend([0] * (self.length_info - len(arriving_time)))
         
-        end_station = [value_list[1] for value_list in self.onboard_dict[self.train_index]]
+        end_station = [value_list[1] for value_list in self.onboard_dict[self.train_index][:self.length_info]]
 
-        end_station.extend([-1] * (self.train_cap - len(end_station)))
+        end_station.extend([0] * (self.length_info - len(end_station)))
         
         time = [self.departure_recode[self.train_index][self.station_index]]
         
-        return  info + remaining_pass + arriving_time + end_station + time
+        missing = self.MissingTrain[-self.length_info:]
+        
+        missing_elements_count = self.length_info - len(missing)
+
+        # 如果有缺失的元素，用-1补充
+        if missing_elements_count > 0:
+            missing.extend([0] * missing_elements_count)
+        
+        return  info + remaining_pass + arriving_time + end_station + time + missing
     
     
     def ActionDetection(self):
@@ -238,6 +257,7 @@ class SkipToy(gym.Env):
             
             #calcualte arrive-departure constrain
             arrive_time_next_station = departure_time + self.running_time
+
             
             diff_ad = arrive_time_next_station - self.departure_recode[self.train_index-1][self.station_index+1]
             
@@ -257,14 +277,15 @@ class SkipToy(gym.Env):
                 
                 if new_action in self.dwell_time:
                 
-                    penatly = (self.action -new_action) * self.action /10
+                    penatly = (self.action -new_action) * self.action/1e5
                 
                     departure_time = self.arrive_recode[self.train_index][self.station_index] + new_action
                     
                     self.action = new_action
                 else:
                     new_action = None
-                    penatly = -self.dwell_time[-1]
+                    count_none = sum(1 for sublist in self.departure_recode.values() for value in sublist if value is None)
+                    penatly = -count_none *2
                 
         self.departure_recode[self.train_index][self.station_index] = departure_time
          
@@ -305,16 +326,12 @@ class SkipToy(gym.Env):
         
                     
     def PassengerArriveProcess(self):
-        
-        if self.train_index == 0:
-        
-            time_interval = [self.arrive_recode[self.train_index][self.station_index-1], self.arrive_recode[self.train_index][self.station_index]]
-        
-        else:
+
             
-            time_interval = [self.departure_recode[self.train_index-1][self.station_index], self.arrive_recode[self.train_index][self.station_index]]
-        
+        time_interval = [0, self.arrive_recode[self.train_index][self.station_index]]
+            
         print(time_interval)
+
         
         for key in self.PassOD:
             if time_interval[0] <= key <= time_interval[1]:
@@ -327,19 +344,24 @@ class SkipToy(gym.Env):
         for key in self.PassengerTotal:
                     
             self.PassengerTotal[key] = sorted(self.PassengerTotal[key], key=lambda x: x[0])
-            
-        
-    
+
     
     def PassengerBoardProcess(self):
         
         #Alighting Process
+        ArrivingTime = []
+        WaitingTime = []
+        
         Passengers = self.onboard_dict[self.train_index]
+        
+        subdict = [value for value in Passengers if value[1] == self.station_index]
+        
+        for sublist in subdict:
+    # 从每个子列表中取出第一个元素，减去3，然后添加到结果列表B中
+            self.TotalTravelingTime.append(self.arrive_recode[self.train_index][self.station_index]- sublist[0] )
+            
 
         self.onboard_dict[self.train_index] = [value for value in Passengers if value[1] > self.station_index]
-        
-        
-        
         
         #calcualte alighting time  and boarding time    
         alighting_num = len(Passengers) - len(self.onboard_dict[self.train_index])
@@ -358,20 +380,30 @@ class SkipToy(gym.Env):
         print('numbers of onboard passenger', len(self.onboard_dict[self.train_index])) 
         
         boarding_num = 0
-        
-        
-               
+                  
        #Boarding Process
         while len(self.onboard_dict[self.train_index]) < self.train_cap and len(self.PassengerTotal[self.station_index]) >0 and boarding_num < max_boarding_passenger:   #constrain: train capacity
             boarding_num +=1
             boarding_passenger = self.PassengerTotal[self.station_index].pop(0)  
+            #the all feasible passenger has beed boarded
+            if boarding_passenger[0] > self.arrive_recode[self.train_index][self.station_index]:
+                self.PassengerTotal[self.station_index].insert(0, boarding_passenger)
+                break
+            ArrivingTime.append(boarding_passenger[0])
             self.onboard_dict[self.train_index].append(boarding_passenger)
         
             
         #calcualte the waiting time until the passenger board on the train
-        ArrivingTime = [value[0] for value in self.onboard_dict[self.train_index]]
+    #    ArrivingTime = [value[0] for value in self.onboard_dict[self.train_index]]
         WaitingTime = [self.arrive_recode[self.train_index][self.station_index] - item for item in ArrivingTime]
+        
+        print(len(WaitingTime))
+
+        
         self.TotalWaitingTime.extend(WaitingTime)
+        
+        if any(x < 0 for x in self.TotalWaitingTime):
+            a=3
         
         print('after')
         print('numbers of remaining passenger', len(self.PassengerTotal[self.station_index]))
@@ -381,12 +413,14 @@ class SkipToy(gym.Env):
             
     def UpdateTrain(self):
         
-        if self.station_index+1 == self.station_num-1 and self.train_index < self.station_num-1:
+        if self.station_index == self.station_num-2 and self.train_index < self.train_num-1:
             
             
             self.departure_recode[self.train_index][self.station_num-1] = self.arrive_recode[self.train_index][self.station_num-1] = \
                 self.departure_recode[self.train_index][self.station_num-2] + self.running_time
-            
+                
+            self.TotalTravelingTime.extend([self.arrive_recode[self.train_index][self.station_index+1]- item[0]  for item in  self.onboard_dict[self.train_index]])
+
             self.onboard_dict[self.train_index] = []    #in the end station, all of passenger should be alighting
             self.train_index +=1
             self.station_index = 0
@@ -414,14 +448,19 @@ class SkipToy(gym.Env):
             
             self.PassengerTotal[self.station_index] = updated_passengers
             
+            WaitingTime = [self.arrive_recode[self.train_index][self.station_index] - item[0] for item in self.onboard_dict[self.train_index]]
+            
+            if any(x < 0 for x in WaitingTime):
+                a=3
+
+            self.TotalWaitingTime.extend(WaitingTime)
+            
             
 
             
             print('in the first staition')
             print('waiging passengers:',len(self.PassengerTotal[self.station_index]))
             print('numbers of onboard passengers:',len(self.onboard_dict[self.train_index]))
-            
-            
             
 
     def CalculateFinalReward(self):
@@ -435,10 +474,13 @@ class SkipToy(gym.Env):
 
                 for i in value:
                     first_item = i[0]
-                    self.MissingTrain.append(first_item//180)
                     # Divide the first item by 9, square it, and add to the sum
-                    sum_of_squares += (first_item // 180) ** 2
-        
+                    sum_of_squares += ((self.arrive_recode[self.train_index][self.station_index]- first_item) //  self.missing_interval) ** 2
+                    
+                    WaitingTime = [self.arrive_recode[self.train_index][self.station_index] - first_item]
+
+                    self.TotalWaitingTime.extend(WaitingTime)
+                    
         return sum_of_squares
     
     
