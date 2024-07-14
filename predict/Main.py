@@ -36,7 +36,7 @@ m.summary()
 adam = Adam(learning_rate=0.01)
 m.compile(optimizer=adam, loss='mse') 
 history = m.fit([train_X], train_Y, epochs=50, batch_size=32, validation_split=0.1)
-m.save("./stock_model.h5")
+m.save("predict/stock_model.h5")
 np.save("stock_normalize.npy", normalize)
 
 plt.plot(history.history['loss'], label='Training Loss')

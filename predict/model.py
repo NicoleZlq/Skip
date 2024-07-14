@@ -1,13 +1,16 @@
-from keras.layers import Input, Dense, LSTM, Conv1D, Dropout, Bidirectional, Multiply
-from keras.models import Model
+from keras import layers
+from tensorflow.keras.layers import Input, Dense, LSTM, Conv1D, Dropout, Bidirectional, Multiply, Permute,RepeatVector,Lambda,Flatten
+from tensorflow.keras.models import Model, Sequential
 # from attention_utils import get_activations
-from keras.layers import add,concatenate
+from tensorflow.keras.layers import add,concatenate
 from tensorflow.python.keras.layers.core import *
-from keras.layers import LSTM
-from keras.models import *
+from tensorflow.keras.layers import LSTM
+from tensorflow.keras.models import *
 from utils import *
 import numpy as np
 import xgboost as xgb
+
+
 
 def attention_3d_block_merge(inputs,single_attention_vector = False):
     # inputs.shape = (batch_size, time_steps, input_dim)
@@ -37,23 +40,25 @@ def attention_3d_block(inputs, single_attention_vector=False):
     a_probs = Permute((2, 1))(a)
     # element-wise
     output_attention_mul = Multiply()([inputs, a_probs])
+ 
     return output_attention_mul
 
 
-
 def attention_model(INPUT_DIMS = 13,TIME_STEPS = 20,lstm_units = 64):
-    inputs = Input(shape=(TIME_STEPS, INPUT_DIMS))
+    
 
+    inputs = Input(shape=(TIME_STEPS, INPUT_DIMS))
     x = Conv1D(filters=64, kernel_size=1, activation='relu')(inputs)  # padding = 'same'
     x = Dropout(0.3)(x)
-
-    # lstm_out = Bidirectional(LSTM(lstm_units, activation='relu'), name='bilstm')(x)
+    
     lstm_out = Bidirectional(LSTM(lstm_units, return_sequences=True))(x)
-    lstm_out = Dropout(0.3)(lstm_out)
+    
     attention_mul = attention_3d_block(lstm_out)
-    attention_mul = Flatten()(attention_mul)
+    
+    attention_mul = layers.Flatten()(attention_mul)
+    
 
-    output = Dense(1, activation='sigmoid')(attention_mul)
+    output = layers.Dense(1, activation='sigmoid')(attention_mul)
     model = Model(inputs=[inputs], outputs=output)
     return model
 
