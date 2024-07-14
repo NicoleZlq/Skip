@@ -1,4 +1,5 @@
-from keras import layers
+from tensorflow.keras import layers
+import tensorflow as tf
 from tensorflow.keras.layers import Input, Dense, LSTM, Conv1D, Dropout, Bidirectional, Multiply, Permute,RepeatVector,Lambda,Flatten
 from tensorflow.keras.models import Model, Sequential
 # from attention_utils import get_activations
@@ -29,19 +30,35 @@ def attention_3d_block_merge(inputs,single_attention_vector = False):
 
 def attention_3d_block(inputs, single_attention_vector=False):
     # inputs.shape = (batch_size, time_steps, input_dim)
-    time_steps = K.int_shape(inputs)[1]
-    input_dim = K.int_shape(inputs)[2]
-    a = Permute((2, 1))(inputs)
-    a = Dense(time_steps, activation='softmax')(a)
-    if single_attention_vector:
-        a = Lambda(lambda x: K.mean(x, axis=1))(a)
-        a = RepeatVector(input_dim)(a)
+    # time_steps = K.int_shape(inputs)[1]
+    # input_dim = K.int_shape(inputs)[2]
+    # a = Permute((2, 1))(inputs)
+    # a = Dense(time_steps, activation='softmax')(a)
+    # if single_attention_vector:
+    #     a = Lambda(lambda x: K.mean(x, axis=1))(a)
+    #     a = RepeatVector(input_dim)(a)
 
-    a_probs = Permute((2, 1))(a)
+    # a_probs = Permute((2, 1))(a)
+    # # element-wise
+    # output_attention_mul = Multiply()([inputs, a_probs])
+ 
+    # return output_attention_mul
+    
+    # inputs.shape = (batch_size, time_steps, input_dim)
+    time_steps = tf.keras.backend.int_shape(inputs)[1]
+    input_dim = tf.keras.backend.int_shape(inputs)[2]
+    a = tf.keras.backend.permute_dimensions(inputs, (0, 2, 1))
+    a = Dense(time_steps, activation='softmax', name='attention_weights')(a)
+    if single_attention_vector:
+        a = tf.keras.backend.mean(a, axis=1)
+        a = tf.keras.backend.repeat(a, input_dim)
+
+    a_probs = tf.keras.backend.permute_dimensions(a, (0, 2, 1))
     # element-wise
     output_attention_mul = Multiply()([inputs, a_probs])
  
     return output_attention_mul
+
 
 
 def attention_model(INPUT_DIMS = 13,TIME_STEPS = 20,lstm_units = 64):
@@ -59,7 +76,8 @@ def attention_model(INPUT_DIMS = 13,TIME_STEPS = 20,lstm_units = 64):
     
 
     output = layers.Dense(1, activation='sigmoid')(attention_mul)
-    model = Model(inputs=[inputs], outputs=output)
+    model = Model(inputs=[inputs], outputs=[output])
+
     return model
 
 def PredictWithData(data,data_yuan,name,modelname,INPUT_DIMS = 13,TIME_STEPS = 20):
