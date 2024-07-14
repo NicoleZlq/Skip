@@ -350,6 +350,3 @@ def plot_flow4():
     plt.show()
     
     
-plot_flow3()
-plot_flow4()
-    

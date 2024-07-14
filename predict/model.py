@@ -1,9 +1,9 @@
 from keras.layers import Input, Dense, LSTM, Conv1D, Dropout, Bidirectional, Multiply
 from keras.models import Model
 # from attention_utils import get_activations
-from keras.layers import merge
-from keras.layers.core import *
-from keras.layers.recurrent import LSTM
+from keras.layers import add,concatenate
+from tensorflow.python.keras.layers.core import *
+from keras.layers import LSTM
 from keras.models import *
 from utils import *
 import numpy as np
@@ -38,6 +38,8 @@ def attention_3d_block(inputs, single_attention_vector=False):
     # element-wise
     output_attention_mul = Multiply()([inputs, a_probs])
     return output_attention_mul
+
+
 
 def attention_model(INPUT_DIMS = 13,TIME_STEPS = 20,lstm_units = 64):
     inputs = Input(shape=(TIME_STEPS, INPUT_DIMS))

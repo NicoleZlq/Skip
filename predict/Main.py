@@ -16,14 +16,15 @@ residuals.index = pd.to_datetime(residuals['trade_date'])
 residuals.pop('trade_date')
 data1 = pd.merge(data1, residuals, on='trade_date')
 #数据切割 训练+测试
-data = data1.iloc[1:3500, :] 
+data = data1.iloc[1:3500, :] #data 训练  data1全部 data2测试
 data2 = data1.iloc[3500:, :] 
 
 TIME_STEPS = 20
 
 data, normalize = NormalizeMult(data)
-print('#', normalize)
-pollution_data = data[:, 3].reshape(len(data), 1)
+print('#', normalize) 
+
+pollution_data = data[:, 3].reshape(len(data), 1)  #get the close price
 
 train_X, _ = create_dataset(data, TIME_STEPS)
 _, train_Y = create_dataset(pollution_data, TIME_STEPS)
