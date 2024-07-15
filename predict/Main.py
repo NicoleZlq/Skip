@@ -27,6 +27,7 @@ data, normalize = NormalizeMult(data)
 print('#', normalize) 
 
 pollution_data = data[:, 3].reshape(len(data), 1)  #get the close price
+print(pollution_data)
 
 train_X, _ = create_dataset(data, TIME_STEPS)
 _, train_Y = create_dataset(pollution_data, TIME_STEPS)
@@ -37,7 +38,7 @@ m = attention_model(INPUT_DIMS=7)
 m.summary()  #输出模型信息
 adam = tf.keras.optimizers.Adam(learning_rate=0.01)
 m.compile(optimizer=adam, loss='mse') 
-history = m.fit([train_X], train_Y, epochs=5, batch_size=32, validation_split=0.1)
+history = m.fit([train_X], train_Y, epochs=5, batch_size=64, validation_split=0.1)
 m.save_weights("path_to_save_weights")
 #tf.keras.models.save_model(m, "predict/stock_model")
 np.save("predict/stock_normalize.npy", normalize)

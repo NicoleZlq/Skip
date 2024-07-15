@@ -61,12 +61,12 @@ def attention_3d_block(inputs, single_attention_vector=False):
 
 
 
-def attention_model(INPUT_DIMS = 13,TIME_STEPS = 20,lstm_units = 64):
+def attention_model(INPUT_DIMS,TIME_STEPS ,lstm_units = 32):
     
 
     inputs = Input(shape=(TIME_STEPS, INPUT_DIMS))
-    x = Conv1D(filters=64, kernel_size=1, activation='relu')(inputs)  # padding = 'same'
-    x = Dropout(0.3)(x)
+    x = Conv1D(filters=64, kernel_size=1, activation='sigmoid')(inputs)  # padding = 'same'
+    x = Dropout(0.1)(x)
     
     lstm_out = Bidirectional(LSTM(lstm_units, return_sequences=True))(x)
     
@@ -80,25 +80,25 @@ def attention_model(INPUT_DIMS = 13,TIME_STEPS = 20,lstm_units = 64):
 
     return model
 
-def PredictWithData(data,data_yuan,name,modelname,INPUT_DIMS = 13,TIME_STEPS = 20):
+def PredictWithData(data,data_yuan,name,modelname,INPUT_DIMS,TIME_STEPS,cut ):
     print(data.columns)
     yindex = data.columns.get_loc(name)
     data = np.array(data, dtype='float64')
-    data, normalize = NormalizeMult(data)
+   # data, normalize = NormalizeMult(data)
     data_y = data[:, yindex]
     data_y = data_y.reshape(data_y.shape[0], 1)
 
-    testX, _ = create_dataset(data)
-    _, testY = create_dataset(data_y)
+    testX, _ = create_dataset(data,TIME_STEPS)
+    _, testY = create_dataset(data_y,TIME_STEPS)
     print("testX Y shape is:", testX.shape, testY.shape)
     if len(testY.shape) == 1:
         testY = testY.reshape(-1, 1)
 
-    model = attention_model(INPUT_DIMS)
+    model = attention_model(INPUT_DIMS, TIME_STEPS)
     model.load_weights(modelname)
     model.summary()
     y_hat =  model.predict(testX)
-    testY, y_hat = xgb_scheduler(data_yuan, y_hat)
+    testY, y_hat = xgb_scheduler(data_yuan, y_hat,cut)
     return y_hat, testY
 
 def lstm(model_type,X_train,yuan_X_train):
@@ -139,10 +139,10 @@ def lstm(model_type,X_train,yuan_X_train):
 
     return model,yuan_model
 
-def xgb_scheduler(data,y_hat):
-    close = data.pop('close')
-    data.insert(5, 'close', close)
-    train, test = prepare_data(data, n_test=len(y_hat), n_in=6, n_out=1)
+def xgb_scheduler(data,y_hat,cut):
+    close = data.pop('num')
+    data.insert(1, 'num', close)
+    train, test = prepare_data(data,cut, n_test=len(y_hat), n_in=2, n_out=1)
     testY, y_hat2 = walk_forward_validation(train, test)
     return testY, y_hat2
 
