@@ -61,7 +61,7 @@ def attention_3d_block(inputs, single_attention_vector=False):
 
 
 
-def attention_model(INPUT_DIMS,TIME_STEPS ,lstm_units = 32):
+def attention_model(INPUT_DIMS,TIME_STEPS ,output_size, lstm_units = 32):
     
 
     inputs = Input(shape=(TIME_STEPS, INPUT_DIMS))
@@ -75,18 +75,18 @@ def attention_model(INPUT_DIMS,TIME_STEPS ,lstm_units = 32):
     attention_mul = layers.Flatten()(attention_mul)
     
 
-    output = layers.Dense(1, activation='sigmoid')(attention_mul)
+    output = layers.Dense(output_size, activation='sigmoid')(attention_mul)
     model = Model(inputs=[inputs], outputs=[output])
 
     return model
 
 def PredictWithData(data,data_yuan,name,modelname,INPUT_DIMS,TIME_STEPS,cut ):
     print(data.columns)
-    yindex = data.columns.get_loc(name)
+    #yindex = data.columns.get_loc(name)
     data = np.array(data, dtype='float64')
    # data, normalize = NormalizeMult(data)
-    data_y = data[:, yindex]
-    data_y = data_y.reshape(data_y.shape[0], 1)
+    data_y = data[:, 1:6]
+    data_y = data_y.reshape(data_y.shape[0], 5)
 
     testX, _ = create_dataset(data,TIME_STEPS)
     _, testY = create_dataset(data_y,TIME_STEPS)
@@ -94,14 +94,14 @@ def PredictWithData(data,data_yuan,name,modelname,INPUT_DIMS,TIME_STEPS,cut ):
     if len(testY.shape) == 1:
         testY = testY.reshape(-1, 1)
 
-    model = attention_model(INPUT_DIMS, TIME_STEPS)
+    model = attention_model(INPUT_DIMS, TIME_STEPS,5)
     model.load_weights(modelname)
     model.summary()
     y_hat =  model.predict(testX)
     testY, y_hat = xgb_scheduler(data_yuan, y_hat,cut)
     return y_hat, testY
 
-def lstm(model_type,X_train,yuan_X_train):
+def lstm(model_type,X_train,yuan_X_train,size):
     if model_type == 1:
         # single-layer LSTM
         model = Sequential()
@@ -140,8 +140,8 @@ def lstm(model_type,X_train,yuan_X_train):
     return model,yuan_model
 
 def xgb_scheduler(data,y_hat,cut):
-    close = data.pop('num')
-    data.insert(1, 'num', close)
+    #close = data.pop('num')
+    #data.insert(1, 'num', close)
     train, test = prepare_data(data,cut, n_test=len(y_hat), n_in=2, n_out=1)
     testY, y_hat2 = walk_forward_validation(train, test)
     return testY, y_hat2
