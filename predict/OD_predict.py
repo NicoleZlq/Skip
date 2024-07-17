@@ -16,11 +16,12 @@ import time
 
 cut = 500
 
-
+instance = 0
+direction = 'start'
 df = pd.read_csv("data_instance5.csv")
 
 # 步骤2: 筛选出start为0的数据
-df_start_zero = df[df['end'] == 4]
+df_start_zero = df[df[direction] == instance]
 
 # 步骤3: 按time分组并计数
 time_grouped = df_start_zero.groupby('time').size()
@@ -33,6 +34,7 @@ new_df = pd.DataFrame({
 
 # 确保列的顺序
 data1 = new_df[['time', 'num']]
+data1.to_csv("predict/{}_station_{}.csv".format(direction,instance),index=False,sep=',')
 
 
 #data1 = data1.loc[:, ['num']]
@@ -59,7 +61,7 @@ print(train_X.shape, train_Y.shape)
 dim = train_X.shape[-1]
 
 
-m = attention_model(dim, step)
+m = attention_model(dim, step,5)
 
 
 adam = tf.keras.optimizers.Adam(learning_rate=0.001)

@@ -55,13 +55,13 @@ def main(args):
     
     np.random.seed(20240101)
 
-    model = A2C("MlpPolicy", env, learning_rate = 0.0004, use_rms_prop=False, verbose=1,tensorboard_log="./skip_small_01_tensorboard/")
+    model = A2C("MlpPolicy", env, seed = 5, learning_rate = 0.0004,   tensorboard_log="./skip_small_01_tensorboard/")
 
-    #model = A2C("MlpPolicy", env, verbose=1, seed=seed1)
-    model.learn(1e5, log_interval=100,  callback=HParamCallback(BaseCallback), tb_log_name="A2C_instance{}".format(args.instance),reset_num_timesteps=True)
+   # model = A2C("MlpPolicy", env, learning_rate=0.0001, use_rms_prop=False, gamma=1.0,gae_lambda=0.5,max_grad_norm=0.6)
+    model.learn(1e5, log_interval=100,  tb_log_name="A2C_instance{}".format(args.instance),reset_num_timesteps=True)
 
     
-    model.save("skip_small_{}".format(args.instance))
+    model.save("skip_small_{}_0".format(args.instance))
     
     del model # remove to demonstrate saving and loading
     
@@ -75,7 +75,7 @@ def main(args):
     
     for step in range(n_steps):
 
-        action, _ = model.predict(obs, deterministic=True)
+        action, _ = model.predict(obs, deterministic=False)
         print(f"Step {step + 1}")
         print("Action: ", action)
         obs, reward, missing,  travel, done,_, info = env.step(action)
@@ -99,7 +99,7 @@ parser.add_argument('--port', default='3306', type=int)
 parser.add_argument('-t',  '--train', default=6, type=int )
 parser.add_argument('-s','--station', default=6, type=int )
 parser.add_argument('--time',  default=60, type=int)
-parser.add_argument('--instance',  default=1, type=int)
+parser.add_argument('--instance',  default=2, type=int)
 
 # 解析参数:
 args = parser.parse_args()
