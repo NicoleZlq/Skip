@@ -75,11 +75,11 @@ class SkipToy(gym.Env):
         n_actions = len(self.dwell_time)
         self.action_space = spaces.Discrete(n_actions)
         # initial state
-        state_length = 1+1+self.station_num+self.length_info+self.length_info+1+ self.length_info
+        state_length = 1+1+self.station_num+self.length_info+self.length_info
         
         self.ini_state = [0] * state_length
         
-        max_value = [2000] * state_length
+        max_value = [1000] * state_length
         
         self.observation_space = spaces.Box(
         low=np.array(self.ini_state), high=np.array(max_value), shape=(state_length,), dtype=np.int64
@@ -185,6 +185,7 @@ class SkipToy(gym.Env):
 
             
             print(self.arrive_recode)
+            print(self.departure_recode)
 
         truncated = False  # we do not limit the number of steps here
          
@@ -231,18 +232,9 @@ class SkipToy(gym.Env):
         end_station = [value_list[1] for value_list in self.onboard_dict[self.train_index][:self.length_info]]
 
         end_station.extend([0] * (self.length_info - len(end_station)))
-        
-        time = [self.departure_recode[self.train_index][self.station_index]]
-        
-        missing = self.MissingTrain[-self.length_info:]
-        
-        missing_elements_count = self.length_info - len(missing)
 
-        # 如果有缺失的元素，用-1补充
-        if missing_elements_count > 0:
-            missing.extend([0] * missing_elements_count)
         
-        return  info + remaining_pass + arriving_time + end_station + time + missing
+        return  info + remaining_pass + arriving_time + end_station  
     
     
     def ActionDetection(self):
@@ -299,7 +291,7 @@ class SkipToy(gym.Env):
         min_difference = float('inf')
 
         for number in numbers:
-            if number > target:
+            if number >= target:
                 difference = number - target
                 if difference < min_difference:
                     min_difference = difference

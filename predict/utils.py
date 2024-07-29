@@ -55,7 +55,7 @@ def order_select_search(training_set):
     p, q = bic_matrix.stack().astype('float64').idxmin()
     print('p and q: %s,%s' % (p, q)) 
 
-def create_dataset(dataset, look_back=20):
+def create_dataset(dataset, look_back):
     dataX, dataY = [], []
     for i in range(len(dataset)-look_back-1):
         a = dataset[i:(i+look_back),:]
@@ -95,13 +95,14 @@ def NormalizeMult(data):
     print(normalize.shape)
     for i in range(0, data.shape[1]):
         list = data[:, i]
-        listlow, listhigh = np.percentile(list, [0, 100])
+        listlow, listhigh = 1,5
         # print(i)
         normalize[i, 0] = listlow
         normalize[i, 1] = listhigh
         delta = listhigh - listlow
         if delta != 0:
             for j in range(0, data.shape[0]):
+                a = (data[j, i] - listlow)/delta
                 data[j, i] = (data[j, i] - listlow)/delta
     # np.save("./normalize.npy",normalize)
     return data, normalize
@@ -165,9 +166,9 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
         agg.dropna(inplace=True)
     return agg
 
-def prepare_data(series, n_test, n_in, n_out):
+def prepare_data(series, cut, n_test, n_in, n_out):
     values = series.values
     supervised_data = series_to_supervised(values, n_in, n_out)
     print('supervised_data', supervised_data)
-    train, test = supervised_data.loc[:3499, :], supervised_data.loc[3500:, :]
+    train, test = supervised_data.loc[:cut, :], supervised_data.loc[cut:, :]
     return train, test
