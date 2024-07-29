@@ -1,13 +1,17 @@
-from keras.layers import Input, Dense, LSTM, Conv1D, Dropout, Bidirectional, Multiply
-from keras.models import Model
+from tensorflow.keras import layers
+import tensorflow as tf
+from tensorflow.keras.layers import Input, Dense, LSTM, Conv1D, Dropout, Bidirectional, Multiply, Permute,RepeatVector,Lambda,Flatten
+from tensorflow.keras.models import Model, Sequential
 # from attention_utils import get_activations
-from keras.layers import add,concatenate
+from tensorflow.keras.layers import add,concatenate
 from tensorflow.python.keras.layers.core import *
-from keras.layers import LSTM
-from keras.models import *
+from tensorflow.keras.layers import LSTM
+from tensorflow.keras.models import *
 from utils import *
 import numpy as np
 import xgboost as xgb
+
+
 
 def attention_3d_block_merge(inputs,single_attention_vector = False):
     # inputs.shape = (batch_size, time_steps, input_dim)
@@ -26,59 +30,78 @@ def attention_3d_block_merge(inputs,single_attention_vector = False):
 
 def attention_3d_block(inputs, single_attention_vector=False):
     # inputs.shape = (batch_size, time_steps, input_dim)
-    time_steps = K.int_shape(inputs)[1]
-    input_dim = K.int_shape(inputs)[2]
-    a = Permute((2, 1))(inputs)
-    a = Dense(time_steps, activation='softmax')(a)
-    if single_attention_vector:
-        a = Lambda(lambda x: K.mean(x, axis=1))(a)
-        a = RepeatVector(input_dim)(a)
+    # time_steps = K.int_shape(inputs)[1]
+    # input_dim = K.int_shape(inputs)[2]
+    # a = Permute((2, 1))(inputs)
+    # a = Dense(time_steps, activation='softmax')(a)
+    # if single_attention_vector:
+    #     a = Lambda(lambda x: K.mean(x, axis=1))(a)
+    #     a = RepeatVector(input_dim)(a)
 
-    a_probs = Permute((2, 1))(a)
+    # a_probs = Permute((2, 1))(a)
+    # # element-wise
+    # output_attention_mul = Multiply()([inputs, a_probs])
+ 
+    # return output_attention_mul
+    
+    # inputs.shape = (batch_size, time_steps, input_dim)
+    time_steps = tf.keras.backend.int_shape(inputs)[1]
+    input_dim = tf.keras.backend.int_shape(inputs)[2]
+    a = tf.keras.backend.permute_dimensions(inputs, (0, 2, 1))
+    a = Dense(time_steps, activation='softmax', name='attention_weights')(a)
+    if single_attention_vector:
+        a = tf.keras.backend.mean(a, axis=1)
+        a = tf.keras.backend.repeat(a, input_dim)
+
+    a_probs = tf.keras.backend.permute_dimensions(a, (0, 2, 1))
     # element-wise
     output_attention_mul = Multiply()([inputs, a_probs])
+ 
     return output_attention_mul
 
 
 
-def attention_model(INPUT_DIMS = 13,TIME_STEPS = 20,lstm_units = 64):
+def attention_model(INPUT_DIMS,TIME_STEPS ,output_size, lstm_units = 32):
+    
+
     inputs = Input(shape=(TIME_STEPS, INPUT_DIMS))
-
-    x = Conv1D(filters=64, kernel_size=1, activation='relu')(inputs)  # padding = 'same'
-    x = Dropout(0.3)(x)
-
-    # lstm_out = Bidirectional(LSTM(lstm_units, activation='relu'), name='bilstm')(x)
+    x = Conv1D(filters=64, kernel_size=1, activation='sigmoid')(inputs)  # padding = 'same'
+    x = Dropout(0.1)(x)
+    
     lstm_out = Bidirectional(LSTM(lstm_units, return_sequences=True))(x)
-    lstm_out = Dropout(0.3)(lstm_out)
+    
     attention_mul = attention_3d_block(lstm_out)
-    attention_mul = Flatten()(attention_mul)
+    
+    attention_mul = layers.Flatten()(attention_mul)
+    
 
-    output = Dense(1, activation='sigmoid')(attention_mul)
-    model = Model(inputs=[inputs], outputs=output)
+    output = layers.Dense(output_size, activation='sigmoid')(attention_mul)
+    model = Model(inputs=[inputs], outputs=[output])
+
     return model
 
-def PredictWithData(data,data_yuan,name,modelname,INPUT_DIMS = 13,TIME_STEPS = 20):
+def PredictWithData(data,data_yuan,name,modelname,INPUT_DIMS,TIME_STEPS,cut ):
     print(data.columns)
-    yindex = data.columns.get_loc(name)
+    #yindex = data.columns.get_loc(name)
     data = np.array(data, dtype='float64')
-    data, normalize = NormalizeMult(data)
-    data_y = data[:, yindex]
-    data_y = data_y.reshape(data_y.shape[0], 1)
+   # data, normalize = NormalizeMult(data)
+    data_y = data[:, 1:6]
+    data_y = data_y.reshape(data_y.shape[0], 5)
 
-    testX, _ = create_dataset(data)
-    _, testY = create_dataset(data_y)
+    testX, _ = create_dataset(data,TIME_STEPS)
+    _, testY = create_dataset(data_y,TIME_STEPS)
     print("testX Y shape is:", testX.shape, testY.shape)
     if len(testY.shape) == 1:
         testY = testY.reshape(-1, 1)
 
-    model = attention_model(INPUT_DIMS)
+    model = attention_model(INPUT_DIMS, TIME_STEPS,5)
     model.load_weights(modelname)
     model.summary()
     y_hat =  model.predict(testX)
-    testY, y_hat = xgb_scheduler(data_yuan, y_hat)
+    testY, y_hat = xgb_scheduler(data_yuan, y_hat,cut)
     return y_hat, testY
 
-def lstm(model_type,X_train,yuan_X_train):
+def lstm(model_type,X_train,yuan_X_train,size):
     if model_type == 1:
         # single-layer LSTM
         model = Sequential()
@@ -116,10 +139,10 @@ def lstm(model_type,X_train,yuan_X_train):
 
     return model,yuan_model
 
-def xgb_scheduler(data,y_hat):
-    close = data.pop('close')
-    data.insert(5, 'close', close)
-    train, test = prepare_data(data, n_test=len(y_hat), n_in=6, n_out=1)
+def xgb_scheduler(data,y_hat,cut):
+    #close = data.pop('num')
+    #data.insert(1, 'num', close)
+    train, test = prepare_data(data,cut, n_test=len(y_hat), n_in=2, n_out=1)
     testY, y_hat2 = walk_forward_validation(train, test)
     return testY, y_hat2
 
