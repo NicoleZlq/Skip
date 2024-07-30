@@ -22,7 +22,7 @@ import pickle as pkl
 import random
 import sys
 sys.path.append('.')
-from synthesize import YewuSampler2, find_oracle
+from synthesize import YewuSampler, find_oracle
 from scipy.ndimage.filters import gaussian_filter1d
 import abc
 from typing import Sequence
