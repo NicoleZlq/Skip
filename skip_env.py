@@ -55,7 +55,9 @@ def main(args):
     
     np.random.seed(20240101)
 
-    model = A2C("MlpPolicy", env, seed = 5, learning_rate = 0.0004,   tensorboard_log="./skip_small_01_tensorboard/")
+    model = A2C("MlpPolicy", env, seed = 5, learning_rate = 0.0004,   
+                #tensorboard_log="./skip_small_01_tensorboard/"
+                )
 
    # model = A2C("MlpPolicy", env, learning_rate=0.0001, use_rms_prop=False, gamma=1.0,gae_lambda=0.5,max_grad_norm=0.6)
     model.learn(1e5, log_interval=100,  tb_log_name="A2C_instance{}".format(args.instance),reset_num_timesteps=True)

@@ -207,7 +207,7 @@ class SkipToy1(gym.Env):
         return (
             np.array(state).astype(np.float32),
             reward,
-            self.MissingTrain,
+    #        self.MissingTrain,
             self.TotalTravelingTime,
             terminated,
             truncated,
