@@ -57,21 +57,17 @@ def main(args):
                  initial_epsilon=1.0,
                  final_epsilon=0.01,
                  seed=984,
-                epsilon_decay_steps=10000,
-                batch_size=8,
-                learning_starts=1000,
-                buffer_size=int(1e5),
-                 log=False,
+                 instance = args.instance,
+                epsilon_decay_steps=20000,
+                learning_starts=100,
+                 log=True,
                  project_name="skip",
                 experiment_name="RCPO",)
 
    # model = A2C("MlpPolicy", env, learning_rate=0.0001, use_rms_prop=False, gamma=1.0,gae_lambda=0.5,max_grad_norm=0.6)
-    model.learn(int(1e5), env)
-
+    model.learn(int(1e5), env, train=True, critic_path=None, actor_path=None)
     
-    model.save("skip_small_{}_0".format(args.instance))
     
-    del model # remove to demonstrate saving and loading
     
     n_steps =5
 
@@ -107,7 +103,9 @@ parser.add_argument('--port', default='3306', type=int)
 parser.add_argument('-t',  '--train', default=6, type=int )
 parser.add_argument('-s','--station', default=6, type=int )
 parser.add_argument('--time',  default=60, type=int)
-parser.add_argument('--instance',  default=2, type=int)
+parser.add_argument('--instance',  default=3, type=int)
+parser.add_argument('--critic_path',  default='save_model/critic_3.pth', type=str)
+parser.add_argument('--actor_path',  default='save_model/actor_3.pth', type=str)
 
 # 解析参数:
 args = parser.parse_args()

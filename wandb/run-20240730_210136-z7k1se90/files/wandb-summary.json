@@ -1,0 +1,1 @@
+{"eval/missing train": 0.583, "eval/maximum": 2, "eval/objective": 0.7135, "eval/travel time": 492.4515898535191, "eval/passenger_num": 2799, "eval//reward": -0.8433860544217687, "global_step": 7736, "_timestamp": 1722344616.3401418, "_runtime": 119.91412782669067, "_step": 428, "losses/critic_loss": 0.1942070871591568, "losses/epsilon": 0.01, "losses/actor_loss": -0.0}

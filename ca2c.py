@@ -24,7 +24,7 @@ class Actor(nn.Module):
 
     def forward(self, s):
         s = F.relu(self.l1(s))
-        a_prob = F.softmax(self.l2(s), dim=1)
+        a_prob = F.leaky_relu(self.l2(s), dim=1)
         return a_prob
 
 
@@ -36,7 +36,7 @@ class Critic(nn.Module):
         self.l2 = nn.Linear(hidden_width, 1)
 
     def forward(self, s):
-        s = F.relu(self.l1(s))
+        s = F.leaky_relu(self.l1(s))
         v_s = self.l2(s)
         return v_s
 
@@ -48,11 +48,10 @@ class CA2C(object):
                  gamma: float = 0.99,
                  initial_epsilon: float = 0.01,
                 final_epsilon: float = 0.01,
-                batch_size: int = 256,
                 learning_starts: int = 100,
-                buffer_size: int = int(1e6),
                 epsilon_decay_steps: int = None,  # None == fixed epsilon
                  log: bool = True,
+                 instance: str = "3",
                  seed: Optional[int] = None,
                  project_name: str = "CRCPO",
                 experiment_name: str = "td",
@@ -62,7 +61,7 @@ class CA2C(object):
         self.state_dim = env.observation_space.shape[0]
         self.action_dim = env.action_space.n
 
-        self.hidden_width = 64  # The number of neurons in hidden layers of the neural network
+        self.hidden_width = 128  # The number of neurons in hidden layers of the neural network
         self.lr = learning_rate  # learning rate
         self.GAMMA = gamma  # discount factor
         self.I = 1
@@ -71,9 +70,9 @@ class CA2C(object):
         self.initial_epsilon = initial_epsilon
         self.epsilon = initial_epsilon
         self.final_epsilon = final_epsilon
-        self.batch_size = batch_size
         self.epsilon_decay_steps = epsilon_decay_steps
         self.learning_starts = learning_starts
+        self.instance = instance
         
         self.np_random = np.random.default_rng(self.seed)
 
@@ -86,12 +85,6 @@ class CA2C(object):
         self.info ={}
         
         
-        self.replay_buffer = self.ReplayBuffer(
-                self.state_dim,
-                1,
-                max_size=buffer_size,
-                action_dtype=np.uint8,
-            )
         
         self.log = log
         if log:
@@ -110,7 +103,10 @@ class CA2C(object):
         
     def learn(self,
         total_timesteps: int,
-        env: Optional[gym.Env] = None,):
+        env: Optional[gym.Env] = None,
+        train: bool = True,
+        critic_path: str = "CRCPO",
+        actor_path: str = "CRCPO",):
         
         
         
@@ -126,15 +122,26 @@ class CA2C(object):
         num_episodes = 0
         s, z = env.reset()
         
+        if not train:
+            self.critic= torch.load(critic_path)
+            self.actor = torch.load(actor_path)
+        
         for _ in range(1, total_timesteps+1):
             a = self.choose_action(s, deterministic=False)
             s_, r, missing, traveling, done, trcthu, info = env.step(a)  #return observation, reward, missing, traveling, terminated, truncated, info
             self.global_step += 1
             
-            self.add(s, a, r, s_, done)
-            
             if self.global_step >= self.learning_starts:
-                self.linearly_decaying_value(self.initial_epsilon,
+                if done :
+                    dw = True
+                else:
+                    dw = False
+                    
+                if train:
+
+                    self.update(s, a, r, s_, dw)
+
+                self.epsilon = self.linearly_decaying_value(self.initial_epsilon,
                                                 self.epsilon_decay_steps,
                                                 self.global_step,
                                                 self.learning_starts,
@@ -166,6 +173,8 @@ class CA2C(object):
                 
         print("Done training!")
         self.env.close()
+        torch.save(self.critic, 'save_model/critic_{}.pth'.format(self.instance))
+        torch.save(self.actor, 'save_model/actor_{}.pth'.format(self.instance))
         if self.log:
             self.close_wandb()
                 
@@ -217,135 +226,19 @@ class CA2C(object):
         )
 
 
-                
-    def ReplayBuffer(self, 
-        obs_shape,
-        action_dim,
-        max_size=100000,
-        obs_dtype=np.float32,
-        action_dtype=np.float32,
-    ):
-
-        """Initialize the replay buffer.
-
-        Args:
-            obs_shape: Shape of the observations
-            action_dim: Dimension of the actions
-            rew_dim: Dimension of the rewards
-            max_size: Maximum size of the buffer
-            obs_dtype: Data type of the observations
-            action_dtype: Data type of the actions
-        """
-        self.max_size = max_size
-        self.ptr, self.size = 0, 0
-        print(max_size,obs_shape)
-        print(type(max_size), type(obs_shape))
-        self.obs = np.zeros((max_size, obs_shape), dtype=obs_dtype)
-        self.next_obs = np.zeros((max_size,  obs_shape), dtype=obs_dtype)
-        self.actions = np.zeros((max_size, action_dim), dtype=action_dtype)
-        self.rewards = np.zeros((max_size, 1), dtype=np.float32)
-        self.dones = np.zeros((max_size, 1), dtype=np.float32)
-
-    def add(self, obs, action, reward, next_obs, done):
-        """Add a new experience to the buffer.
-
-        Args:
-            obs: Observation
-            action: Action
-            reward: Reward
-            next_obs: Next observation
-            done: Done
-        """
-        self.obs[self.ptr] = np.array(obs).copy()
-        self.next_obs[self.ptr] = np.array(next_obs).copy()
-        self.actions[self.ptr] = np.array(action).copy()
-        self.rewards[self.ptr] = np.array(reward).copy()
-        self.dones[self.ptr] = np.array(done).copy()
-        self.ptr = (self.ptr + 1) % self.max_size
-        self.size = min(self.size + 1, self.max_size)
+    
         
     def close_wandb(self) -> None:
         """Closes the wandb writer and finishes the run."""
 
         wandb.finish()
 
-    def sample(self, batch_size, replace=True, use_cer=False, to_tensor=False, device=None):
-        """Sample a batch of experiences from the buffer.
-
-        Args:
-            batch_size: Batch size
-            replace: Whether to sample with replacement
-            use_cer: Whether to use CER
-            to_tensor: Whether to convert the data to PyTorch tensors
-            device: Device to use
-
-        Returns:
-            A tuple of (observations, actions, rewards, next observations, dones)
-
-        """
-        inds = np.random.choice(self.size, batch_size, replace=replace)
-        if use_cer:
-            inds[0] = self.ptr - 1  # always use last experience
-        experience_tuples = (
-            self.obs[inds],
-            self.actions[inds],
-            self.rewards[inds],
-            self.next_obs[inds],
-            self.dones[inds],
-        )
-        if to_tensor:
-            return tuple(map(lambda x: th.tensor(x).to(device), experience_tuples))
-        else:
-            return experience_tuples
-
-    def sample_obs(self, batch_size, replace=True, to_tensor=False, device=None):
-        """Sample a batch of observations from the buffer.
-
-        Args:
-            batch_size: Batch size
-            replace: Whether to sample with replacement
-            to_tensor: Whether to convert the data to PyTorch tensors
-            device: Device to use
-
-        Returns:
-            A batch of observations
-        """
-        inds = np.random.choice(self.size, batch_size, replace=replace)
-        if to_tensor:
-            return th.tensor(self.obs[inds]).to(device)
-        else:
-            return self.obs[inds]
-
-    def get_all_data(self, max_samples=None):
-        """Get all the data in the buffer (with a maximum specified).
-
-        Args:
-            max_samples: Maximum number of samples to return
-
-        Returns:
-            A tuple of (observations, actions, rewards, next observations, dones)
-        """
-        if max_samples is not None:
-            inds = np.random.choice(self.size, min(max_samples, self.size), replace=False)
-        else:
-            inds = np.arange(self.size)
-        return (
-            self.obs[inds],
-            self.actions[inds],
-            self.rewards[inds],
-            self.next_obs[inds],
-            self.dones[inds],
-        )
-
-    def __len__(self):
-        """Get the size of the buffer."""
-        return self.size
 
             
 
 
 
-    def abc(self, s, a, r, s_, dw):
+    def update(self, s, a, r, s_, dw):
         s = torch.unsqueeze(torch.tensor(s, dtype=torch.float), 0)
         s_ = torch.unsqueeze(torch.tensor(s_, dtype=torch.float), 0)
         v_s = self.critic(s).flatten()  # v(s)
@@ -370,6 +263,16 @@ class CA2C(object):
         self.I *= self.GAMMA  # Represent the gamma^t in th policy gradient theorem
         
         
+        if self.log and self.global_step % 100 == 0:
+            wandb.log(
+                    {
+                        "losses/critic_loss": critic_loss,
+                        "losses/epsilon": self.epsilon,
+                        "losses/actor_loss": actor_loss,
+                        "global_step": self.global_step,
+                    },)
+            
+        
     def register_additional_config(self, conf: Dict = {}) -> None:
         """Registers additional config parameters to wandb. For example when calling train().
 
@@ -386,7 +289,6 @@ class CA2C(object):
             "initial_epsilon": self.initial_epsilon,
              "final_epsilon": self.final_epsilon,
             "epsilon_decay_steps:": self.epsilon_decay_steps,
-            "batch_size": self.batch_size,
             "gamma": self.GAMMA,
             "learning_starts": self.learning_starts,
             "seed": self.seed,
@@ -405,7 +307,7 @@ class CA2C(object):
         """
         self.experiment_name = experiment_name
         env_id =  self.env.spec.id
-        self.full_experiment_name = f"{env_id}__{experiment_name}__{self.seed}__{int(time.time())}"
+        self.full_experiment_name = f"{env_id}__{experiment_name}__{self.instance}__{int(time.time())}"
 
 
         config = self.get_config()

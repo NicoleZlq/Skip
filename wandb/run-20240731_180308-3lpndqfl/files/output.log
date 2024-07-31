@@ -1,0 +1,3164 @@
+
+[34m[1mwandb[39m[22m: [33mWARNING[39m Step cannot be set when using syncing with tensorboard. Please log your step values as a metric such as 'global_step'
+station: 1
+train: 0
+[0, 100]
+max boarding passengers: 850.0
+before
+waiging passengers: 129
+numbers of onboard passenger 0
+129
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 129
+************* False
+reward: 0.0
+station: 2
+train: 0
+[0, 290]
+max boarding passengers: 520.0
+before
+waiging passengers: 344
+numbers of onboard passenger 99
+251
+after
+numbers of remaining passenger 93
+numbers of onboard passenger 350
+************* False
+reward: -0.2
+station: 3
+train: 0
+[0, 450]
+max boarding passengers: 635.0
+before
+waiging passengers: 100
+numbers of onboard passenger 235
+100
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 335
+************* False
+reward: -0.2708333333333333
+station: 4
+train: 0
+[0, 630]
+max boarding passengers: 569.0
+before
+waiging passengers: 130
+numbers of onboard passenger 154
+130
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 284
+in the first staition
+waiging passengers: 605
+numbers of onboard passengers: 139
+************* False
+reward: -0.48688524590163934
+station: 1
+train: 1
+[0, 220]
+max boarding passengers: 726.0
+before
+waiging passengers: 631
+numbers of onboard passenger 115
+144
+after
+numbers of remaining passenger 487
+numbers of onboard passenger 259
+************* False
+reward: -0.3325867861142217
+station: 2
+train: 1
+[0, 400]
+max boarding passengers: 688.0
+before
+waiging passengers: 495
+numbers of onboard passenger 197
+153
+after
+numbers of remaining passenger 342
+numbers of onboard passenger 350
+************* False
+reward: -0.28393881453154873
+station: 3
+train: 1
+[0, 580]
+max boarding passengers: 647.0
+before
+waiging passengers: 35
+numbers of onboard passenger 247
+29
+after
+numbers of remaining passenger 6
+numbers of onboard passenger 276
+************* False
+reward: -0.2762790697674419
+station: 4
+train: 1
+[0, 760]
+max boarding passengers: 616.0
+before
+waiging passengers: 20
+numbers of onboard passenger 142
+20
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 162
+in the first staition
+waiging passengers: 590
+numbers of onboard passengers: 138
+************* False
+reward: -0.27123287671232876
+station: 1
+train: 2
+[0, 340]
+max boarding passengers: 725.0
+before
+waiging passengers: 661
+numbers of onboard passenger 113
+151
+after
+numbers of remaining passenger 510
+numbers of onboard passenger 264
+************* False
+reward: -0.21459537572254336
+station: 2
+train: 2
+[0, 520]
+max boarding passengers: 679.0
+before
+waiging passengers: 499
+numbers of onboard passenger 193
+157
+after
+numbers of remaining passenger 342
+numbers of onboard passenger 350
+************* False
+reward: -0.1927319922128488
+station: 3
+train: 2
+[0, 700]
+max boarding passengers: 630.0
+before
+waiging passengers: 32
+numbers of onboard passenger 230
+21
+after
+numbers of remaining passenger 11
+numbers of onboard passenger 251
+************* False
+reward: -0.19014084507042253
+station: 4
+train: 2
+[0, 880]
+max boarding passengers: 632.0
+before
+waiging passengers: 23
+numbers of onboard passenger 133
+23
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 156
+in the first staition
+waiging passengers: 611
+numbers of onboard passengers: 139
+************* False
+reward: -0.18738170347003155
+station: 1
+train: 3
+[0, 460]
+max boarding passengers: 722.0
+before
+waiging passengers: 643
+numbers of onboard passenger 111
+137
+after
+numbers of remaining passenger 506
+numbers of onboard passenger 248
+************* False
+reward: -0.1595916174099946
+station: 2
+train: 3
+[0, 640]
+max boarding passengers: 567.0
+before
+waiging passengers: 502
+numbers of onboard passenger 165
+185
+after
+numbers of remaining passenger 317
+numbers of onboard passenger 350
+************* False
+reward: -0.15516129032258066
+station: 3
+train: 3
+[0, 810]
+max boarding passengers: 640.0
+before
+waiging passengers: 36
+numbers of onboard passenger 240
+22
+after
+numbers of remaining passenger 14
+numbers of onboard passenger 262
+************* False
+reward: -0.15861702127659577
+station: 4
+train: 3
+[0, 990]
+max boarding passengers: 315.0
+before
+waiging passengers: 16
+numbers of onboard passenger 127
+16
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 143
+in the first staition
+waiging passengers: 601
+numbers of onboard passengers: 149
+************* False
+reward: -0.14251439539347407
+station: 1
+train: 4
+[0, 580]
+max boarding passengers: 920.0
+before
+waiging passengers: 640
+numbers of onboard passenger 119
+147
+after
+numbers of remaining passenger 493
+numbers of onboard passenger 266
+************* False
+reward: -0.12478991596638656
+station: 2
+train: 4
+[0, 780]
+max boarding passengers: 892.0
+before
+waiging passengers: 449
+numbers of onboard passenger 208
+142
+after
+numbers of remaining passenger 307
+numbers of onboard passenger 350
+************* False
+reward: -0.11776367961934972
+station: 3
+train: 4
+[0, 980]
+max boarding passengers: 835.0
+before
+waiging passengers: 33
+numbers of onboard passenger 235
+31
+after
+numbers of remaining passenger 2
+numbers of onboard passenger 266
+************* False
+reward: -0.11633372502937721
+station: 4
+train: 4
+[0, 1180]
+max boarding passengers: 809.0
+before
+waiging passengers: 1
+numbers of onboard passenger 125
+1
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 126
+in the first staition
+waiging passengers: 474
+numbers of onboard passengers: 143
+************* False
+reward: -0.11628817541111981
+station: 1
+train: 5
+[0, 700]
+max boarding passengers: 1019.0
+before
+waiging passengers: 504
+numbers of onboard passenger 112
+143
+after
+numbers of remaining passenger 361
+numbers of onboard passenger 255
+************* False
+reward: -0.11457746478873239
+station: 2
+train: 5
+[0, 910]
+max boarding passengers: 879.0
+before
+waiging passengers: 320
+numbers of onboard passenger 184
+166
+after
+numbers of remaining passenger 154
+numbers of onboard passenger 350
+************* False
+reward: -0.09880239520958084
+station: 3
+train: 5
+[0, 1110]
+max boarding passengers: 830.0
+before
+waiging passengers: 5
+numbers of onboard passenger 230
+5
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 235
+************* False
+reward: -0.09863832613749585
+station: 4
+train: 5
+[0, 1310]
+max boarding passengers: 828.0
+before
+waiging passengers: 0
+numbers of onboard passenger 113
+0
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 113
+************* True
+{0: [0, 100, 290, 450, 630, 810], 1: [120, 220, 400, 580, 760, 940], 2: [240, 340, 520, 700, 880, 1060], 3: [360, 460, 640, 810, 990, 1140], 4: [480, 580, 780, 980, 1180, 1380], 5: [600, 700, 910, 1110, 1310, None]}
+{0: [0, 190, 350, 530, 710, 810], 1: [120, 300, 480, 660, 840, 940], 2: [240, 420, 600, 780, 960, 1060], 3: [360, 540, 710, 890, 1040, 1140], 4: [480, 680, 880, 1080, 1280, 1380], 5: [600, 810, 1010, 1210, 1410, None]}
+reward: -0.7208883261374959
+24
+24
+Episode infos:
+Total Reward: -0.7208883261374959
+station: 1
+train: 0
+[0, 100]
+max boarding passengers: 750.0
+before
+waiging passengers: 129
+numbers of onboard passenger 0
+129
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 129
+************* False
+reward: 0.0
+station: 2
+train: 0
+[0, 280]
+max boarding passengers: 720.0
+before
+waiging passengers: 331
+numbers of onboard passenger 99
+251
+after
+numbers of remaining passenger 80
+numbers of onboard passenger 350
+************* False
+reward: -0.15263157894736842
+station: 3
+train: 0
+[0, 460]
+max boarding passengers: 635.0
+before
+waiging passengers: 100
+numbers of onboard passenger 235
+100
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 335
+************* False
+reward: -0.2375
+station: 4
+train: 0
+[0, 640]
+max boarding passengers: 569.0
+before
+waiging passengers: 131
+numbers of onboard passenger 154
+131
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 285
+in the first staition
+waiging passengers: 617
+numbers of onboard passengers: 139
+************* False
+reward: -0.4828150572831424
+station: 1
+train: 1
+[0, 220]
+max boarding passengers: 726.0
+before
+waiging passengers: 647
+numbers of onboard passenger 115
+144
+after
+numbers of remaining passenger 503
+numbers of onboard passenger 259
+************* False
+reward: -0.32997762863534674
+station: 2
+train: 1
+[0, 400]
+max boarding passengers: 688.0
+before
+waiging passengers: 509
+numbers of onboard passenger 197
+153
+after
+numbers of remaining passenger 356
+numbers of onboard passenger 350
+************* False
+reward: -0.2817574021012416
+station: 3
+train: 1
+[0, 580]
+max boarding passengers: 647.0
+before
+waiging passengers: 37
+numbers of onboard passenger 247
+29
+after
+numbers of remaining passenger 8
+numbers of onboard passenger 276
+************* False
+reward: -0.2741635687732342
+station: 4
+train: 1
+[0, 760]
+max boarding passengers: 616.0
+before
+waiging passengers: 19
+numbers of onboard passenger 142
+19
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 161
+in the first staition
+waiging passengers: 590
+numbers of onboard passengers: 138
+************* False
+reward: -0.2694063926940639
+station: 1
+train: 2
+[0, 340]
+max boarding passengers: 725.0
+before
+waiging passengers: 661
+numbers of onboard passenger 113
+151
+after
+numbers of remaining passenger 510
+numbers of onboard passenger 264
+************* False
+reward: -0.21315028901734104
+station: 2
+train: 2
+[0, 520]
+max boarding passengers: 679.0
+before
+waiging passengers: 499
+numbers of onboard passenger 193
+157
+after
+numbers of remaining passenger 342
+numbers of onboard passenger 350
+************* False
+reward: -0.19143413367942894
+station: 3
+train: 2
+[0, 700]
+max boarding passengers: 630.0
+before
+waiging passengers: 32
+numbers of onboard passenger 230
+21
+after
+numbers of remaining passenger 11
+numbers of onboard passenger 251
+************* False
+reward: -0.18886043533930857
+station: 4
+train: 2
+[0, 880]
+max boarding passengers: 632.0
+before
+waiging passengers: 23
+numbers of onboard passenger 133
+23
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 156
+in the first staition
+waiging passengers: 611
+numbers of onboard passengers: 139
+************* False
+reward: -0.1861198738170347
+station: 1
+train: 3
+[0, 460]
+max boarding passengers: 622.0
+before
+waiging passengers: 643
+numbers of onboard passenger 111
+137
+after
+numbers of remaining passenger 506
+numbers of onboard passenger 248
+************* False
+reward: -0.1685169263836647
+station: 2
+train: 3
+[0, 630]
+max boarding passengers: 667.0
+before
+waiging passengers: 502
+numbers of onboard passenger 165
+185
+after
+numbers of remaining passenger 317
+numbers of onboard passenger 350
+************* False
+reward: -0.15918377321603128
+station: 3
+train: 3
+[0, 810]
+max boarding passengers: 640.0
+before
+waiging passengers: 36
+numbers of onboard passenger 240
+22
+after
+numbers of remaining passenger 14
+numbers of onboard passenger 262
+************* False
+reward: -0.14264990328820115
+station: 4
+train: 3
+[0, 990]
+max boarding passengers: 315.0
+before
+waiging passengers: 16
+numbers of onboard passenger 127
+16
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 143
+in the first staition
+waiging passengers: 601
+numbers of onboard passengers: 149
+************* False
+reward: -0.14155470249520152
+station: 1
+train: 4
+[0, 580]
+max boarding passengers: 920.0
+before
+waiging passengers: 640
+numbers of onboard passenger 119
+147
+after
+numbers of remaining passenger 493
+numbers of onboard passenger 266
+************* False
+reward: -0.12394957983193278
+station: 2
+train: 4
+[0, 780]
+max boarding passengers: 892.0
+before
+waiging passengers: 449
+numbers of onboard passenger 208
+142
+after
+numbers of remaining passenger 307
+numbers of onboard passenger 350
+************* False
+reward: -0.11697065820777161
+station: 3
+train: 4
+[0, 980]
+max boarding passengers: 835.0
+before
+waiging passengers: 33
+numbers of onboard passenger 235
+31
+after
+numbers of remaining passenger 2
+numbers of onboard passenger 266
+************* False
+reward: -0.11555033294163729
+station: 4
+train: 4
+[0, 1180]
+max boarding passengers: 809.0
+before
+waiging passengers: 1
+numbers of onboard passenger 125
+1
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 126
+in the first staition
+waiging passengers: 474
+numbers of onboard passengers: 143
+************* False
+reward: -0.11550509005481598
+station: 1
+train: 5
+[0, 700]
+max boarding passengers: 1019.0
+before
+waiging passengers: 504
+numbers of onboard passenger 112
+143
+after
+numbers of remaining passenger 361
+numbers of onboard passenger 255
+************* False
+reward: -0.11387323943661971
+station: 2
+train: 5
+[0, 910]
+max boarding passengers: 879.0
+before
+waiging passengers: 320
+numbers of onboard passenger 184
+166
+after
+numbers of remaining passenger 154
+numbers of onboard passenger 350
+************* False
+reward: -0.09813705921490352
+station: 3
+train: 5
+[0, 1110]
+max boarding passengers: 830.0
+before
+waiging passengers: 5
+numbers of onboard passenger 230
+5
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 235
+************* False
+reward: -0.0979740949850548
+station: 4
+train: 5
+[0, 1310]
+max boarding passengers: 828.0
+before
+waiging passengers: 0
+numbers of onboard passenger 113
+0
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 113
+************* True
+{0: [0, 100, 280, 460, 640, 820], 1: [120, 220, 400, 580, 760, 940], 2: [240, 340, 520, 700, 880, 1060], 3: [360, 460, 630, 810, 990, 1140], 4: [480, 580, 780, 980, 1180, 1380], 5: [600, 700, 910, 1110, 1310, None]}
+{0: [0, 180, 360, 540, 720, 820], 1: [120, 300, 480, 660, 840, 940], 2: [240, 420, 600, 780, 960, 1060], 3: [360, 530, 710, 890, 1040, 1140], 4: [480, 680, 880, 1080, 1280, 1380], 5: [600, 810, 1010, 1210, 1410, None]}
+reward: -0.7202240949850548
+48
+48
+Episode infos:
+Total Reward: -0.7202240949850548
+station: 1
+train: 0
+[0, 100]
+max boarding passengers: 1250.0
+before
+waiging passengers: 129
+numbers of onboard passenger 0
+129
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 129
+************* False
+reward: 0.0
+station: 2
+train: 0
+[0, 330]
+max boarding passengers: 720.0
+before
+waiging passengers: 396
+numbers of onboard passenger 99
+251
+after
+numbers of remaining passenger 145
+numbers of onboard passenger 350
+************* False
+reward: -0.3157894736842105
+station: 3
+train: 0
+[0, 510]
+max boarding passengers: 635.0
+before
+waiging passengers: 114
+numbers of onboard passenger 235
+114
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 349
+************* False
+reward: -0.4959514170040486
+station: 4
+train: 0
+[0, 690]
+max boarding passengers: 559.0
+before
+waiging passengers: 133
+numbers of onboard passenger 158
+133
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 291
+in the first staition
+waiging passengers: 666
+numbers of onboard passengers: 139
+************* False
+reward: -0.7511961722488039
+station: 1
+train: 1
+[0, 220]
+max boarding passengers: 1126.0
+before
+waiging passengers: 711
+numbers of onboard passenger 115
+144
+after
+numbers of remaining passenger 567
+numbers of onboard passenger 259
+************* False
+reward: -0.5495824175824177
+station: 2
+train: 1
+[0, 440]
+max boarding passengers: 688.0
+before
+waiging passengers: 566
+numbers of onboard passenger 197
+153
+after
+numbers of remaining passenger 413
+numbers of onboard passenger 350
+************* False
+reward: -0.4430856067732832
+station: 3
+train: 1
+[0, 620]
+max boarding passengers: 647.0
+before
+waiging passengers: 35
+numbers of onboard passenger 247
+19
+after
+numbers of remaining passenger 16
+numbers of onboard passenger 266
+************* False
+reward: -0.43530499075785584
+station: 4
+train: 1
+[0, 800]
+max boarding passengers: 624.0
+before
+waiging passengers: 29
+numbers of onboard passenger 140
+29
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 169
+in the first staition
+waiging passengers: 629
+numbers of onboard passengers: 138
+************* False
+reward: -0.4239423942394239
+station: 1
+train: 2
+[0, 340]
+max boarding passengers: 1025.0
+before
+waiging passengers: 699
+numbers of onboard passenger 113
+151
+after
+numbers of remaining passenger 548
+numbers of onboard passenger 264
+************* False
+reward: -0.36042857142857143
+station: 2
+train: 2
+[0, 550]
+max boarding passengers: 679.0
+before
+waiging passengers: 555
+numbers of onboard passenger 193
+157
+after
+numbers of remaining passenger 398
+numbers of onboard passenger 350
+************* False
+reward: -0.302504816955684
+station: 3
+train: 2
+[0, 730]
+max boarding passengers: 630.0
+before
+waiging passengers: 39
+numbers of onboard passenger 230
+22
+after
+numbers of remaining passenger 17
+numbers of onboard passenger 252
+************* False
+reward: -0.2982900569981001
+station: 4
+train: 2
+[0, 910]
+max boarding passengers: 631.0
+before
+waiging passengers: 16
+numbers of onboard passenger 133
+16
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 149
+in the first staition
+waiging passengers: 650
+numbers of onboard passengers: 139
+************* False
+reward: -0.29529780564263325
+station: 1
+train: 3
+[0, 460]
+max boarding passengers: 922.0
+before
+waiging passengers: 683
+numbers of onboard passenger 111
+137
+after
+numbers of remaining passenger 546
+numbers of onboard passenger 248
+************* False
+reward: -0.2677370390165687
+station: 2
+train: 3
+[0, 660]
+max boarding passengers: 667.0
+before
+waiging passengers: 533
+numbers of onboard passenger 165
+185
+after
+numbers of remaining passenger 348
+numbers of onboard passenger 350
+************* False
+reward: -0.24408560311284044
+station: 3
+train: 3
+[0, 840]
+max boarding passengers: 640.0
+before
+waiging passengers: 38
+numbers of onboard passenger 240
+22
+after
+numbers of remaining passenger 16
+numbers of onboard passenger 262
+************* False
+reward: -0.22666025024061598
+station: 4
+train: 3
+[0, 1020]
+max boarding passengers: 615.0
+before
+waiging passengers: 12
+numbers of onboard passenger 127
+12
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 139
+in the first staition
+waiging passengers: 617
+numbers of onboard passengers: 149
+************* False
+reward: -0.22535885167464115
+station: 1
+train: 4
+[0, 580]
+max boarding passengers: 920.0
+before
+waiging passengers: 651
+numbers of onboard passenger 119
+147
+after
+numbers of remaining passenger 504
+numbers of onboard passenger 266
+************* False
+reward: -0.19740150880134116
+station: 2
+train: 4
+[0, 780]
+max boarding passengers: 892.0
+before
+waiging passengers: 462
+numbers of onboard passenger 208
+142
+after
+numbers of remaining passenger 320
+numbers of onboard passenger 350
+************* False
+reward: -0.1863132911392405
+station: 3
+train: 4
+[0, 980]
+max boarding passengers: 835.0
+before
+waiging passengers: 31
+numbers of onboard passenger 235
+26
+after
+numbers of remaining passenger 5
+numbers of onboard passenger 261
+************* False
+reward: -0.18441660140955365
+station: 4
+train: 4
+[0, 1180]
+max boarding passengers: 812.0
+before
+waiging passengers: 0
+numbers of onboard passenger 123
+0
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 123
+in the first staition
+waiging passengers: 474
+numbers of onboard passengers: 143
+************* False
+reward: -0.18441660140955365
+station: 1
+train: 5
+[0, 700]
+max boarding passengers: 1019.0
+before
+waiging passengers: 504
+numbers of onboard passenger 112
+143
+after
+numbers of remaining passenger 361
+numbers of onboard passenger 255
+************* False
+reward: -0.17584507042253522
+station: 2
+train: 5
+[0, 910]
+max boarding passengers: 879.0
+before
+waiging passengers: 320
+numbers of onboard passenger 184
+166
+after
+numbers of remaining passenger 154
+numbers of onboard passenger 350
+************* False
+reward: -0.156686626746507
+station: 3
+train: 5
+[0, 1110]
+max boarding passengers: 830.0
+before
+waiging passengers: 5
+numbers of onboard passenger 230
+5
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 235
+************* False
+reward: -0.15642643639986714
+station: 4
+train: 5
+[0, 1310]
+max boarding passengers: 828.0
+before
+waiging passengers: 0
+numbers of onboard passenger 113
+0
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 113
+************* True
+{0: [0, 100, 330, 510, 690, 870], 1: [120, 220, 440, 620, 800, 980], 2: [240, 340, 550, 730, 910, 1090], 3: [360, 460, 660, 840, 1020, 1200], 4: [480, 580, 780, 980, 1180, 1380], 5: [600, 700, 910, 1110, 1310, None]}
+{0: [0, 230, 410, 590, 770, 870], 1: [120, 340, 520, 700, 880, 980], 2: [240, 450, 630, 810, 990, 1090], 3: [360, 560, 740, 920, 1100, 1200], 4: [480, 680, 880, 1080, 1280, 1380], 5: [600, 810, 1010, 1210, 1410, None]}
+reward: -0.7786764363998671
+72
+72
+Episode infos:
+Total Reward: -0.7786764363998671
+station: 1
+train: 0
+[0, 100]
+max boarding passengers: 450.0
+before
+waiging passengers: 129
+numbers of onboard passenger 0
+129
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 129
+************* False
+reward: 0.0
+station: 2
+train: 0
+[0, 250]
+max boarding passengers: 820.0
+before
+waiging passengers: 293
+numbers of onboard passenger 99
+251
+after
+numbers of remaining passenger 42
+numbers of onboard passenger 350
+************* False
+reward: -0.07368421052631578
+station: 3
+train: 0
+[0, 440]
+max boarding passengers: 635.0
+before
+waiging passengers: 97
+numbers of onboard passenger 235
+97
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 332
+************* False
+reward: -0.16771488469601678
+station: 4
+train: 0
+[0, 620]
+max boarding passengers: 570.0
+before
+waiging passengers: 129
+numbers of onboard passenger 152
+129
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 281
+in the first staition
+waiging passengers: 596
+numbers of onboard passengers: 139
+************* False
+reward: -0.3943894389438944
+station: 1
+train: 1
+[0, 220]
+max boarding passengers: 726.0
+before
+waiging passengers: 621
+numbers of onboard passenger 115
+144
+after
+numbers of remaining passenger 477
+numbers of onboard passenger 259
+************* False
+reward: -0.2688413948256468
+station: 2
+train: 1
+[0, 400]
+max boarding passengers: 688.0
+before
+waiging passengers: 488
+numbers of onboard passenger 197
+153
+after
+numbers of remaining passenger 335
+numbers of onboard passenger 350
+************* False
+reward: -0.22936660268714013
+station: 3
+train: 1
+[0, 580]
+max boarding passengers: 647.0
+before
+waiging passengers: 36
+numbers of onboard passenger 247
+32
+after
+numbers of remaining passenger 4
+numbers of onboard passenger 279
+************* False
+reward: -0.22253258845437615
+station: 4
+train: 1
+[0, 760]
+max boarding passengers: 615.0
+before
+waiging passengers: 21
+numbers of onboard passenger 144
+21
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 165
+in the first staition
+waiging passengers: 590
+numbers of onboard passengers: 138
+************* False
+reward: -0.2182648401826484
+station: 1
+train: 2
+[0, 340]
+max boarding passengers: 725.0
+before
+waiging passengers: 661
+numbers of onboard passenger 113
+151
+after
+numbers of remaining passenger 510
+numbers of onboard passenger 264
+************* False
+reward: -0.1726878612716763
+station: 2
+train: 2
+[0, 520]
+max boarding passengers: 679.0
+before
+waiging passengers: 499
+numbers of onboard passenger 193
+157
+after
+numbers of remaining passenger 342
+numbers of onboard passenger 350
+************* False
+reward: -0.15509409474367294
+station: 3
+train: 2
+[0, 700]
+max boarding passengers: 630.0
+before
+waiging passengers: 32
+numbers of onboard passenger 230
+21
+after
+numbers of remaining passenger 11
+numbers of onboard passenger 251
+************* False
+reward: -0.1530089628681178
+station: 4
+train: 2
+[0, 880]
+max boarding passengers: 632.0
+before
+waiging passengers: 23
+numbers of onboard passenger 133
+23
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 156
+in the first staition
+waiging passengers: 611
+numbers of onboard passengers: 139
+************* False
+reward: -0.15078864353312302
+station: 1
+train: 3
+[0, 460]
+max boarding passengers: 722.0
+before
+waiging passengers: 643
+numbers of onboard passenger 111
+137
+after
+numbers of remaining passenger 506
+numbers of onboard passenger 248
+************* False
+reward: -0.12842557764642665
+station: 2
+train: 3
+[0, 640]
+max boarding passengers: 867.0
+before
+waiging passengers: 502
+numbers of onboard passenger 165
+185
+after
+numbers of remaining passenger 317
+numbers of onboard passenger 350
+************* False
+reward: -0.11681329423264906
+station: 3
+train: 3
+[0, 840]
+max boarding passengers: 640.0
+before
+waiging passengers: 36
+numbers of onboard passenger 240
+27
+after
+numbers of remaining passenger 9
+numbers of onboard passenger 267
+************* False
+reward: -0.11529184756391703
+station: 4
+train: 3
+[0, 1020]
+max boarding passengers: 312.0
+before
+waiging passengers: 17
+numbers of onboard passenger 129
+17
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 146
+in the first staition
+waiging passengers: 617
+numbers of onboard passengers: 149
+************* False
+reward: -0.11435406698564593
+station: 1
+train: 4
+[0, 580]
+max boarding passengers: 920.0
+before
+waiging passengers: 651
+numbers of onboard passenger 119
+147
+after
+numbers of remaining passenger 504
+numbers of onboard passenger 266
+************* False
+reward: -0.10016764459346186
+station: 2
+train: 4
+[0, 780]
+max boarding passengers: 892.0
+before
+waiging passengers: 462
+numbers of onboard passenger 208
+142
+after
+numbers of remaining passenger 320
+numbers of onboard passenger 350
+************* False
+reward: -0.09454113924050633
+station: 3
+train: 4
+[0, 980]
+max boarding passengers: 835.0
+before
+waiging passengers: 31
+numbers of onboard passenger 235
+26
+after
+numbers of remaining passenger 5
+numbers of onboard passenger 261
+************* False
+reward: -0.09357870007830854
+station: 4
+train: 4
+[0, 1180]
+max boarding passengers: 812.0
+before
+waiging passengers: 0
+numbers of onboard passenger 123
+0
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 123
+in the first staition
+waiging passengers: 474
+numbers of onboard passengers: 143
+************* False
+reward: -0.09357870007830854
+station: 1
+train: 5
+[0, 700]
+max boarding passengers: 1019.0
+before
+waiging passengers: 504
+numbers of onboard passenger 112
+143
+after
+numbers of remaining passenger 361
+numbers of onboard passenger 255
+************* False
+reward: -0.09415492957746478
+station: 2
+train: 5
+[0, 910]
+max boarding passengers: 879.0
+before
+waiging passengers: 320
+numbers of onboard passenger 184
+166
+after
+numbers of remaining passenger 154
+numbers of onboard passenger 350
+************* False
+reward: -0.0795076513639388
+station: 3
+train: 5
+[0, 1110]
+max boarding passengers: 830.0
+before
+waiging passengers: 5
+numbers of onboard passenger 230
+5
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 235
+************* False
+reward: -0.07937562271670541
+station: 4
+train: 5
+[0, 1310]
+max boarding passengers: 828.0
+before
+waiging passengers: 0
+numbers of onboard passenger 113
+0
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 113
+************* True
+{0: [0, 100, 250, 440, 620, 800], 1: [120, 220, 400, 580, 760, 940], 2: [240, 340, 520, 700, 880, 1060], 3: [360, 460, 640, 840, 1020, 1170], 4: [480, 580, 780, 980, 1180, 1380], 5: [600, 700, 910, 1110, 1310, None]}
+{0: [0, 150, 340, 520, 700, 800], 1: [120, 300, 480, 660, 840, 940], 2: [240, 420, 600, 780, 960, 1060], 3: [360, 540, 740, 920, 1070, 1170], 4: [480, 680, 880, 1080, 1280, 1380], 5: [600, 810, 1010, 1210, 1410, None]}
+reward: -0.7016256227167054
+96
+96
+Episode infos:
+Total Reward: -0.7016256227167054
+station: 1
+train: 0
+[0, 100]
+max boarding passengers: 450.0
+before
+waiging passengers: 129
+numbers of onboard passenger 0
+129
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 129
+************* False
+reward: 0.0
+station: 2
+train: 0
+[0, 250]
+max boarding passengers: 720.0
+before
+waiging passengers: 293
+numbers of onboard passenger 99
+251
+after
+numbers of remaining passenger 42
+numbers of onboard passenger 350
+************* False
+reward: -0.07368421052631578
+station: 3
+train: 0
+[0, 430]
+max boarding passengers: 635.0
+before
+waiging passengers: 96
+numbers of onboard passenger 235
+96
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 331
+************* False
+reward: -0.1638655462184874
+station: 4
+train: 0
+[0, 610]
+max boarding passengers: 571.0
+before
+waiging passengers: 126
+numbers of onboard passenger 152
+126
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 278
+in the first staition
+waiging passengers: 580
+numbers of onboard passengers: 139
+************* False
+reward: -0.37375415282392027
+station: 1
+train: 1
+[0, 220]
+max boarding passengers: 726.0
+before
+waiging passengers: 609
+numbers of onboard passenger 115
+144
+after
+numbers of remaining passenger 465
+numbers of onboard passenger 259
+************* False
+reward: -0.2542372881355932
+station: 2
+train: 1
+[0, 400]
+max boarding passengers: 688.0
+before
+waiging passengers: 481
+numbers of onboard passenger 197
+153
+after
+numbers of remaining passenger 328
+numbers of onboard passenger 350
+************* False
+reward: -0.21676300578034682
+station: 3
+train: 1
+[0, 580]
+max boarding passengers: 647.0
+before
+waiging passengers: 36
+numbers of onboard passenger 247
+33
+after
+numbers of remaining passenger 3
+numbers of onboard passenger 280
+************* False
+reward: -0.21008403361344538
+station: 4
+train: 1
+[0, 760]
+max boarding passengers: 614.0
+before
+waiging passengers: 24
+numbers of onboard passenger 144
+24
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 168
+in the first staition
+waiging passengers: 590
+numbers of onboard passengers: 138
+************* False
+reward: -0.2054794520547945
+station: 1
+train: 2
+[0, 340]
+max boarding passengers: 725.0
+before
+waiging passengers: 661
+numbers of onboard passenger 113
+151
+after
+numbers of remaining passenger 510
+numbers of onboard passenger 264
+************* False
+reward: -0.16257225433526012
+station: 2
+train: 2
+[0, 520]
+max boarding passengers: 579.0
+before
+waiging passengers: 499
+numbers of onboard passenger 193
+157
+after
+numbers of remaining passenger 342
+numbers of onboard passenger 350
+************* False
+reward: -0.15600908500973396
+station: 3
+train: 2
+[0, 690]
+max boarding passengers: 630.0
+before
+waiging passengers: 32
+numbers of onboard passenger 230
+20
+after
+numbers of remaining passenger 12
+numbers of onboard passenger 250
+************* False
+reward: -0.15913837283792442
+station: 4
+train: 2
+[0, 870]
+max boarding passengers: 632.0
+before
+waiging passengers: 22
+numbers of onboard passenger 132
+22
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 154
+in the first staition
+waiging passengers: 603
+numbers of onboard passengers: 139
+************* False
+reward: -0.14213518635502212
+station: 1
+train: 3
+[0, 460]
+max boarding passengers: 522.0
+before
+waiging passengers: 635
+numbers of onboard passenger 111
+137
+after
+numbers of remaining passenger 498
+numbers of onboard passenger 248
+************* False
+reward: -0.12903281334050565
+station: 2
+train: 3
+[0, 620]
+max boarding passengers: 867.0
+before
+waiging passengers: 491
+numbers of onboard passenger 165
+178
+after
+numbers of remaining passenger 313
+numbers of onboard passenger 343
+************* False
+reward: -0.11045655375552282
+station: 3
+train: 3
+[0, 820]
+max boarding passengers: 843.0
+before
+waiging passengers: 33
+numbers of onboard passenger 236
+25
+after
+numbers of remaining passenger 8
+numbers of onboard passenger 261
+************* False
+reward: -0.10911736178467507
+station: 4
+train: 3
+[0, 1020]
+max boarding passengers: 815.0
+before
+waiging passengers: 18
+numbers of onboard passenger 126
+18
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 144
+in the first staition
+waiging passengers: 617
+numbers of onboard passengers: 149
+************* False
+reward: -0.10817307692307693
+station: 1
+train: 4
+[0, 580]
+max boarding passengers: 920.0
+before
+waiging passengers: 651
+numbers of onboard passenger 119
+147
+after
+numbers of remaining passenger 504
+numbers of onboard passenger 266
+************* False
+reward: -0.0946969696969697
+station: 2
+train: 4
+[0, 780]
+max boarding passengers: 892.0
+before
+waiging passengers: 469
+numbers of onboard passenger 208
+142
+after
+numbers of remaining passenger 327
+numbers of onboard passenger 350
+************* False
+reward: -0.08935663224781573
+station: 3
+train: 4
+[0, 980]
+max boarding passengers: 835.0
+before
+waiging passengers: 34
+numbers of onboard passenger 235
+29
+after
+numbers of remaining passenger 5
+numbers of onboard passenger 264
+************* False
+reward: -0.08833922261484099
+station: 4
+train: 4
+[0, 1180]
+max boarding passengers: 813.0
+before
+waiging passengers: 0
+numbers of onboard passenger 127
+0
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 127
+in the first staition
+waiging passengers: 474
+numbers of onboard passengers: 143
+************* False
+reward: -0.08833922261484099
+station: 1
+train: 5
+[0, 700]
+max boarding passengers: 1019.0
+before
+waiging passengers: 504
+numbers of onboard passenger 112
+143
+after
+numbers of remaining passenger 361
+numbers of onboard passenger 255
+************* False
+reward: -0.08942110836569007
+station: 2
+train: 5
+[0, 910]
+max boarding passengers: 879.0
+before
+waiging passengers: 327
+numbers of onboard passenger 184
+166
+after
+numbers of remaining passenger 161
+numbers of onboard passenger 350
+************* False
+reward: -0.07502500833611203
+station: 3
+train: 5
+[0, 1110]
+max boarding passengers: 831.0
+before
+waiging passengers: 5
+numbers of onboard passenger 231
+5
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 236
+************* False
+reward: -0.07490013315579228
+station: 4
+train: 5
+[0, 1310]
+max boarding passengers: 826.0
+before
+waiging passengers: 0
+numbers of onboard passenger 112
+0
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 112
+************* True
+{0: [0, 100, 250, 430, 610, 790], 1: [120, 220, 400, 580, 760, 940], 2: [240, 340, 520, 690, 870, 1050], 3: [360, 460, 620, 820, 1020, 1220], 4: [480, 580, 780, 980, 1180, 1380], 5: [600, 700, 910, 1110, 1310, None]}
+{0: [0, 150, 330, 510, 690, 790], 1: [120, 300, 480, 660, 840, 940], 2: [240, 420, 590, 770, 950, 1050], 3: [360, 520, 720, 920, 1120, 1220], 4: [480, 680, 880, 1080, 1280, 1380], 5: [600, 810, 1010, 1210, 1410, None]}
+reward: -0.6989001331557922
+120
+120
+Episode infos:
+Total Reward: -0.6989001331557922
+station: 1
+train: 0
+[0, 100]
+max boarding passengers: 650.0
+before
+waiging passengers: 129
+numbers of onboard passenger 0
+129
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 129
+************* False
+reward: 0.0
+station: 2
+train: 0
+[0, 270]
+max boarding passengers: 120.0
+before
+waiging passengers: 322
+numbers of onboard passenger 99
+120
+after
+numbers of remaining passenger 202
+numbers of onboard passenger 219
+************* False
+reward: -0.20080321285140562
+station: 3
+train: 0
+[0, 390]
+max boarding passengers: 675.0
+before
+waiging passengers: 91
+numbers of onboard passenger 144
+91
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 235
+************* False
+reward: -0.2676470588235294
+station: 4
+train: 0
+[0, 570]
+max boarding passengers: 620.0
+before
+waiging passengers: 120
+numbers of onboard passenger 105
+120
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 225
+in the first staition
+waiging passengers: 524
+numbers of onboard passengers: 139
+************* False
+reward: -0.47391304347826085
+station: 1
+train: 1
+[0, 220]
+max boarding passengers: 726.0
+before
+waiging passengers: 568
+numbers of onboard passenger 115
+144
+after
+numbers of remaining passenger 424
+numbers of onboard passenger 259
+************* False
+reward: -0.2934051144010767
+station: 2
+train: 1
+[0, 400]
+max boarding passengers: 688.0
+before
+waiging passengers: 569
+numbers of onboard passenger 197
+153
+after
+numbers of remaining passenger 416
+numbers of onboard passenger 350
+************* False
+reward: -0.3404017857142857
+station: 3
+train: 1
+[0, 580]
+max boarding passengers: 646.0
+before
+waiging passengers: 38
+numbers of onboard passenger 246
+38
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 284
+************* False
+reward: -0.3265524625267666
+station: 4
+train: 1
+[0, 760]
+max boarding passengers: 605.0
+before
+waiging passengers: 30
+numbers of onboard passenger 139
+30
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 169
+in the first staition
+waiging passengers: 590
+numbers of onboard passengers: 138
+************* False
+reward: -0.3163900414937759
+station: 1
+train: 2
+[0, 340]
+max boarding passengers: 1425.0
+before
+waiging passengers: 661
+numbers of onboard passenger 113
+151
+after
+numbers of remaining passenger 510
+numbers of onboard passenger 264
+************* False
+reward: -0.24341580207501995
+station: 2
+train: 2
+[0, 590]
+max boarding passengers: 79.0
+before
+waiging passengers: 630
+numbers of onboard passenger 193
+79
+after
+numbers of remaining passenger 551
+numbers of onboard passenger 272
+************* False
+reward: -0.2882882882882883
+station: 3
+train: 2
+[0, 710]
+max boarding passengers: 452.0
+before
+waiging passengers: 32
+numbers of onboard passenger 174
+24
+after
+numbers of remaining passenger 8
+numbers of onboard passenger 198
+************* False
+reward: -0.2911858407079646
+station: 4
+train: 2
+[0, 870]
+max boarding passengers: 51.99999999999999
+before
+waiging passengers: 22
+numbers of onboard passenger 100
+22
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 122
+in the first staition
+waiging passengers: 603
+numbers of onboard passengers: 139
+************* False
+reward: -0.27866473149492016
+station: 1
+train: 3
+[0, 460]
+max boarding passengers: 922.0
+before
+waiging passengers: 635
+numbers of onboard passenger 111
+137
+after
+numbers of remaining passenger 498
+numbers of onboard passenger 248
+************* False
+reward: -0.23216444981862153
+station: 2
+train: 3
+[0, 660]
+max boarding passengers: 867.0
+before
+waiging passengers: 700
+numbers of onboard passenger 165
+185
+after
+numbers of remaining passenger 515
+numbers of onboard passenger 350
+************* False
+reward: -0.3012506797172376
+station: 3
+train: 3
+[0, 860]
+max boarding passengers: 844.0
+before
+waiging passengers: 29
+numbers of onboard passenger 244
+25
+after
+numbers of remaining passenger 4
+numbers of onboard passenger 269
+************* False
+reward: -0.29721030042918456
+station: 4
+train: 3
+[0, 1060]
+max boarding passengers: 823.0
+before
+waiging passengers: 18
+numbers of onboard passenger 142
+18
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 160
+in the first staition
+waiging passengers: 617
+numbers of onboard passengers: 149
+************* False
+reward: -0.29436769394261425
+station: 1
+train: 4
+[0, 580]
+max boarding passengers: 1020.0
+before
+waiging passengers: 651
+numbers of onboard passenger 119
+147
+after
+numbers of remaining passenger 504
+numbers of onboard passenger 266
+************* False
+reward: -0.2643617998163453
+station: 2
+train: 4
+[0, 790]
+max boarding passengers: 892.0
+before
+waiging passengers: 671
+numbers of onboard passenger 208
+142
+after
+numbers of remaining passenger 529
+numbers of onboard passenger 350
+************* False
+reward: -0.3
+station: 3
+train: 4
+[0, 990]
+max boarding passengers: 834.0
+before
+waiging passengers: 30
+numbers of onboard passenger 234
+27
+after
+numbers of remaining passenger 3
+numbers of onboard passenger 261
+************* False
+reward: -0.29654878568385173
+station: 4
+train: 4
+[0, 1190]
+max boarding passengers: 811.0
+before
+waiging passengers: 0
+numbers of onboard passenger 122
+0
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 122
+in the first staition
+waiging passengers: 474
+numbers of onboard passengers: 143
+************* False
+reward: -0.29654878568385173
+station: 1
+train: 5
+[0, 700]
+max boarding passengers: 1119.0
+before
+waiging passengers: 504
+numbers of onboard passenger 112
+143
+after
+numbers of remaining passenger 361
+numbers of onboard passenger 255
+************* False
+reward: -0.28433725788074443
+station: 2
+train: 5
+[0, 920]
+max boarding passengers: 879.0
+before
+waiging passengers: 529
+numbers of onboard passenger 184
+166
+after
+numbers of remaining passenger 363
+numbers of onboard passenger 350
+************* False
+reward: -0.2979635584137192
+station: 3
+train: 5
+[0, 1120]
+max boarding passengers: 847.0
+before
+waiging passengers: 3
+numbers of onboard passenger 247
+3
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 250
+************* False
+reward: -0.29764453961456105
+station: 4
+train: 5
+[0, 1320]
+max boarding passengers: 829.0
+before
+waiging passengers: 0
+numbers of onboard passenger 129
+0
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 129
+************* True
+{0: [0, 100, 270, 390, 570, 750], 1: [120, 220, 400, 580, 760, 940], 2: [240, 340, 590, 710, 870, 990], 3: [360, 460, 660, 860, 1060, 1260], 4: [480, 580, 790, 990, 1190, 1390], 5: [600, 700, 920, 1120, 1320, None]}
+{0: [0, 170, 290, 470, 650, 750], 1: [120, 300, 480, 660, 840, 940], 2: [240, 490, 610, 770, 890, 990], 3: [360, 560, 760, 960, 1160, 1260], 4: [480, 690, 890, 1090, 1290, 1390], 5: [600, 820, 1020, 1220, 1420, None]}
+reward: -1.151394539614561
+144
+144
+Episode infos:
+Total Reward: -1.151394539614561
+station: 1
+train: 0
+[0, 100]
+max boarding passengers: 150.0
+before
+waiging passengers: 129
+numbers of onboard passenger 0
+129
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 129
+************* False
+reward: 0.0
+station: 2
+train: 0
+[0, 220]
+max boarding passengers: 720.0
+before
+waiging passengers: 258
+numbers of onboard passenger 99
+251
+after
+numbers of remaining passenger 7
+numbers of onboard passenger 350
+************* False
+reward: 0.0
+station: 3
+train: 0
+[0, 400]
+max boarding passengers: 635.0
+before
+waiging passengers: 91
+numbers of onboard passenger 235
+91
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 326
+************* False
+reward: -0.09129511677282377
+station: 4
+train: 0
+[0, 580]
+max boarding passengers: 573.0
+before
+waiging passengers: 120
+numbers of onboard passenger 149
+120
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 269
+in the first staition
+waiging passengers: 543
+numbers of onboard passengers: 139
+************* False
+reward: -0.2961082910321489
+station: 1
+train: 1
+[0, 220]
+max boarding passengers: 1426.0
+before
+waiging passengers: 579
+numbers of onboard passenger 115
+144
+after
+numbers of remaining passenger 435
+numbers of onboard passenger 259
+************* False
+reward: -0.20022883295194507
+station: 2
+train: 1
+[0, 470]
+max boarding passengers: 688.0
+before
+waiging passengers: 445
+numbers of onboard passenger 197
+153
+after
+numbers of remaining passenger 292
+numbers of onboard passenger 350
+************* False
+reward: -0.1976630963972736
+station: 3
+train: 1
+[0, 650]
+max boarding passengers: 647.0
+before
+waiging passengers: 49
+numbers of onboard passenger 247
+49
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 296
+************* False
+reward: -0.19052044609665428
+station: 4
+train: 1
+[0, 830]
+max boarding passengers: 606.0
+before
+waiging passengers: 45
+numbers of onboard passenger 152
+45
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 197
+in the first staition
+waiging passengers: 684
+numbers of onboard passengers: 138
+************* False
+reward: -0.1864406779661017
+station: 1
+train: 2
+[0, 340]
+max boarding passengers: 1325.0
+before
+waiging passengers: 728
+numbers of onboard passenger 113
+151
+after
+numbers of remaining passenger 577
+numbers of onboard passenger 264
+************* False
+reward: -0.1962269503546099
+station: 2
+train: 2
+[0, 580]
+max boarding passengers: 679.0
+before
+waiging passengers: 594
+numbers of onboard passenger 193
+157
+after
+numbers of remaining passenger 437
+numbers of onboard passenger 350
+************* False
+reward: -0.1499680918953414
+station: 3
+train: 2
+[0, 760]
+max boarding passengers: 630.0
+before
+waiging passengers: 36
+numbers of onboard passenger 230
+21
+after
+numbers of remaining passenger 15
+numbers of onboard passenger 251
+************* False
+reward: -0.14798488664987405
+station: 4
+train: 2
+[0, 940]
+max boarding passengers: 630.0
+before
+waiging passengers: 18
+numbers of onboard passenger 131
+18
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 149
+in the first staition
+waiging passengers: 682
+numbers of onboard passengers: 139
+************* False
+reward: -0.14632627646326277
+station: 1
+train: 3
+[0, 460]
+max boarding passengers: 1222.0
+before
+waiging passengers: 714
+numbers of onboard passenger 111
+137
+after
+numbers of remaining passenger 577
+numbers of onboard passenger 248
+************* False
+reward: -0.1548671625929862
+station: 2
+train: 3
+[0, 690]
+max boarding passengers: 867.0
+before
+waiging passengers: 572
+numbers of onboard passenger 165
+185
+after
+numbers of remaining passenger 387
+numbers of onboard passenger 350
+************* False
+reward: -0.11369134010643445
+station: 3
+train: 3
+[0, 890]
+max boarding passengers: 840.0
+before
+waiging passengers: 38
+numbers of onboard passenger 240
+27
+after
+numbers of remaining passenger 11
+numbers of onboard passenger 267
+************* False
+reward: -0.112225405921681
+station: 4
+train: 3
+[0, 1090]
+max boarding passengers: 814.0
+before
+waiging passengers: 7
+numbers of onboard passenger 131
+7
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 138
+in the first staition
+waiging passengers: 617
+numbers of onboard passengers: 149
+************* False
+reward: -0.11185149928605426
+station: 1
+train: 4
+[0, 580]
+max boarding passengers: 1320.0
+before
+waiging passengers: 651
+numbers of onboard passenger 119
+147
+after
+numbers of remaining passenger 504
+numbers of onboard passenger 266
+************* False
+reward: -0.1380392156862745
+station: 2
+train: 4
+[0, 820]
+max boarding passengers: 892.0
+before
+waiging passengers: 462
+numbers of onboard passenger 208
+142
+after
+numbers of remaining passenger 320
+numbers of onboard passenger 350
+************* False
+reward: -0.09255612445844821
+station: 3
+train: 4
+[0, 1020]
+max boarding passengers: 835.0
+before
+waiging passengers: 20
+numbers of onboard passenger 235
+20
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 255
+************* False
+reward: -0.09183274716686206
+station: 4
+train: 4
+[0, 1220]
+max boarding passengers: 814.0
+before
+waiging passengers: 0
+numbers of onboard passenger 119
+0
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 119
+in the first staition
+waiging passengers: 474
+numbers of onboard passengers: 143
+************* False
+reward: -0.09183274716686206
+station: 1
+train: 5
+[0, 700]
+max boarding passengers: 1419.0
+before
+waiging passengers: 504
+numbers of onboard passenger 112
+143
+after
+numbers of remaining passenger 361
+numbers of onboard passenger 255
+************* False
+reward: -0.13260105448154658
+station: 2
+train: 5
+[0, 950]
+max boarding passengers: 879.0
+before
+waiging passengers: 320
+numbers of onboard passenger 184
+166
+after
+numbers of remaining passenger 154
+numbers of onboard passenger 350
+************* False
+reward: -0.07804716041182332
+station: 3
+train: 5
+[0, 1150]
+max boarding passengers: 830.0
+before
+waiging passengers: 0
+numbers of onboard passenger 230
+0
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 230
+************* False
+reward: -0.07804716041182332
+station: 4
+train: 5
+[0, 1350]
+max boarding passengers: 832.0
+before
+waiging passengers: 0
+numbers of onboard passenger 112
+0
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 112
+************* True
+{0: [0, 100, 220, 400, 580, 760], 1: [120, 220, 470, 650, 830, 1010], 2: [240, 340, 580, 760, 940, 1120], 3: [360, 460, 690, 890, 1090, 1290], 4: [480, 580, 820, 1020, 1220, 1420], 5: [600, 700, 950, 1150, 1350, None]}
+{0: [0, 120, 300, 480, 660, 760], 1: [120, 370, 550, 730, 910, 1010], 2: [240, 480, 660, 840, 1020, 1120], 3: [360, 590, 790, 990, 1190, 1290], 4: [480, 720, 920, 1120, 1320, 1420], 5: [600, 850, 1050, 1250, 1450, None]}
+reward: -0.8445471604118233
+168
+168
+Episode infos:
+Total Reward: -0.8445471604118233
+station: 1
+train: 0
+[0, 100]
+max boarding passengers: 950.0
+before
+waiging passengers: 129
+numbers of onboard passenger 0
+129
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 129
+************* False
+reward: 0.0
+station: 2
+train: 0
+[0, 300]
+max boarding passengers: 720.0
+before
+waiging passengers: 360
+numbers of onboard passenger 99
+251
+after
+numbers of remaining passenger 109
+numbers of onboard passenger 350
+************* False
+reward: -0.23157894736842105
+station: 3
+train: 0
+[0, 480]
+max boarding passengers: 635.0
+before
+waiging passengers: 105
+numbers of onboard passenger 235
+105
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 340
+************* False
+reward: -0.354639175257732
+station: 4
+train: 0
+[0, 660]
+max boarding passengers: 566.0
+before
+waiging passengers: 131
+numbers of onboard passenger 156
+131
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 287
+in the first staition
+waiging passengers: 634
+numbers of onboard passengers: 139
+************* False
+reward: -0.5957792207792207
+station: 1
+train: 1
+[0, 220]
+max boarding passengers: 826.0
+before
+waiging passengers: 673
+numbers of onboard passenger 115
+144
+after
+numbers of remaining passenger 529
+numbers of onboard passenger 259
+************* False
+reward: -0.4162313681868743
+station: 2
+train: 1
+[0, 410]
+max boarding passengers: 688.0
+before
+waiging passengers: 535
+numbers of onboard passenger 197
+153
+after
+numbers of remaining passenger 382
+numbers of onboard passenger 350
+************* False
+reward: -0.3488593155893536
+station: 3
+train: 1
+[0, 590]
+max boarding passengers: 647.0
+before
+waiging passengers: 38
+numbers of onboard passenger 247
+26
+after
+numbers of remaining passenger 12
+numbers of onboard passenger 273
+************* False
+reward: -0.3404452690166976
+station: 4
+train: 1
+[0, 770]
+max boarding passengers: 617.0
+before
+waiging passengers: 19
+numbers of onboard passenger 140
+19
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 159
+in the first staition
+waiging passengers: 598
+numbers of onboard passengers: 138
+************* False
+reward: -0.33454876937101186
+station: 1
+train: 2
+[0, 340]
+max boarding passengers: 725.0
+before
+waiging passengers: 670
+numbers of onboard passenger 113
+151
+after
+numbers of remaining passenger 519
+numbers of onboard passenger 264
+************* False
+reward: -0.2647907647907648
+station: 2
+train: 2
+[0, 520]
+max boarding passengers: 679.0
+before
+waiging passengers: 513
+numbers of onboard passenger 193
+157
+after
+numbers of remaining passenger 356
+numbers of onboard passenger 350
+************* False
+reward: -0.23784834737524305
+station: 3
+train: 2
+[0, 700]
+max boarding passengers: 630.0
+before
+waiging passengers: 33
+numbers of onboard passenger 230
+19
+after
+numbers of remaining passenger 14
+numbers of onboard passenger 249
+************* False
+reward: -0.234955185659411
+station: 4
+train: 2
+[0, 880]
+max boarding passengers: 634.0
+before
+waiging passengers: 23
+numbers of onboard passenger 133
+23
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 156
+in the first staition
+waiging passengers: 611
+numbers of onboard passengers: 139
+************* False
+reward: -0.23154574132492114
+station: 1
+train: 3
+[0, 460]
+max boarding passengers: 922.0
+before
+waiging passengers: 643
+numbers of onboard passenger 111
+137
+after
+numbers of remaining passenger 506
+numbers of onboard passenger 248
+************* False
+reward: -0.1972058033315422
+station: 2
+train: 3
+[0, 660]
+max boarding passengers: 867.0
+before
+waiging passengers: 502
+numbers of onboard passenger 165
+185
+after
+numbers of remaining passenger 317
+numbers of onboard passenger 350
+************* False
+reward: -0.1793743890518084
+station: 3
+train: 3
+[0, 860]
+max boarding passengers: 840.0
+before
+waiging passengers: 36
+numbers of onboard passenger 240
+28
+after
+numbers of remaining passenger 8
+numbers of onboard passenger 268
+************* False
+reward: -0.17695274831243973
+station: 4
+train: 3
+[0, 1060]
+max boarding passengers: 811.0
+before
+waiging passengers: 17
+numbers of onboard passenger 129
+17
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 146
+in the first staition
+waiging passengers: 617
+numbers of onboard passengers: 149
+************* False
+reward: -0.1755141080822573
+station: 1
+train: 4
+[0, 580]
+max boarding passengers: 1020.0
+before
+waiging passengers: 651
+numbers of onboard passenger 119
+147
+after
+numbers of remaining passenger 504
+numbers of onboard passenger 266
+************* False
+reward: -0.1637494763301215
+station: 2
+train: 4
+[0, 790]
+max boarding passengers: 892.0
+before
+waiging passengers: 462
+numbers of onboard passenger 208
+142
+after
+numbers of remaining passenger 320
+numbers of onboard passenger 350
+************* False
+reward: -0.14511664689600634
+station: 3
+train: 4
+[0, 990]
+max boarding passengers: 835.0
+before
+waiging passengers: 30
+numbers of onboard passenger 235
+27
+after
+numbers of remaining passenger 3
+numbers of onboard passenger 262
+************* False
+reward: -0.14358372456964005
+station: 4
+train: 4
+[0, 1190]
+max boarding passengers: 811.0
+before
+waiging passengers: 0
+numbers of onboard passenger 123
+0
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 123
+in the first staition
+waiging passengers: 474
+numbers of onboard passengers: 143
+************* False
+reward: -0.14358372456964005
+station: 1
+train: 5
+[0, 700]
+max boarding passengers: 1119.0
+before
+waiging passengers: 504
+numbers of onboard passenger 112
+143
+after
+numbers of remaining passenger 361
+numbers of onboard passenger 255
+************* False
+reward: -0.1491344123856439
+station: 2
+train: 5
+[0, 920]
+max boarding passengers: 879.0
+before
+waiging passengers: 320
+numbers of onboard passenger 184
+166
+after
+numbers of remaining passenger 154
+numbers of onboard passenger 350
+************* False
+reward: -0.12200797872340426
+station: 3
+train: 5
+[0, 1120]
+max boarding passengers: 830.0
+before
+waiging passengers: 3
+numbers of onboard passenger 230
+3
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 233
+************* False
+reward: -0.12188641647293258
+station: 4
+train: 5
+[0, 1320]
+max boarding passengers: 830.0
+before
+waiging passengers: 0
+numbers of onboard passenger 113
+0
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 113
+************* True
+{0: [0, 100, 300, 480, 660, 840], 1: [120, 220, 410, 590, 770, 950], 2: [240, 340, 520, 700, 880, 1060], 3: [360, 460, 660, 860, 1060, 1260], 4: [480, 580, 790, 990, 1190, 1390], 5: [600, 700, 920, 1120, 1320, None]}
+{0: [0, 200, 380, 560, 740, 840], 1: [120, 310, 490, 670, 850, 950], 2: [240, 420, 600, 780, 960, 1060], 3: [360, 560, 760, 960, 1160, 1260], 4: [480, 690, 890, 1090, 1290, 1390], 5: [600, 820, 1020, 1220, 1420, None]}
+reward: -0.7786364164729325
+192
+192
+Episode infos:
+Total Reward: -0.7786364164729325
+station: 1
+train: 0
+[0, 100]
+max boarding passengers: 250.0
+before
+waiging passengers: 129
+numbers of onboard passenger 0
+129
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 129
+************* False
+reward: 0.0
+station: 2
+train: 0
+[0, 230]
+max boarding passengers: 720.0
+before
+waiging passengers: 267
+numbers of onboard passenger 99
+251
+after
+numbers of remaining passenger 16
+numbers of onboard passenger 350
+************* False
+reward: -0.002631578947368421
+station: 3
+train: 0
+[0, 410]
+max boarding passengers: 635.0
+before
+waiging passengers: 91
+numbers of onboard passenger 235
+91
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 326
+************* False
+reward: -0.09978768577494693
+station: 4
+train: 0
+[0, 590]
+max boarding passengers: 573.0
+before
+waiging passengers: 121
+numbers of onboard passenger 149
+121
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 270
+in the first staition
+waiging passengers: 552
+numbers of onboard passengers: 139
+************* False
+reward: -0.30743243243243246
+station: 1
+train: 1
+[0, 220]
+max boarding passengers: 726.0
+before
+waiging passengers: 590
+numbers of onboard passenger 115
+144
+after
+numbers of remaining passenger 446
+numbers of onboard passenger 259
+************* False
+reward: -0.208
+station: 2
+train: 1
+[0, 400]
+max boarding passengers: 688.0
+before
+waiging passengers: 459
+numbers of onboard passenger 197
+153
+after
+numbers of remaining passenger 306
+numbers of onboard passenger 350
+************* False
+reward: -0.17704280155642024
+station: 3
+train: 1
+[0, 580]
+max boarding passengers: 647.0
+before
+waiging passengers: 40
+numbers of onboard passenger 247
+38
+after
+numbers of remaining passenger 2
+numbers of onboard passenger 285
+************* False
+reward: -0.17073170731707318
+station: 4
+train: 1
+[0, 760]
+max boarding passengers: 612.0
+before
+waiging passengers: 29
+numbers of onboard passenger 147
+29
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 176
+in the first staition
+waiging passengers: 590
+numbers of onboard passengers: 138
+************* False
+reward: -0.16621004566210046
+station: 1
+train: 2
+[0, 340]
+max boarding passengers: 725.0
+before
+waiging passengers: 661
+numbers of onboard passenger 113
+151
+after
+numbers of remaining passenger 510
+numbers of onboard passenger 264
+************* False
+reward: -0.1315028901734104
+station: 2
+train: 2
+[0, 520]
+max boarding passengers: 679.0
+before
+waiging passengers: 499
+numbers of onboard passenger 193
+157
+after
+numbers of remaining passenger 342
+numbers of onboard passenger 350
+************* False
+reward: -0.11810512654120701
+station: 3
+train: 2
+[0, 700]
+max boarding passengers: 630.0
+before
+waiging passengers: 32
+numbers of onboard passenger 230
+21
+after
+numbers of remaining passenger 11
+numbers of onboard passenger 251
+************* False
+reward: -0.11651728553137004
+station: 4
+train: 2
+[0, 880]
+max boarding passengers: 632.0
+before
+waiging passengers: 23
+numbers of onboard passenger 133
+23
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 156
+in the first staition
+waiging passengers: 611
+numbers of onboard passengers: 139
+************* False
+reward: -0.11482649842271293
+station: 1
+train: 3
+[0, 460]
+max boarding passengers: 922.0
+before
+waiging passengers: 643
+numbers of onboard passenger 111
+137
+after
+numbers of remaining passenger 506
+numbers of onboard passenger 248
+************* False
+reward: -0.09779688339602365
+station: 2
+train: 3
+[0, 660]
+max boarding passengers: 867.0
+before
+waiging passengers: 502
+numbers of onboard passenger 165
+185
+after
+numbers of remaining passenger 317
+numbers of onboard passenger 350
+************* False
+reward: -0.08895405669599218
+station: 3
+train: 3
+[0, 860]
+max boarding passengers: 840.0
+before
+waiging passengers: 36
+numbers of onboard passenger 240
+28
+after
+numbers of remaining passenger 8
+numbers of onboard passenger 268
+************* False
+reward: -0.08775313404050145
+station: 4
+train: 3
+[0, 1060]
+max boarding passengers: 811.0
+before
+waiging passengers: 17
+numbers of onboard passenger 129
+17
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 146
+in the first staition
+waiging passengers: 617
+numbers of onboard passengers: 149
+************* False
+reward: -0.08703969392635102
+station: 1
+train: 4
+[0, 580]
+max boarding passengers: 1020.0
+before
+waiging passengers: 651
+numbers of onboard passenger 119
+147
+after
+numbers of remaining passenger 504
+numbers of onboard passenger 266
+************* False
+reward: -0.08624633431085044
+station: 2
+train: 4
+[0, 790]
+max boarding passengers: 892.0
+before
+waiging passengers: 462
+numbers of onboard passenger 208
+142
+after
+numbers of remaining passenger 320
+numbers of onboard passenger 350
+************* False
+reward: -0.0719652036378015
+station: 3
+train: 4
+[0, 990]
+max boarding passengers: 835.0
+before
+waiging passengers: 30
+numbers of onboard passenger 235
+27
+after
+numbers of remaining passenger 3
+numbers of onboard passenger 262
+************* False
+reward: -0.07120500782472614
+station: 4
+train: 4
+[0, 1190]
+max boarding passengers: 811.0
+before
+waiging passengers: 0
+numbers of onboard passenger 123
+0
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 123
+in the first staition
+waiging passengers: 474
+numbers of onboard passengers: 143
+************* False
+reward: -0.07120500782472614
+station: 1
+train: 5
+[0, 700]
+max boarding passengers: 1119.0
+before
+waiging passengers: 504
+numbers of onboard passenger 112
+143
+after
+numbers of remaining passenger 361
+numbers of onboard passenger 255
+************* False
+reward: -0.08403940886699508
+station: 2
+train: 5
+[0, 920]
+max boarding passengers: 879.0
+before
+waiging passengers: 320
+numbers of onboard passenger 184
+166
+after
+numbers of remaining passenger 154
+numbers of onboard passenger 350
+************* False
+reward: -0.06050531914893617
+station: 3
+train: 5
+[0, 1120]
+max boarding passengers: 830.0
+before
+waiging passengers: 3
+numbers of onboard passenger 230
+3
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 233
+************* False
+reward: -0.060445034872135504
+station: 4
+train: 5
+[0, 1320]
+max boarding passengers: 830.0
+before
+waiging passengers: 0
+numbers of onboard passenger 113
+0
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 113
+************* True
+{0: [0, 100, 230, 410, 590, 770], 1: [120, 220, 400, 580, 760, 940], 2: [240, 340, 520, 700, 880, 1060], 3: [360, 460, 660, 860, 1060, 1260], 4: [480, 580, 790, 990, 1190, 1390], 5: [600, 700, 920, 1120, 1320, None]}
+{0: [0, 130, 310, 490, 670, 770], 1: [120, 300, 480, 660, 840, 940], 2: [240, 420, 600, 780, 960, 1060], 3: [360, 560, 760, 960, 1160, 1260], 4: [480, 690, 890, 1090, 1290, 1390], 5: [600, 820, 1020, 1220, 1420, None]}
+reward: -0.7171950348721354
+216
+216
+Episode infos:
+Total Reward: -0.7171950348721354
+station: 1
+train: 0
+[0, 100]
+max boarding passengers: 1150.0
+before
+waiging passengers: 129
+numbers of onboard passenger 0
+129
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 129
+************* False
+reward: 0.0
+station: 2
+train: 0
+[0, 320]
+max boarding passengers: 820.0
+before
+waiging passengers: 385
+numbers of onboard passenger 99
+251
+after
+numbers of remaining passenger 134
+numbers of onboard passenger 350
+************* False
+reward: -0.29210526315789476
+station: 3
+train: 0
+[0, 510]
+max boarding passengers: 635.0
+before
+waiging passengers: 114
+numbers of onboard passenger 235
+114
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 349
+************* False
+reward: -0.4777327935222672
+station: 4
+train: 0
+[0, 690]
+max boarding passengers: 559.0
+before
+waiging passengers: 133
+numbers of onboard passenger 158
+133
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 291
+in the first staition
+waiging passengers: 666
+numbers of onboard passengers: 139
+************* False
+reward: -0.7368421052631579
+station: 1
+train: 1
+[0, 220]
+max boarding passengers: 1126.0
+before
+waiging passengers: 711
+numbers of onboard passenger 115
+144
+after
+numbers of remaining passenger 567
+numbers of onboard passenger 259
+************* False
+reward: -0.5396923076923077
+station: 2
+train: 1
+[0, 440]
+max boarding passengers: 688.0
+before
+waiging passengers: 566
+numbers of onboard passenger 197
+153
+after
+numbers of remaining passenger 413
+numbers of onboard passenger 350
+************* False
+reward: -0.43461900282220134
+station: 3
+train: 1
+[0, 620]
+max boarding passengers: 647.0
+before
+waiging passengers: 35
+numbers of onboard passenger 247
+19
+after
+numbers of remaining passenger 16
+numbers of onboard passenger 266
+************* False
+reward: -0.4269870609981516
+station: 4
+train: 1
+[0, 800]
+max boarding passengers: 624.0
+before
+waiging passengers: 29
+numbers of onboard passenger 140
+29
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 169
+in the first staition
+waiging passengers: 629
+numbers of onboard passengers: 138
+************* False
+reward: -0.4158415841584158
+station: 1
+train: 2
+[0, 340]
+max boarding passengers: 1025.0
+before
+waiging passengers: 699
+numbers of onboard passenger 113
+151
+after
+numbers of remaining passenger 548
+numbers of onboard passenger 264
+************* False
+reward: -0.35400000000000004
+station: 2
+train: 2
+[0, 550]
+max boarding passengers: 679.0
+before
+waiging passengers: 555
+numbers of onboard passenger 193
+157
+after
+numbers of remaining passenger 398
+numbers of onboard passenger 350
+************* False
+reward: -0.29672447013487474
+station: 3
+train: 2
+[0, 730]
+max boarding passengers: 630.0
+before
+waiging passengers: 39
+numbers of onboard passenger 230
+22
+after
+numbers of remaining passenger 17
+numbers of onboard passenger 252
+************* False
+reward: -0.29259024699176694
+station: 4
+train: 2
+[0, 910]
+max boarding passengers: 631.0
+before
+waiging passengers: 16
+numbers of onboard passenger 133
+16
+after
+numbers of remaining passenger 0
+numbers of onboard passenger 149
+in the first staition
+waiging passengers: 650
+numbers of onboard passengers: 139
+************* False
+reward: -0.2896551724137931

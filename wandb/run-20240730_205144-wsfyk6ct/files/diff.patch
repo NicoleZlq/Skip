@@ -1,0 +1,65 @@
+diff --git a/__pycache__/ca2c.cpython-310.pyc b/__pycache__/ca2c.cpython-310.pyc
+index 9acff31..6132d9a 100644
+Binary files a/__pycache__/ca2c.cpython-310.pyc and b/__pycache__/ca2c.cpython-310.pyc differ
+diff --git a/ca2c.py b/ca2c.py
+index 6ff230d..e22b273 100644
+--- a/ca2c.py
++++ b/ca2c.py
+@@ -134,6 +134,12 @@ class CA2C(object):
+             self.add(s, a, r, s_, done)
+             
+             if self.global_step >= self.learning_starts:
++                if done :
++                    dw = True
++                else:
++                    dw = False
++
++                self.update(s, a, r, s_, dw)
+                 self.linearly_decaying_value(self.initial_epsilon,
+                                                 self.epsilon_decay_steps,
+                                                 self.global_step,
+@@ -345,7 +351,7 @@ class CA2C(object):
+ 
+ 
+ 
+-    def abc(self, s, a, r, s_, dw):
++    def update(self, s, a, r, s_, dw):
+         s = torch.unsqueeze(torch.tensor(s, dtype=torch.float), 0)
+         s_ = torch.unsqueeze(torch.tensor(s_, dtype=torch.float), 0)
+         v_s = self.critic(s).flatten()  # v(s)
+@@ -370,6 +376,16 @@ class CA2C(object):
+         self.I *= self.GAMMA  # Represent the gamma^t in th policy gradient theorem
+         
+         
++        if self.log and self.global_step % 100 == 0:
++            wandb.log(
++                    {
++                        "losses/critic_loss": critic_loss,
++                        "metrics/epsilon": self.epsilon,
++                        "losses/critic_loss": actor_loss,
++                        "global_step": self.global_step,
++                    },)
++            
++        
+     def register_additional_config(self, conf: Dict = {}) -> None:
+         """Registers additional config parameters to wandb. For example when calling train().
+ 
+diff --git a/policy_constraint.py b/policy_constraint.py
+index 2f6a662..67c370d 100644
+--- a/policy_constraint.py
++++ b/policy_constraint.py
+@@ -57,11 +57,11 @@ def main(args):
+                  initial_epsilon=1.0,
+                  final_epsilon=0.01,
+                  seed=984,
+-                epsilon_decay_steps=10000,
++                epsilon_decay_steps=2000,
+                 batch_size=8,
+-                learning_starts=1000,
++                learning_starts=100,
+                 buffer_size=int(1e5),
+-                 log=False,
++                 log=True,
+                  project_name="skip",
+                 experiment_name="RCPO",)
+ 

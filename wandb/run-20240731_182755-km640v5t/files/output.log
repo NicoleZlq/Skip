@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "e:\anaconda\Lib\site-packages\gymnasium\envs\classic_control\policy_constraint.py", line 113, in <module>
+    main(args)
+  File "e:\anaconda\Lib\site-packages\gymnasium\envs\classic_control\policy_constraint.py", line 68, in main
+    model.learn(int(1e5), env, train=True, critic_path=None, actor_path=None)
+  File "e:\anaconda\Lib\site-packages\gymnasium\envs\classic_control\ca2c.py", line 130, in learn
+    a = self.choose_action(s, deterministic=False)
+  File "e:\anaconda\Lib\site-packages\gymnasium\envs\classic_control\ca2c.py", line 95, in choose_action
+    prob_weights = self.actor(s).detach().numpy().flatten()  # probability distribution(numpy)
+  File "E:\anaconda\envs\skip\lib\site-packages\torch\nn\modules\module.py", line 1190, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "e:\anaconda\Lib\site-packages\gymnasium\envs\classic_control\ca2c.py", line 27, in forward
+    a_prob = F.leaky_relu(self.l2(s), dim=1)
+TypeError: leaky_relu() got an unexpected keyword argument 'dim'
