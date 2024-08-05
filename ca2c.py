@@ -23,8 +23,9 @@ class Actor(nn.Module):
         self.l2 = nn.Linear(hidden_width, action_dim)
 
     def forward(self, s):
-        s = F.relu(self.l1(s))
-        a_prob = F.leaky_relu(self.l2(s), dim=1)
+        s = F.relu6(self.l1(s))
+        s = F.relu6(self.l2(s))
+        a_prob = F.softmax(s, dim=1)
         return a_prob
 
 
@@ -34,9 +35,8 @@ class Critic(nn.Module):
         super(Critic, self).__init__()
         self.l1 = nn.Linear(state_dim, hidden_width)
         self.l2 = nn.Linear(hidden_width, 1)
-
     def forward(self, s):
-        s = F.leaky_relu(self.l1(s))
+        s = F.relu(self.l1(s))
         v_s = self.l2(s)
         return v_s
 
@@ -48,7 +48,6 @@ class CA2C(object):
                  gamma: float = 0.99,
                  initial_epsilon: float = 0.01,
                 final_epsilon: float = 0.01,
-                learning_starts: int = 100,
                 epsilon_decay_steps: int = None,  # None == fixed epsilon
                  log: bool = True,
                  instance: str = "3",
@@ -56,6 +55,9 @@ class CA2C(object):
                  project_name: str = "CRCPO",
                 experiment_name: str = "td",
                 wandb_entity: Optional[str] = None,
+                constraint: bool = True,
+                lamb: int = 10,
+                C: int=-2
                  ):
         
         self.state_dim = env.observation_space.shape[0]
@@ -71,8 +73,11 @@ class CA2C(object):
         self.epsilon = initial_epsilon
         self.final_epsilon = final_epsilon
         self.epsilon_decay_steps = epsilon_decay_steps
-        self.learning_starts = learning_starts
         self.instance = instance
+        self.constraint = constraint
+        self.lamb = lamb
+        
+        self.C = C #the lower bound of the cost(the train is violates the constraints)
         
         self.np_random = np.random.default_rng(self.seed)
 
@@ -82,22 +87,42 @@ class CA2C(object):
         self.critic = Critic(self.state_dim, self.hidden_width)
         self.critic_optimizer = torch.optim.Adam(self.critic.parameters(), lr=self.lr)
         
+        self.target_actor =  Actor(self.state_dim, self.action_dim, self.hidden_width)
+        self.target_critic = Critic(self.state_dim, self.hidden_width)
+        
+        self.hard_update(self.target_actor,self.actor)
+        self.hard_update(self.target_critic,self.critic)
+
+        
         self.info ={}
         
         
         
         self.log = log
+        
         if log:
             self.setup_wandb(project_name, experiment_name, wandb_entity)
+            
+            
+    def hard_update(self,target, origin):
+        
+        for target_param, param in zip(target.parameters(), origin.parameters()):
+            
+            target_param.data.copy_(param.data)
 
     def choose_action(self, s, deterministic):
         s = torch.unsqueeze(torch.tensor(s, dtype=torch.float), 0)
         prob_weights = self.actor(s).detach().numpy().flatten()  # probability distribution(numpy)
         
-        if self.np_random.random() < self.epsilon:
-            a = np.random.choice(range(self.action_dim), p=prob_weights)
-        else:
+        if deterministic:
             a = np.argmax(prob_weights)
+            
+        else:
+        
+            if self.np_random.random() < self.epsilon:
+                a = np.random.choice(range(self.action_dim), p=prob_weights)
+            else:
+                a = np.argmax(prob_weights)
         return a
 
         
@@ -106,10 +131,9 @@ class CA2C(object):
         env: Optional[gym.Env] = None,
         train: bool = True,
         critic_path: str = "CRCPO",
-        actor_path: str = "CRCPO",):
-        
-        
-        
+        actor_path: str = "CRCPO",
+        deterministic: bool = False):
+
         
         """Train the agent.
             Args:
@@ -118,36 +142,52 @@ class CA2C(object):
             eval_freq: policy evaluation frequency (in number of steps). 
             """
         self.global_step = 0
+        self.train = train
         self.num_episodes = 0
         num_episodes = 0
+        self.eta_1 = 0
+        self.eta_2 = 0
         s, z = env.reset()
+        self.total_timesteps = total_timesteps
+        num_constraint = 0
+        deterministic = deterministic
         
         if not train:
-            self.critic= torch.load(critic_path)
-            self.actor = torch.load(actor_path)
-        
-        for _ in range(1, total_timesteps+1):
-            a = self.choose_action(s, deterministic=False)
-            s_, r, missing, traveling, done, trcthu, info = env.step(a)  #return observation, reward, missing, traveling, terminated, truncated, info
-            self.global_step += 1
             
-            if self.global_step >= self.learning_starts:
-                if done :
-                    dw = True
+            self.load_models(actor_path=actor_path, critic_path=critic_path)
+
+   
+
+        for _ in range(1, self.total_timesteps+1):
+            a = self.choose_action(s, deterministic)
+            s_, r, done, trcthu, info = env.step(a)  #return observation, reward, missing, traveling, terminated, truncated, info
+            self.global_step += 1  
+            
+            r_p = r + info['cost']
+            
+
+            if done :
+                dw = True
+            else:
+                dw = False
+                
+            if self.train:
+                
+                if self.constraint:
+                    self.c_update(s, a, r, info, s_, dw)
                 else:
-                    dw = False
-                    
-                if train:
 
-                    self.update(s, a, r, s_, dw)
+                    self.update(s, a, r_p, s_, dw)
 
-                self.epsilon = self.linearly_decaying_value(self.initial_epsilon,
-                                                self.epsilon_decay_steps,
-                                                self.global_step,
-                                                self.learning_starts,
-                                                self.final_epsilon,)
+            self.epsilon = self.linearly_decaying_value(self.initial_epsilon,
+                                            self.epsilon_decay_steps,
+                                            self.global_step,
+                                            self.final_epsilon,)
             
-            
+            self.eta_1 = 1/(_ + 1)
+            self.eta_2 = 1/(np.sqrt(_ + 1))
+                
+                          
             
             if done:
                 print(self.global_step)
@@ -155,29 +195,41 @@ class CA2C(object):
                 num_episodes += 1
                 self.num_episodes += 1
                 
+                if r_p <-1:
+                    num_constraint +=1
+                
                 self.info={
-                    "n": sum(missing)/len(missing),
-                     "tr": sum(traveling)/len(traveling),
-                    "m": max(missing),
-                    "o": sum([x**2 for x in missing])/len(missing), 
-                    "r": r, 
-                    "p": len(traveling)}
+                    "n": sum(info['missing'])/len(info['missing']),
+                        "tr": sum(info['traveling'])/len(info['traveling']),
+                    "m": max(info['missing']),
+                    "o": sum([x**2 for x in info['missing']])/len(info['missing']), 
+                    "r": r_p, 
+                    "p": len(info['traveling']),
+                    "c": num_constraint,}
 
 
                 if self.log :
                     print(self.global_step)
                     self.log_episode_info(self.info, self.global_step)
 
-            else:
-                s = s_
-                
+        else:
+            s = s_
+            
         print("Done training!")
         self.env.close()
-        torch.save(self.critic, 'save_model/critic_{}.pth'.format(self.instance))
-        torch.save(self.actor, 'save_model/actor_{}.pth'.format(self.instance))
+        torch.save(self.critic.state_dict(), 'save_model/critic_{}_{}.pth'.format(self.instance,self.constraint))
+        torch.save(self.target_actor.state_dict(), 'save_model/actor_{}_{}.pth'.format(self.instance,self.constraint))
         if self.log:
             self.close_wandb()
-                
+    
+    
+    def load_models(self,critic_path, actor_path):
+        
+        self.critic.load_state_dict(torch.load(critic_path))
+        self.actor.load_state_dict(torch.load(actor_path))
+        self.hard_update(self.target_actor,self.actor)
+        self.hard_update(self.target_critic,self.critic)
+        
                 
     def log_episode_info(
         self,
@@ -218,24 +270,19 @@ class CA2C(object):
                "eval/objective": objective,
                "eval/travel time": travel,
                "eval/passenger_num":passenger,
-                "eval//reward": reward,
-                "global_step": global_timestep,
+                "eval/reward": reward,
+                "global_step":global_timestep,
+                "eval/num violate":  info["c"],
             },
             commit=None,
             step = global_timestep
         )
-
-
     
         
     def close_wandb(self) -> None:
         """Closes the wandb writer and finishes the run."""
 
         wandb.finish()
-
-
-            
-
 
 
     def update(self, s, a, r, s_, dw):
@@ -248,11 +295,15 @@ class CA2C(object):
             td_target = r + self.GAMMA * (1 - dw) * v_s_
 
         # Update actor
-        log_pi = torch.log(self.actor(s).flatten()[a])  # log pi(a|s)
+        log_pi = torch.log(self.target_actor(s).flatten()[a])  # log pi(a|s)
         actor_loss = -self.I * ((td_target - v_s).detach()) * log_pi  # Only calculate the derivative of log_pi
         self.actor_optimizer.zero_grad()
         actor_loss.backward()
         self.actor_optimizer.step()
+        
+        if self.total_timesteps % 10 == 0:
+        
+            self.soft_update(tau=0.001)
 
         # Update critic
         critic_loss = (td_target - v_s) ** 2  # Only calculate the derivative of v(s)
@@ -263,15 +314,70 @@ class CA2C(object):
         self.I *= self.GAMMA  # Represent the gamma^t in th policy gradient theorem
         
         
-        if self.log and self.global_step % 100 == 0:
+        if self.log :
+            wandb.log(
+                    {
+                        "losses/critic_loss": critic_loss,
+                        "losses/actor_loss": actor_loss,
+                    },)
+            
+    def c_update(self, s, a, r,info, s_, dw):
+        s = torch.unsqueeze(torch.tensor(s, dtype=torch.float), 0)
+        s_ = torch.unsqueeze(torch.tensor(s_, dtype=torch.float), 0)
+        v_s = self.critic(s).flatten()  # v(s)
+        v_s_ = self.critic(s_).flatten()  # v(s')
+        
+        cost = info['cost']
+        
+        r_ = r + self.lamb * cost
+        
+
+
+        with torch.no_grad():  # td_target has no gradient
+            td_target = r_ + self.GAMMA * (1 - dw) * v_s_
+
+        # Update actor
+        log_pi = torch.log(self.target_actor(s).flatten()[a])  # log pi(a|s)
+        actor_loss = -self.I * ((td_target - v_s).detach()) * log_pi  # Only calculate the derivative of log_pi
+        self.actor_optimizer.zero_grad()
+        actor_loss.backward()
+        self.actor_optimizer.step()
+        
+        if self.total_timesteps % 100 == 0:
+        
+            self.soft_update(tau=self.eta_2)
+
+        # Update critic
+        critic_loss = (td_target - v_s) ** 2  # Only calculate the derivative of v(s)
+        self.critic_optimizer.zero_grad()
+        critic_loss.backward()
+        self.critic_optimizer.step()
+
+        self.I *= self.GAMMA  # Represent the gamma^t in th policy gradient theorem
+        
+        self.lamb = self.lamb - self.eta_1 * (cost -self.C)
+        
+        self.lamb = np.clip(self.lamb,0, 100)
+        
+        if self.log :
             wandb.log(
                     {
                         "losses/critic_loss": critic_loss,
                         "losses/epsilon": self.epsilon,
                         "losses/actor_loss": actor_loss,
-                        "global_step": self.global_step,
+                        "losses/lambda": self.lamb,
+                        "losses/eta": self.eta_2,
                     },)
+               
+    def soft_update(self,tau):
+        
+        for target_param, param in zip(self.target_actor.parameters(), self.actor.parameters()):
             
+            target_param.data.copy_(target_param.data * (1.0 - tau) + param.data * tau)
+            
+        for target_param, param in zip(self.target_critic.parameters(), self.critic.parameters()):
+            
+            target_param.data.copy_(target_param.data * (1.0 - tau) + param.data * tau)
         
     def register_additional_config(self, conf: Dict = {}) -> None:
         """Registers additional config parameters to wandb. For example when calling train().
@@ -283,6 +389,9 @@ class CA2C(object):
             wandb.config[key] = value
             
     def get_config(self):
+        
+        C = self.C
+        lamb = self.lamb
         return {
             "env_id": self.env.unwrapped.spec.id,
             "learning_rate": self.lr,
@@ -290,8 +399,10 @@ class CA2C(object):
              "final_epsilon": self.final_epsilon,
             "epsilon_decay_steps:": self.epsilon_decay_steps,
             "gamma": self.GAMMA,
-            "learning_starts": self.learning_starts,
             "seed": self.seed,
+            "constraint": self.constraint,
+            "lamb":lamb,
+            "C":C,
         }
 
     def setup_wandb(self, project_name: str, experiment_name: str, entity: Optional[str] = None, group: Optional[str] = None) -> None:
@@ -307,7 +418,7 @@ class CA2C(object):
         """
         self.experiment_name = experiment_name
         env_id =  self.env.spec.id
-        self.full_experiment_name = f"{env_id}__{experiment_name}__{self.instance}__{int(time.time())}"
+        self.full_experiment_name = f"{env_id}__{experiment_name}__{self.instance}__{self.seed}"
 
 
         config = self.get_config()
@@ -340,7 +451,7 @@ class CA2C(object):
         wandb.finish()
         
         
-    def linearly_decaying_value(self, initial_value, decay_period, step, warmup_steps, final_value):
+    def linearly_decaying_value(self, initial_value, decay_period, step,  final_value):
         """Returns the current value for a linearly decaying parameter.
 
         This follows the Nature DQN schedule of a linearly decaying epsilon (Mnih et
@@ -358,7 +469,7 @@ class CA2C(object):
         Returns:
             A float, the current value computed according to the schedule.
         """
-        steps_left = decay_period + warmup_steps - step
+        steps_left = decay_period - step
         bonus = (initial_value - final_value) * steps_left / decay_period
         value = final_value + bonus
         value = np.clip(value, min(initial_value, final_value), max(initial_value, final_value))
@@ -381,50 +492,5 @@ def evaluate_policy(env, agent):
 
     return int(evaluate_reward / times)
 
-
-
-class QNet(nn.Module):
-    """Multi-objective Q-Network conditioned on the weight vector."""
-
-    def __init__(self, obs_shape, action_dim, rew_dim, net_arch):
-        """Initialize the Q network.
-
-        Args:
-            obs_shape: shape of the observation
-            action_dim: number of actions
-            rew_dim: number of objectives
-            net_arch: network architecture (number of units per layer)
-        """
-        super().__init__()
-        self.obs_shape = obs_shape
-        self.action_dim = action_dim
-        self.rew_dim = rew_dim
-        if len(obs_shape) == 1:
-            self.feature_extractor = None
-            input_dim = obs_shape[0] + rew_dim
-        elif len(obs_shape) > 1:  # Image observation
-            self.feature_extractor = NatureCNN(self.obs_shape, features_dim=512)
-            input_dim = self.feature_extractor.features_dim + rew_dim
-        # |S| + |R| -> ... -> |A| * |R|
-        self.net = mlp(input_dim, action_dim * rew_dim, net_arch)
-        self.apply(layer_init)
-
-    def forward(self, obs, w):
-        """Predict Q values for all actions.
-
-        Args:
-            obs: current observation
-            w: weight vector
-
-        Returns: the Q values for all actions
-
-        """
-        if self.feature_extractor is not None:
-            features = self.feature_extractor(obs / 255.0)
-            input = torch.cat((features, w), dim=w.dim() - 1)
-        else:
-            input = torch.cat((obs, w), dim=w.dim() - 1)
-        q_values = self.net(input)
-        return q_values.view(-1, self.action_dim, self.rew_dim)  # Batch size X Actions X Rewards
 
 

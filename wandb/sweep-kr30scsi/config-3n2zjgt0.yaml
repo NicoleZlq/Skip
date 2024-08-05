@@ -1,0 +1,6 @@
+wandb_version: 1
+
+C:
+  value: -2
+lamb:
+  value: 20

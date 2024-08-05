@@ -1,0 +1,14 @@
+program: policy_constraint.py
+project: skip
+method: bayes
+metric:
+  goal: minimize
+  name: eval/num violate
+parameters:
+
+  lamb:
+    distribution: categorical
+    values: [2,4,6,8,10,15,20]
+  C:
+    distribution: categorical
+    values: [-1,-2,-4,-5]

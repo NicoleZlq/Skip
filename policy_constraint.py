@@ -9,6 +9,7 @@ from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.logger import HParam
 import random
 import wandb
+import torch
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -49,23 +50,25 @@ def main(args):
 
     read_OD = data_generator.process_csv(args.instance)
 
-    env = gym.make("Skip-v0", num_trains=args.train,   num_stations=args.station, num_time = args.time, pass_od = read_OD)
+    env = gym.make("Skip-v1", num_trains=args.train,   num_stations=args.station, num_time = args.time, pass_od = read_OD)
     
     model = CA2C(env, 
-                 learning_rate=1e-4, 
+                 learning_rate=1e-5, 
                  gamma=0.99,
                  initial_epsilon=1.0,
                  final_epsilon=0.01,
-                 seed=984,
+                 seed=args.seed,
                  instance = args.instance,
-                epsilon_decay_steps=20000,
-                learning_starts=100,
+                epsilon_decay_steps=4000,
                  log=True,
+                 constraint=True,
                  project_name="skip",
-                experiment_name="RCPO",)
+                experiment_name="CRCPO-L",
+                lamb =args.lamb,
+                C = args.C)
 
    # model = A2C("MlpPolicy", env, learning_rate=0.0001, use_rms_prop=False, gamma=1.0,gae_lambda=0.5,max_grad_norm=0.6)
-    model.learn(int(1e5), env, train=True, critic_path=None, actor_path=None)
+    model.learn(int(3e4), env, train=True, deterministic=False, critic_path=args.critic_path, actor_path=args.actor_path)
     
     
     
@@ -103,12 +106,21 @@ parser.add_argument('--port', default='3306', type=int)
 parser.add_argument('-t',  '--train', default=6, type=int )
 parser.add_argument('-s','--station', default=6, type=int )
 parser.add_argument('--time',  default=60, type=int)
-parser.add_argument('--instance',  default=3, type=int)
-parser.add_argument('--critic_path',  default='save_model/critic_3.pth', type=str)
-parser.add_argument('--actor_path',  default='save_model/actor_3.pth', type=str)
+parser.add_argument('--instance',  default='3', type=str)
+parser.add_argument('--critic_path',  default='save_model/critic_2_False.pth', type=str)
+parser.add_argument('--actor_path',  default='save_model/actor_2_False.pth', type=str)
+parser.add_argument('--seed',  default=910, type=int)
+parser.add_argument('--lamb',  default=15, type=int)
+parser.add_argument('--C',  default=-1, type=int)
 
 # 解析参数:
 args = parser.parse_args()
+
+seed = 20240101
+torch.manual_seed(seed)
+print(torch.randint(1, 2024, (10,)))
+
+  
 
 main(args)
 

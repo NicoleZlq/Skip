@@ -1,0 +1,568 @@
+2024-08-04 15:57:53 ERROR 400 response executing GraphQL.
+2024-08-04 15:57:53 ERROR {"errors":[{"message":"name required for project query","path":["project"]}],"data":{"project":null}}
+2024-08-04 15:57:53 ERROR Traceback (most recent call last):
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\apis\normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\internal\internal_api.py", line 1060, in sweep
+    response = self.gql(
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\internal\internal_api.py", line 317, in gql
+    ret = self._retry_gql(
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\lib\retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\internal\internal_api.py", line 345, in execute
+    return self.client.execute(*args, **kwargs)  # type: ignore
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\vendor\gql-0.2.0\wandb_gql\client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\vendor\gql-0.2.0\wandb_gql\client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\lib\gql_request.py", line 59, in execute
+    request.raise_for_status()
+  File "E:\anaconda\envs\skip\lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://api.wandb.ai/graphql
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\cli\cli.py", line 108, in wrapper
+    return func(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\cli\cli.py", line 1827, in agent
+    wandb_agent.agent(sweep_id, entity=entity, project=project, count=count)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\wandb_agent.py", line 570, in agent
+    return run_agent(
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\wandb_agent.py", line 528, in run_agent
+    agent.run()
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\wandb_agent.py", line 190, in run
+    sweep_obj = self._api.sweep(self._sweep_id, "{}")
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\apis\internal.py", line 130, in sweep
+    return self.api.sweep(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\apis\normalize.py", line 51, in wrapper
+    raise CommError(message, error)
+wandb.errors.CommError: name required for project query (Error 400: Bad Request)
+
+2024-08-04 15:59:41 ERROR 400 response executing GraphQL.
+2024-08-04 15:59:41 ERROR {"errors":[{"message":"name required for project query","path":["project"]}],"data":{"project":null}}
+2024-08-04 15:59:41 ERROR Traceback (most recent call last):
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\apis\normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\internal\internal_api.py", line 1060, in sweep
+    response = self.gql(
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\internal\internal_api.py", line 317, in gql
+    ret = self._retry_gql(
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\lib\retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\internal\internal_api.py", line 345, in execute
+    return self.client.execute(*args, **kwargs)  # type: ignore
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\vendor\gql-0.2.0\wandb_gql\client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\vendor\gql-0.2.0\wandb_gql\client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\lib\gql_request.py", line 59, in execute
+    request.raise_for_status()
+  File "E:\anaconda\envs\skip\lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://api.wandb.ai/graphql
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\cli\cli.py", line 108, in wrapper
+    return func(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\cli\cli.py", line 1827, in agent
+    wandb_agent.agent(sweep_id, entity=entity, project=project, count=count)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\wandb_agent.py", line 570, in agent
+    return run_agent(
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\wandb_agent.py", line 528, in run_agent
+    agent.run()
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\wandb_agent.py", line 190, in run
+    sweep_obj = self._api.sweep(self._sweep_id, "{}")
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\apis\internal.py", line 130, in sweep
+    return self.api.sweep(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\apis\normalize.py", line 51, in wrapper
+    raise CommError(message, error)
+wandb.errors.CommError: name required for project query (Error 400: Bad Request)
+
+2024-08-04 16:01:18 ERROR 400 response executing GraphQL.
+2024-08-04 16:01:18 ERROR {"errors":[{"message":"name required for project query","path":["project"]}],"data":{"project":null}}
+2024-08-04 16:01:18 ERROR Traceback (most recent call last):
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\apis\normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\internal\internal_api.py", line 1060, in sweep
+    response = self.gql(
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\internal\internal_api.py", line 317, in gql
+    ret = self._retry_gql(
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\lib\retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\internal\internal_api.py", line 345, in execute
+    return self.client.execute(*args, **kwargs)  # type: ignore
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\vendor\gql-0.2.0\wandb_gql\client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\vendor\gql-0.2.0\wandb_gql\client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\lib\gql_request.py", line 59, in execute
+    request.raise_for_status()
+  File "E:\anaconda\envs\skip\lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://api.wandb.ai/graphql
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\cli\cli.py", line 108, in wrapper
+    return func(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\cli\cli.py", line 1827, in agent
+    wandb_agent.agent(sweep_id, entity=entity, project=project, count=count)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\wandb_agent.py", line 570, in agent
+    return run_agent(
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\wandb_agent.py", line 528, in run_agent
+    agent.run()
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\wandb_agent.py", line 190, in run
+    sweep_obj = self._api.sweep(self._sweep_id, "{}")
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\apis\internal.py", line 130, in sweep
+    return self.api.sweep(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\apis\normalize.py", line 51, in wrapper
+    raise CommError(message, error)
+wandb.errors.CommError: name required for project query (Error 400: Bad Request)
+
+2024-08-04 16:04:23 ERROR 400 response executing GraphQL.
+2024-08-04 16:04:23 ERROR {"errors":[{"message":"name required for project query","path":["project"]}],"data":{"project":null}}
+2024-08-04 16:04:23 ERROR Traceback (most recent call last):
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\apis\normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\internal\internal_api.py", line 1060, in sweep
+    response = self.gql(
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\internal\internal_api.py", line 317, in gql
+    ret = self._retry_gql(
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\lib\retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\internal\internal_api.py", line 345, in execute
+    return self.client.execute(*args, **kwargs)  # type: ignore
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\vendor\gql-0.2.0\wandb_gql\client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\vendor\gql-0.2.0\wandb_gql\client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\lib\gql_request.py", line 59, in execute
+    request.raise_for_status()
+  File "E:\anaconda\envs\skip\lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://api.wandb.ai/graphql
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\cli\cli.py", line 108, in wrapper
+    return func(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\cli\cli.py", line 1827, in agent
+    wandb_agent.agent(sweep_id, entity=entity, project=project, count=count)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\wandb_agent.py", line 570, in agent
+    return run_agent(
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\wandb_agent.py", line 528, in run_agent
+    agent.run()
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\wandb_agent.py", line 190, in run
+    sweep_obj = self._api.sweep(self._sweep_id, "{}")
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\apis\internal.py", line 130, in sweep
+    return self.api.sweep(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\apis\normalize.py", line 51, in wrapper
+    raise CommError(message, error)
+wandb.errors.CommError: name required for project query (Error 400: Bad Request)
+
+2024-08-04 16:04:57 ERROR 400 response executing GraphQL.
+2024-08-04 16:04:57 ERROR {"errors":[{"message":"name required for project query","path":["project"]}],"data":{"project":null}}
+2024-08-04 16:04:57 ERROR Traceback (most recent call last):
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\apis\normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\internal\internal_api.py", line 1060, in sweep
+    response = self.gql(
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\internal\internal_api.py", line 317, in gql
+    ret = self._retry_gql(
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\lib\retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\internal\internal_api.py", line 345, in execute
+    return self.client.execute(*args, **kwargs)  # type: ignore
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\vendor\gql-0.2.0\wandb_gql\client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\vendor\gql-0.2.0\wandb_gql\client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\lib\gql_request.py", line 59, in execute
+    request.raise_for_status()
+  File "E:\anaconda\envs\skip\lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://api.wandb.ai/graphql
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\cli\cli.py", line 108, in wrapper
+    return func(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\cli\cli.py", line 1827, in agent
+    wandb_agent.agent(sweep_id, entity=entity, project=project, count=count)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\wandb_agent.py", line 570, in agent
+    return run_agent(
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\wandb_agent.py", line 528, in run_agent
+    agent.run()
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\wandb_agent.py", line 190, in run
+    sweep_obj = self._api.sweep(self._sweep_id, "{}")
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\apis\internal.py", line 130, in sweep
+    return self.api.sweep(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\apis\normalize.py", line 51, in wrapper
+    raise CommError(message, error)
+wandb.errors.CommError: name required for project query (Error 400: Bad Request)
+
+2024-08-04 16:06:47 ERROR 400 response executing GraphQL.
+2024-08-04 16:06:47 ERROR {"errors":[{"message":"name required for project query","path":["project"]}],"data":{"project":null}}
+2024-08-04 16:06:47 ERROR Traceback (most recent call last):
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\apis\normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\internal\internal_api.py", line 1060, in sweep
+    response = self.gql(
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\internal\internal_api.py", line 317, in gql
+    ret = self._retry_gql(
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\lib\retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\internal\internal_api.py", line 345, in execute
+    return self.client.execute(*args, **kwargs)  # type: ignore
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\vendor\gql-0.2.0\wandb_gql\client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\vendor\gql-0.2.0\wandb_gql\client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\sdk\lib\gql_request.py", line 59, in execute
+    request.raise_for_status()
+  File "E:\anaconda\envs\skip\lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://api.wandb.ai/graphql
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\cli\cli.py", line 108, in wrapper
+    return func(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\cli\cli.py", line 1827, in agent
+    wandb_agent.agent(sweep_id, entity=entity, project=project, count=count)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\wandb_agent.py", line 570, in agent
+    return run_agent(
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\wandb_agent.py", line 528, in run_agent
+    agent.run()
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\wandb_agent.py", line 190, in run
+    sweep_obj = self._api.sweep(self._sweep_id, "{}")
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\apis\internal.py", line 130, in sweep
+    return self.api.sweep(*args, **kwargs)
+  File "E:\anaconda\envs\skip\lib\site-packages\wandb\apis\normalize.py", line 51, in wrapper
+    raise CommError(message, error)
+wandb.errors.CommError: name required for project query (Error 400: Bad Request)
+
+2024-08-04 16:07:10 INFO Running runs: []
+2024-08-04 16:07:10 INFO Agent received command: run
+2024-08-04 16:07:10 INFO Agent starting run with config:
+	C: -5
+	lamb: 2
+2024-08-04 16:07:10 INFO About to run command: python policy_constraint.py --C=-5 --lamb=2
+2024-08-04 16:07:15 INFO Running runs: ['sudyjhir']
+2024-08-04 16:07:25 INFO Cleaning up finished run: sudyjhir
+2024-08-04 16:07:26 INFO Agent received command: run
+2024-08-04 16:07:26 INFO Agent starting run with config:
+	C: -5
+	lamb: 2
+2024-08-04 16:07:26 INFO About to run command: python policy_constraint.py --C=-5 --lamb=2
+2024-08-04 16:07:31 INFO Running runs: ['7hunxzry']
+2024-08-04 16:07:36 INFO Cleaning up finished run: 7hunxzry
+2024-08-04 16:07:37 INFO Agent received command: run
+2024-08-04 16:07:37 INFO Agent starting run with config:
+	C: -4
+	lamb: 2
+2024-08-04 16:07:37 INFO About to run command: python policy_constraint.py --C=-4 --lamb=2
+2024-08-04 16:07:42 INFO Running runs: ['pwi444bg']
+2024-08-04 16:07:42 ERROR Detected 3 failed runs in the first 60 seconds, shutting down.
+2024-08-04 16:07:42 INFO To disable this check set WANDB_AGENT_DISABLE_FLAPPING=true
+2024-08-04 16:08:45 INFO Running runs: []
+2024-08-04 16:08:45 INFO Agent received command: run
+2024-08-04 16:08:45 INFO Agent starting run with config:
+	C: -1
+	lamb: 20
+2024-08-04 16:08:45 INFO About to run command: python policy_constraint.py --C=-1 --lamb=20
+2024-08-04 16:08:50 INFO Running runs: ['pawloy6t']
+2024-08-04 16:08:55 INFO Cleaning up finished run: pawloy6t
+2024-08-04 16:08:56 INFO Agent received command: run
+2024-08-04 16:08:56 INFO Agent starting run with config:
+	C: -1
+	lamb: 6
+2024-08-04 16:08:56 INFO About to run command: python policy_constraint.py --C=-1 --lamb=6
+2024-08-04 16:09:01 INFO Running runs: ['0da8te70']
+2024-08-04 16:09:06 INFO Cleaning up finished run: 0da8te70
+2024-08-04 16:09:07 INFO Agent received command: run
+2024-08-04 16:09:07 INFO Agent starting run with config:
+	C: -4
+	lamb: 4
+2024-08-04 16:09:07 INFO About to run command: python policy_constraint.py --C=-4 --lamb=4
+2024-08-04 16:09:12 INFO Running runs: ['1jb3sqpt']
+2024-08-04 16:09:17 ERROR Detected 3 failed runs in the first 60 seconds, shutting down.
+2024-08-04 16:09:17 INFO To disable this check set WANDB_AGENT_DISABLE_FLAPPING=true
+2024-08-04 16:10:00 INFO Running runs: []
+2024-08-04 16:10:01 INFO Agent received command: run
+2024-08-04 16:10:01 INFO Agent starting run with config:
+	C: -4
+	lamb: 8
+2024-08-04 16:10:01 INFO About to run command: python policy_constraint.py --C=-4 --lamb=8
+2024-08-04 16:10:06 INFO Running runs: ['umvfm0i1']
+2024-08-04 16:11:54 INFO Running runs: []
+2024-08-04 16:11:54 INFO Agent received command: run
+2024-08-04 16:11:54 INFO Agent starting run with config:
+	C: -1
+	lamb: 4
+2024-08-04 16:11:54 INFO About to run command: python policy_constraint.py --C=-1 --lamb=4
+2024-08-04 16:12:00 INFO Running runs: ['nnk9ze80']
+2024-08-04 16:15:32 INFO Running runs: []
+2024-08-04 16:15:32 INFO Agent received command: run
+2024-08-04 16:15:32 INFO Agent starting run with config:
+	C: -5
+	lamb: 10
+2024-08-04 16:15:32 INFO About to run command: python policy_constraint.py --C=-5 --lamb=10
+2024-08-04 16:15:37 INFO Running runs: ['9mlgc9rz']
+2024-08-04 16:18:44 INFO Cleaning up finished run: 9mlgc9rz
+2024-08-04 16:18:46 INFO Agent received command: run
+2024-08-04 16:18:46 INFO Agent starting run with config:
+	C: -4
+	lamb: 6
+2024-08-04 16:18:46 INFO About to run command: python policy_constraint.py --C=-4 --lamb=6
+2024-08-04 16:18:51 INFO Running runs: ['n74fnlmu']
+2024-08-04 16:22:03 INFO Cleaning up finished run: n74fnlmu
+2024-08-04 16:22:04 INFO Agent received command: run
+2024-08-04 16:22:04 INFO Agent starting run with config:
+	C: -2
+	lamb: 8
+2024-08-04 16:22:04 INFO About to run command: python policy_constraint.py --C=-2 --lamb=8
+2024-08-04 16:22:09 INFO Running runs: ['yqsy3pw1']
+2024-08-04 16:24:06 INFO Running runs: []
+2024-08-04 16:24:07 INFO Agent received command: run
+2024-08-04 16:24:07 INFO Agent starting run with config:
+	C: -2
+	lamb: 4
+2024-08-04 16:24:07 INFO About to run command: python policy_constraint.py --C=-2 --lamb=4
+2024-08-04 16:24:12 INFO Running runs: ['hhfsu9is']
+2024-08-04 16:27:24 INFO Cleaning up finished run: hhfsu9is
+2024-08-04 16:27:25 INFO Agent received command: run
+2024-08-04 16:27:25 INFO Agent starting run with config:
+	C: -5
+	lamb: 2
+2024-08-04 16:27:25 INFO About to run command: python policy_constraint.py --C=-5 --lamb=2
+2024-08-04 16:27:30 INFO Running runs: ['9olnq4l4']
+2024-08-04 16:30:48 INFO Cleaning up finished run: 9olnq4l4
+2024-08-04 16:30:49 INFO Agent received command: run
+2024-08-04 16:30:49 INFO Agent starting run with config:
+	C: -5
+	lamb: 4
+2024-08-04 16:30:49 INFO About to run command: python policy_constraint.py --C=-5 --lamb=4
+2024-08-04 16:30:54 INFO Running runs: ['0165ns3d']
+2024-08-04 16:33:56 INFO Cleaning up finished run: 0165ns3d
+2024-08-04 16:33:57 INFO Agent received command: run
+2024-08-04 16:33:57 INFO Agent starting run with config:
+	C: -5
+	lamb: 8
+2024-08-04 16:33:57 INFO About to run command: python policy_constraint.py --C=-5 --lamb=8
+2024-08-04 16:34:02 INFO Running runs: ['jh8crk05']
+2024-08-04 16:37:04 INFO Cleaning up finished run: jh8crk05
+2024-08-04 16:37:05 INFO Agent received command: run
+2024-08-04 16:37:05 INFO Agent starting run with config:
+	C: -5
+	lamb: 4
+2024-08-04 16:37:05 INFO About to run command: python policy_constraint.py --C=-5 --lamb=4
+2024-08-04 16:37:10 INFO Running runs: ['0w8ebs9q']
+2024-08-04 16:40:06 ERROR Detected 5 failed runs in a row, shutting down.
+2024-08-04 16:40:06 INFO To change this value set WANDB_AGENT_MAX_INITIAL_FAILURES=val
+2024-08-04 16:41:10 INFO Running runs: []
+2024-08-04 16:41:10 INFO Agent received command: run
+2024-08-04 16:41:10 INFO Agent starting run with config:
+	C: -1
+	lamb: 20
+2024-08-04 16:41:10 INFO About to run command: python policy_constraint.py --C=-1 --lamb=20
+2024-08-04 16:41:15 INFO Running runs: ['i3j3p3zw']
+2024-08-04 16:44:07 INFO Cleaning up finished run: i3j3p3zw
+2024-08-04 16:44:09 INFO Agent received command: run
+2024-08-04 16:44:09 INFO Agent starting run with config:
+	C: -1
+	lamb: 2
+2024-08-04 16:44:09 INFO About to run command: python policy_constraint.py --C=-1 --lamb=2
+2024-08-04 16:44:14 INFO Running runs: ['7nh72h6d']
+2024-08-04 16:47:39 INFO Cleaning up finished run: 7nh72h6d
+2024-08-04 16:47:40 INFO Agent received command: run
+2024-08-04 16:47:40 INFO Agent starting run with config:
+	C: -1
+	lamb: 2
+2024-08-04 16:47:40 INFO About to run command: python policy_constraint.py --C=-1 --lamb=2
+2024-08-04 16:47:45 INFO Running runs: ['ey8xtftv']
+2024-08-04 17:32:52 INFO Running runs: []
+2024-08-04 17:32:52 INFO Agent received command: run
+2024-08-04 17:32:52 INFO Agent starting run with config:
+	C: -4
+	lamb: 8
+2024-08-04 17:32:52 INFO About to run command: python policy_constraint.py --C=-4 --lamb=8
+2024-08-04 17:32:57 INFO Running runs: ['k5vfye03']
+2024-08-04 17:38:04 INFO Cleaning up finished run: k5vfye03
+2024-08-04 17:38:05 INFO Agent received command: run
+2024-08-04 17:38:05 INFO Agent starting run with config:
+	C: -5
+	lamb: 8
+2024-08-04 17:38:05 INFO About to run command: python policy_constraint.py --C=-5 --lamb=8
+2024-08-04 17:38:10 INFO Running runs: ['u3shfm59']
+2024-08-04 17:42:21 INFO Cleaning up finished run: u3shfm59
+2024-08-04 17:42:21 INFO Agent received command: run
+2024-08-04 17:42:21 INFO Agent starting run with config:
+	C: -5
+	lamb: 2
+2024-08-04 17:42:21 INFO About to run command: python policy_constraint.py --C=-5 --lamb=2
+2024-08-04 17:42:26 INFO Running runs: ['onkbzrzt']
+2024-08-04 17:46:00 INFO Cleaning up finished run: onkbzrzt
+2024-08-04 17:46:00 INFO Agent received command: run
+2024-08-04 17:46:00 INFO Agent starting run with config:
+	C: -5
+	lamb: 10
+2024-08-04 17:46:00 INFO About to run command: python policy_constraint.py --C=-5 --lamb=10
+2024-08-04 17:46:05 INFO Running runs: ['ejdhaj3u']
+2024-08-04 17:49:44 INFO Cleaning up finished run: ejdhaj3u
+2024-08-04 17:49:45 INFO Agent received command: run
+2024-08-04 17:49:45 INFO Agent starting run with config:
+	C: -1
+	lamb: 2
+2024-08-04 17:49:45 INFO About to run command: python policy_constraint.py --C=-1 --lamb=2
+2024-08-04 17:49:50 INFO Running runs: ['eeyqvnz8']
+2024-08-04 17:54:04 ERROR Detected 5 failed runs in a row, shutting down.
+2024-08-04 17:54:04 INFO To change this value set WANDB_AGENT_MAX_INITIAL_FAILURES=val
+2024-08-04 17:54:33 INFO Running runs: []
+2024-08-04 17:54:33 INFO Agent received command: run
+2024-08-04 17:54:33 INFO Agent starting run with config:
+	C: -5
+	lamb: 8
+2024-08-04 17:54:33 INFO About to run command: python policy_constraint.py --C=-5 --lamb=8
+2024-08-04 17:54:38 INFO Running runs: ['el29gvm3']
+2024-08-04 17:58:59 INFO Cleaning up finished run: el29gvm3
+2024-08-04 17:59:00 INFO Agent received command: run
+2024-08-04 17:59:00 INFO Agent starting run with config:
+	C: -5
+	lamb: 20
+2024-08-04 17:59:00 INFO About to run command: python policy_constraint.py --C=-5 --lamb=20
+2024-08-04 17:59:05 INFO Running runs: ['dktb7uee']
+2024-08-04 18:03:21 INFO Cleaning up finished run: dktb7uee
+2024-08-04 18:03:22 INFO Agent received command: run
+2024-08-04 18:03:22 INFO Agent starting run with config:
+	C: -4
+	lamb: 20
+2024-08-04 18:03:22 INFO About to run command: python policy_constraint.py --C=-4 --lamb=20
+2024-08-04 18:03:27 INFO Running runs: ['t9dudp1q']
+2024-08-04 18:07:42 INFO Cleaning up finished run: t9dudp1q
+2024-08-04 18:07:43 INFO Agent received command: run
+2024-08-04 18:07:43 INFO Agent starting run with config:
+	C: -5
+	lamb: 10
+2024-08-04 18:07:43 INFO About to run command: python policy_constraint.py --C=-5 --lamb=10
+2024-08-04 18:07:48 INFO Running runs: ['ktpmdcx2']
+2024-08-04 18:12:18 INFO Cleaning up finished run: ktpmdcx2
+2024-08-04 18:12:19 INFO Agent received command: run
+2024-08-04 18:12:19 INFO Agent starting run with config:
+	C: -4
+	lamb: 2
+2024-08-04 18:12:19 INFO About to run command: python policy_constraint.py --C=-4 --lamb=2
+2024-08-04 18:12:24 INFO Running runs: ['ej0lq38g']
+2024-08-04 18:15:58 ERROR Detected 5 failed runs in a row, shutting down.
+2024-08-04 18:15:58 INFO To change this value set WANDB_AGENT_MAX_INITIAL_FAILURES=val
+2024-08-05 11:21:14 INFO Running runs: []
+2024-08-05 11:21:15 INFO Agent received command: run
+2024-08-05 11:21:15 INFO Agent starting run with config:
+	C: -5
+	lamb: 20
+2024-08-05 11:21:15 INFO About to run command: python policy_constraint.py --C=-5 --lamb=20
+2024-08-05 11:21:20 INFO Running runs: ['63kg55lp']
+2024-08-05 11:25:29 INFO Cleaning up finished run: 63kg55lp
+2024-08-05 11:25:30 INFO Agent received command: run
+2024-08-05 11:25:30 INFO Agent starting run with config:
+	C: -5
+	lamb: 10
+2024-08-05 11:25:30 INFO About to run command: python policy_constraint.py --C=-5 --lamb=10
+2024-08-05 11:25:35 INFO Running runs: ['whrjxdmg']
+2024-08-05 11:29:46 INFO Cleaning up finished run: whrjxdmg
+2024-08-05 11:29:46 INFO Agent received command: run
+2024-08-05 11:29:46 INFO Agent starting run with config:
+	C: -2
+	lamb: 15
+2024-08-05 11:29:46 INFO About to run command: python policy_constraint.py --C=-2 --lamb=15
+2024-08-05 11:29:51 INFO Running runs: ['2z32zg14']
+2024-08-05 11:34:07 INFO Cleaning up finished run: 2z32zg14
+2024-08-05 11:34:07 INFO Agent received command: run
+2024-08-05 11:34:07 INFO Agent starting run with config:
+	C: -2
+	lamb: 20
+2024-08-05 11:34:07 INFO About to run command: python policy_constraint.py --C=-2 --lamb=20
+2024-08-05 11:34:12 INFO Running runs: ['3n2zjgt0']
+2024-08-05 11:38:40 INFO Cleaning up finished run: 3n2zjgt0
+2024-08-05 11:38:40 INFO Agent received command: run
+2024-08-05 11:38:40 INFO Agent starting run with config:
+	C: -5
+	lamb: 8
+2024-08-05 11:38:40 INFO About to run command: python policy_constraint.py --C=-5 --lamb=8
+2024-08-05 11:38:45 INFO Running runs: ['prguccm9']
+2024-08-05 11:43:21 ERROR Detected 5 failed runs in a row, shutting down.
+2024-08-05 11:43:21 INFO To change this value set WANDB_AGENT_MAX_INITIAL_FAILURES=val
+2024-08-05 12:00:36 INFO Running runs: []
+2024-08-05 12:00:37 INFO Agent received command: run
+2024-08-05 12:00:37 INFO Agent starting run with config:
+	C: -5
+	lamb: 15
+2024-08-05 12:00:37 INFO About to run command: python policy_constraint.py --C=-5 --lamb=15
+2024-08-05 12:00:42 INFO Running runs: ['8rf9bw8d']
+2024-08-05 12:03:55 INFO Cleaning up finished run: 8rf9bw8d
+2024-08-05 12:03:57 INFO Agent received command: run
+2024-08-05 12:03:57 INFO Agent starting run with config:
+	C: -1
+	lamb: 15
+2024-08-05 12:03:57 INFO About to run command: python policy_constraint.py --C=-1 --lamb=15
+2024-08-05 12:04:02 INFO Running runs: ['qtvlcw11']
+2024-08-05 12:04:56 INFO Running runs: []
+2024-08-05 12:04:56 INFO Agent received command: run
+2024-08-05 12:04:56 INFO Agent starting run with config:
+	C: -1
+	lamb: 15
+2024-08-05 12:04:56 INFO About to run command: python policy_constraint.py --C=-1 --lamb=15
+2024-08-05 12:05:01 INFO Running runs: ['pthf2s7z']
+2024-08-05 12:08:16 INFO Cleaning up finished run: pthf2s7z
+2024-08-05 12:08:17 INFO Agent received command: run
+2024-08-05 12:08:17 INFO Agent starting run with config:
+	C: -1
+	lamb: 8
+2024-08-05 12:08:17 INFO About to run command: python policy_constraint.py --C=-1 --lamb=8
+2024-08-05 12:08:22 INFO Running runs: ['4gyb7db4']
+2024-08-05 12:11:30 INFO Cleaning up finished run: 4gyb7db4
+2024-08-05 12:13:22 INFO Running runs: []
+2024-08-05 12:13:23 INFO Agent received command: run
+2024-08-05 12:13:23 INFO Agent starting run with config:
+	C: -1
+	lamb: 10
+2024-08-05 12:13:23 INFO About to run command: python policy_constraint.py --C=-1 --lamb=10
+2024-08-05 12:13:28 INFO Running runs: ['jn0xuhie']
+2024-08-05 12:17:12 INFO Cleaning up finished run: jn0xuhie
+2024-08-05 12:17:13 INFO Agent received command: run
+2024-08-05 12:17:13 INFO Agent starting run with config:
+	C: -1
+	lamb: 15
+2024-08-05 12:17:13 INFO About to run command: python policy_constraint.py --C=-1 --lamb=15
+2024-08-05 12:17:18 INFO Running runs: ['6crqc1v8']
+2024-08-05 12:21:18 INFO Cleaning up finished run: 6crqc1v8
+2024-08-05 12:21:18 INFO Agent received command: run
+2024-08-05 12:21:18 INFO Agent starting run with config:
+	C: -1
+	lamb: 15
+2024-08-05 12:21:18 INFO About to run command: python policy_constraint.py --C=-1 --lamb=15
+2024-08-05 12:21:23 INFO Running runs: ['0k442qp9']
+2024-08-05 12:24:31 INFO Cleaning up finished run: 0k442qp9
+2024-08-05 12:24:31 INFO Agent received command: run
+2024-08-05 12:24:31 INFO Agent starting run with config:
+	C: -1
+	lamb: 15
+2024-08-05 12:24:31 INFO About to run command: python policy_constraint.py --C=-1 --lamb=15
+2024-08-05 12:24:36 INFO Running runs: ['nfuawtvj']
+2024-08-05 12:27:33 INFO Cleaning up finished run: nfuawtvj
+2024-08-05 12:27:34 INFO Agent received command: run
+2024-08-05 12:27:34 INFO Agent starting run with config:
+	C: -1
+	lamb: 15
+2024-08-05 12:27:34 INFO About to run command: python policy_constraint.py --C=-1 --lamb=15
+2024-08-05 12:27:39 INFO Running runs: ['4rz6bg4o']
+2024-08-05 12:30:36 ERROR Detected 5 failed runs in a row, shutting down.
+2024-08-05 12:30:36 INFO To change this value set WANDB_AGENT_MAX_INITIAL_FAILURES=val
