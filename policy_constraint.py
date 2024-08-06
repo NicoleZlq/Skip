@@ -63,7 +63,7 @@ def main(args):
                  log=True,
                  constraint=True,
                  project_name="skip",
-                experiment_name="CRCPO-L",
+                experiment_name="CRCPO-T1",
                 lamb =args.lamb,
                 C = args.C)
 
@@ -109,8 +109,8 @@ parser.add_argument('--time',  default=60, type=int)
 parser.add_argument('--instance',  default='3', type=str)
 parser.add_argument('--critic_path',  default='save_model/critic_2_False.pth', type=str)
 parser.add_argument('--actor_path',  default='save_model/actor_2_False.pth', type=str)
-parser.add_argument('--seed',  default=910, type=int)
-parser.add_argument('--lamb',  default=15, type=int)
+parser.add_argument('--seed',  default=1497, type=int)
+parser.add_argument('--lamb',  default=0, type=int)
 parser.add_argument('--C',  default=-1, type=int)
 
 # 解析参数:

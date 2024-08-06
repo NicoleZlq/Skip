@@ -87,11 +87,11 @@ class CA2C(object):
         self.critic = Critic(self.state_dim, self.hidden_width)
         self.critic_optimizer = torch.optim.Adam(self.critic.parameters(), lr=self.lr)
         
-        self.target_actor =  Actor(self.state_dim, self.action_dim, self.hidden_width)
-        self.target_critic = Critic(self.state_dim, self.hidden_width)
+        # self.target_actor =  Actor(self.state_dim, self.action_dim, self.hidden_width)
+        # self.target_critic = Critic(self.state_dim, self.hidden_width)
         
-        self.hard_update(self.target_actor,self.actor)
-        self.hard_update(self.target_critic,self.critic)
+        # self.hard_update(self.target_actor,self.actor)
+        # self.hard_update(self.target_critic,self.critic)
 
         
         self.info ={}
@@ -184,8 +184,7 @@ class CA2C(object):
                                             self.global_step,
                                             self.final_epsilon,)
             
-            self.eta_1 = 1/(_ + 1)
-            self.eta_2 = 1/(np.sqrt(_ + 1))
+            
                 
                           
             
@@ -197,6 +196,11 @@ class CA2C(object):
                 
                 if r_p <-1:
                     num_constraint +=1
+                    
+                self.lamb +=  (info['cost'] - self.C)
+                self.lamb = np.maximum(self.lamb, 0)
+                
+                
                 
                 self.info={
                     "n": sum(info['missing'])/len(info['missing']),
@@ -209,7 +213,6 @@ class CA2C(object):
 
 
                 if self.log :
-                    print(self.global_step)
                     self.log_episode_info(self.info, self.global_step)
 
         else:
@@ -218,7 +221,7 @@ class CA2C(object):
         print("Done training!")
         self.env.close()
         torch.save(self.critic.state_dict(), 'save_model/critic_{}_{}.pth'.format(self.instance,self.constraint))
-        torch.save(self.target_actor.state_dict(), 'save_model/actor_{}_{}.pth'.format(self.instance,self.constraint))
+        torch.save(self.actor.state_dict(), 'save_model/actor_{}_{}.pth'.format(self.instance,self.constraint))
         if self.log:
             self.close_wandb()
     
@@ -227,8 +230,8 @@ class CA2C(object):
         
         self.critic.load_state_dict(torch.load(critic_path))
         self.actor.load_state_dict(torch.load(actor_path))
-        self.hard_update(self.target_actor,self.actor)
-        self.hard_update(self.target_critic,self.critic)
+        # self.hard_update(self.target_actor,self.actor)
+        # self.hard_update(self.target_critic,self.critic)
         
                 
     def log_episode_info(
@@ -295,15 +298,15 @@ class CA2C(object):
             td_target = r + self.GAMMA * (1 - dw) * v_s_
 
         # Update actor
-        log_pi = torch.log(self.target_actor(s).flatten()[a])  # log pi(a|s)
+        log_pi = torch.log(self.actor(s).flatten()[a])  # log pi(a|s)
         actor_loss = -self.I * ((td_target - v_s).detach()) * log_pi  # Only calculate the derivative of log_pi
         self.actor_optimizer.zero_grad()
         actor_loss.backward()
         self.actor_optimizer.step()
         
-        if self.total_timesteps % 10 == 0:
+        # if self.total_timesteps % 10 == 0:
         
-            self.soft_update(tau=0.001)
+        #     self.soft_update(tau=0.001)
 
         # Update critic
         critic_loss = (td_target - v_s) ** 2  # Only calculate the derivative of v(s)
@@ -337,15 +340,15 @@ class CA2C(object):
             td_target = r_ + self.GAMMA * (1 - dw) * v_s_
 
         # Update actor
-        log_pi = torch.log(self.target_actor(s).flatten()[a])  # log pi(a|s)
+        log_pi = torch.log(self.actor(s).flatten()[a])  # log pi(a|s)
         actor_loss = -self.I * ((td_target - v_s).detach()) * log_pi  # Only calculate the derivative of log_pi
         self.actor_optimizer.zero_grad()
         actor_loss.backward()
         self.actor_optimizer.step()
         
-        if self.total_timesteps % 100 == 0:
+        # if self.total_timesteps % 100 == 0:
         
-            self.soft_update(tau=self.eta_2)
+        #     self.soft_update(tau=self.eta_2)
 
         # Update critic
         critic_loss = (td_target - v_s) ** 2  # Only calculate the derivative of v(s)
@@ -355,10 +358,10 @@ class CA2C(object):
 
         self.I *= self.GAMMA  # Represent the gamma^t in th policy gradient theorem
         
-        self.lamb = self.lamb - self.eta_1 * (cost -self.C)
-        
-        self.lamb = np.clip(self.lamb,0, 100)
-        
+        print(self.lamb)
+        self.eta_1 = 1/(self.global_step+ 1)
+        self.eta_2 = 1/(np.sqrt(self.global_step + 1))
+                
         if self.log :
             wandb.log(
                     {
